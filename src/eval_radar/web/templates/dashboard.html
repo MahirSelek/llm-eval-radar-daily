@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Eval Radar{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>Command center</h1>
+    <p class="sub">Model, token, kanallar, yazarlar ve bugünün sinyalleri — tek bakış.</p>
+  </div>
+  <div class="btn-row">
+    <button class="btn" id="btn-collect">Şimdi collect</button>
+    <button class="btn primary" id="btn-report">Rapor preview</button>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card span-3">
+    <div class="kpi-label">Aktif model</div>
+    <div class="kpi" style="font-size:1.2rem">{{ model.model }}</div>
+    <p class="muted" style="margin:.4rem 0 0">{{ model.provider }}
+      {% if llm_ok %}<span class="pill ok">online</span>{% else %}<span class="pill warn">key yok</span>{% endif %}
+    </p>
+  </div>
+  <div class="card span-3">
+    <div class="kpi-label">Bugün token</div>
+    <div class="kpi">{{ usage.today_tokens }}</div>
+    <p class="muted" style="margin:.4rem 0 0">{{ usage.calls }} toplam çağrı</p>
+  </div>
+  <div class="card span-3">
+    <div class="kpi-label">Toplam token</div>
+    <div class="kpi">{{ usage.total_tokens }}</div>
+    <p class="muted" style="margin:.4rem 0 0">logged usage.jsonl</p>
+  </div>
+  <div class="card span-3">
+    <div class="kpi-label">Son digest</div>
+    <div class="kpi" style="font-size:1.2rem">
+      {% if digest %}{{ digest.counts.arxiv }}/{{ digest.counts.github }}/{{ digest.counts.reddit }}{% else %}—{% endif %}
+    </div>
+    <p class="muted" style="margin:.4rem 0 0">arXiv / GitHub / Reddit</p>
+  </div>
+
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Konu başlıkları</h3>
+    <ul class="list">
+      {% for topic, n in topics %}
+      <li><span>{{ topic }}</span><span class="muted">{{ n }}</span></li>
+      {% else %}
+      <li class="muted">Henüz digest yok — collect çalıştır.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Yazarlar / kaynaklar</h3>
+    <ul class="list">
+      {% for name, n in authors %}
+      <li><span>{{ name }}</span><span class="muted">{{ n }}</span></li>
+      {% else %}
+      <li class="muted">Yazar sinyali yok.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card span-4">
+    <h3 style="margin-top:0;font-family:var(--display)">Kanallar</h3>
+    <ul class="list">
+      {% for ch, n in channels.items() %}
+      <li><span>{{ ch }}</span><span class="muted">{{ n }}</span></li>
+      {% else %}
+      <li class="muted">—</li>
+      {% endfor %}
+    </ul>
+    <p class="muted" style="margin-top:1rem;font-size:.82rem">
+      Takip: {{ seeds.reddit_subs|length }} sub · {{ seeds.github_repos|length }} repo · {{ seeds.people|length }} seed kişi
+    </p>
+  </div>
+
+  <div class="card span-4">
+    <h3 style="margin-top:0;font-family:var(--display)">Token / model kırılımı</h3>
+    <ul class="list">
+      {% for m, n in usage.by_model.items() %}
+      <li><span class="mono">{{ m }}</span><span class="muted">{{ n }}</span></li>
+      {% else %}
+      <li class="muted">Henüz LLM çağrısı yok.</li>
+      {% endfor %}
+    </ul>
+    <ul class="list" style="margin-top:.75rem">
+      {% for p, n in usage.by_purpose.items() %}
+      <li><span>{{ p }}</span><span class="muted">{{ n }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card span-4">
+    <h3 style="margin-top:0;font-family:var(--display)">Son sohbet</h3>
+    <ul class="list">
+      {% for row in chat_preview %}
+      <li>
+        <span><strong>{{ row.role }}</strong>: {{ (row.text or '')[:90] }}{% if (row.text or '')|length > 90 %}…{% endif %}</span>
+      </li>
+      {% else %}
+      <li class="muted">Sohbet yok.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card span-12">
+    <h3 style="margin-top:0;font-family:var(--display)">Son kullanım logu</h3>
+    <table>
+      <thead>
+        <tr><th>Zaman</th><th>Provider</th><th>Model</th><th>Purpose</th><th>Tokens</th></tr>
+      </thead>
+      <tbody>
+        {% for r in usage.recent %}
+        <tr>
+          <td class="mono">{{ r.ts }}</td>
+          <td>{{ r.provider }}</td>
+          <td class="mono">{{ r.model }}</td>
+          <td>{{ r.purpose }}</td>
+          <td>{{ r.total_tokens }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="muted">Kayıt yok — chat veya /report sonrası dolar.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card span-12" id="preview-box" style="display:none">
+    <h3 style="margin-top:0;font-family:var(--display)">Rapor preview</h3>
+    <pre id="preview-out" class="mono" style="white-space:pre-wrap;margin:0;color:var(--muted)"></pre>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function post(url) {
+  const r = await fetch(url, { method: 'POST' });
+  return r.json();
+}
+document.getElementById('btn-collect').onclick = async () => {
+  const btn = document.getElementById('btn-collect');
+  btn.disabled = true; btn.textContent = 'Collecting…';
+  try {
+    const data = await post('/api/collect');
+    alert(data.ok ? ('OK ' + JSON.stringify(data.counts)) : data.error);
+    if (data.ok) location.reload();
+  } finally { btn.disabled = false; btn.textContent = 'Şimdi collect'; }
+};
+document.getElementById('btn-report').onclick = async () => {
+  const btn = document.getElementById('btn-report');
+  btn.disabled = true; btn.textContent = 'Writing…';
+  try {
+    const data = await post('/api/report-preview');
+    const box = document.getElementById('preview-box');
+    const out = document.getElementById('preview-out');
+    box.style.display = 'block';
+    out.textContent = data.ok ? data.report : (data.error || 'error');
+    // strip raw markdown asterisks for readability in preview
+    if (data.ok && out.textContent) {
+      out.textContent = out.textContent.replace(/\*\*/g, '').replace(/__/g, '');
+    }
+  } finally { btn.disabled = false; btn.textContent = 'Rapor preview'; }
+};
+</script>
+{% endblock %}

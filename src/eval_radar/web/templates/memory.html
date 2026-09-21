@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Memory · Eval Radar{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>Agent memory</h1>
+    <p class="sub">Öğrendikleri, tercihler ve sohbet izi — seninle pekiştirme alanı.</p>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Preferences</h3>
+    <pre class="mono" style="white-space:pre-wrap;color:var(--muted);margin:0">{{ prefs | tojson(indent=2) }}</pre>
+  </div>
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Profile</h3>
+    <pre style="white-space:pre-wrap;color:var(--muted);margin:0;font-family:var(--font)">{{ profile }}</pre>
+  </div>
+  <div class="card span-12">
+    <h3 style="margin-top:0;font-family:var(--display)">Chat log</h3>
+    {% for row in chat %}
+    <div class="bubble {{ row.role }}" style="max-width:100%">
+      <div class="muted" style="font-size:.75rem;margin-bottom:.35rem">{{ row.role }} · {{ row.ts }}</div>
+      {% if row.html %}{{ row.html|safe }}{% else %}{{ row.text }}{% endif %}
+    </div>
+    {% else %}
+    <p class="muted">Log boş.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

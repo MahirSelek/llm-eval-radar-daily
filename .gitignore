@@ -1,0 +1,15 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+data/digests/*
+!data/digests/.gitkeep
+data/memory/chat_log.jsonl
+data/memory/chat_id.txt
+data/memory/usage.jsonl
+*.log

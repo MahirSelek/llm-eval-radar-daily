@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Chat · Eval Radar{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>Senin LLM’in</h1>
+    <p class="sub">Dashboard sohbeti — agent memory ile pekiştirir. Telegram ile aynı beyin.</p>
+  </div>
+  {% if llm_ok %}<span class="pill ok">LLM ready</span>{% else %}<span class="pill warn">CURSOR_API_KEY ekle</span>{% endif %}
+</div>
+
+<div class="chat-box">
+  <div class="chat-log" id="log">
+    {% for row in chat %}
+    <div class="bubble {{ row.role }}">{% if row.html %}{{ row.html|safe }}{% else %}{{ row.text }}{% endif %}</div>
+    {% else %}
+    <p class="muted">İlk mesajı yaz — eval dünyasını birlikte konuşalım.</p>
+    {% endfor %}
+  </div>
+  <form class="composer" id="composer">
+    <input id="msg" placeholder="Ne düşünüyorsun / neyi önceliklendirelim?" autocomplete="off" />
+    <button class="btn primary" type="submit" id="send-btn">Gönder</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const log = document.getElementById('log');
+const form = document.getElementById('composer');
+const input = document.getElementById('msg');
+const sendBtn = document.getElementById('send-btn');
+
+function addBubble(role, text, html) {
+  const d = document.createElement('div');
+  d.className = 'bubble ' + role;
+  if (html) d.innerHTML = html;
+  else d.textContent = text || '';
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+
+function showThinking() {
+  const d = document.createElement('div');
+  d.className = 'bubble assistant thinking';
+  d.id = 'thinking-bubble';
+  d.innerHTML = '<span class="thinking-label">Mesaj alındı · cevaplıyor</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+
+function clearThinking() {
+  const el = document.getElementById('thinking-bubble');
+  if (el) el.remove();
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text || sendBtn.disabled) return;
+
+  addBubble('user', text);
+  input.value = '';
+  sendBtn.disabled = true;
+  input.disabled = true;
+  showThinking();
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    const data = await r.json();
+    clearThinking();
+    addBubble(
+      'assistant',
+      data.reply || data.error || 'Bir hata oldu, tekrar dene.',
+      data.reply_html
+    );
+  } catch (err) {
+    clearThinking();
+    addBubble('assistant', 'Bağlantı hatası — dashboard çalışıyor mu? ' + err);
+  } finally {
+    sendBtn.disabled = false;
+    input.disabled = false;
+    input.focus();
+  }
+});
+
+log.scrollTop = log.scrollHeight;
+</script>
+{% endblock %}

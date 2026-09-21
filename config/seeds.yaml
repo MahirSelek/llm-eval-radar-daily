@@ -1,0 +1,96 @@
+people:
+  - name: Percy Liang
+    focus: HELM, CRFM, foundation model evaluation
+    queries: ["Percy Liang HELM", "Stanford CRFM evaluation"]
+  - name: Wei-Lin Chiang
+    focus: Chatbot Arena, LMSYS
+    queries: ["Wei-Lin Chiang Chatbot Arena", "LMSYS arena"]
+  - name: Anastasios Angelopoulos
+    focus: Arena statistics, ranking uncertainty
+    queries: ["Angelopoulos Chatbot Arena", "LMSYS statistical ranking"]
+  - name: Yann Dubois
+    focus: AlpacaEval, LLM-as-judge
+    queries: ["Yann Dubois AlpacaEval", "AlpacaEval judge"]
+  - name: Clémentine Fourrier
+    focus: Open LLM Leaderboard, HF eval
+    queries: ["Clémentine Fourrier Open LLM Leaderboard"]
+  - name: Lewis Tunstall
+    focus: Hugging Face evaluation tooling
+    queries: ["Lewis Tunstall evaluation Hugging Face"]
+  - name: Stella Biderman
+    focus: EleutherAI, open eval culture
+    queries: ["Stella Biderman EleutherAI evaluation"]
+  - name: Hailey Schoelkopf
+    focus: lm-evaluation-harness
+    queries: ["Hailey Schoelkopf lm-eval", "lm-evaluation-harness"]
+  - name: Leo Gao
+    focus: EleutherAI eval harness origins
+    queries: ["Leo Gao lm-evaluation-harness"]
+  - name: Dan Hendrycks
+    focus: MMLU, robust evaluation, safety benches
+    queries: ["Dan Hendrycks MMLU", "Hendrycks benchmark"]
+  - name: Sayash Kapoor
+    focus: reproducibility, eval critique
+    queries: ["Sayash Kapoor LLM evaluation", "AI Snake Oil evaluation"]
+  - name: Arvind Narayanan
+    focus: eval hype critique, methodology
+    queries: ["Arvind Narayanan LLM benchmark"]
+  - name: Nathan Lambert
+    focus: RLHF, preference eval, Allen AI
+    queries: ["Nathan Lambert evaluation RLHF"]
+  - name: Sewon Min
+    focus: data contamination, eval methodology
+    queries: ["Sewon Min contamination benchmark"]
+  - name: Douwe Kiela
+    focus: retrieval & contextual eval culture
+    queries: ["Douwe Kiela evaluation benchmark"]
+  - name: Thomas Wolf
+    focus: HF ecosystem eval announcements
+    queries: ["Thomas Wolf Open LLM Leaderboard"]
+  - name: Victor Sanh
+    focus: HF models & eval releases
+    queries: ["Victor Sanh Hugging Face evaluation"]
+  - name: Noam Shazeer
+    focus: model releases that shift eval baselines
+    queries: ["Noam Shazeer benchmark"]
+  - name: Tri Dao
+    focus: efficiency work affecting eval practice
+    queries: ["Tri Dao FlashAttention evaluation"]
+  - name: Maxime Labonne
+    focus: open LLM fine-tune eval practice
+    queries: ["Maxime Labonne LLM evaluation"]
+
+github_repos:
+  - EleutherAI/lm-evaluation-harness
+  - stanford-crfm/helm
+  - lmsys/arena-hard-auto
+  - huggingface/open-r1
+  - princeton-nlp/SWE-bench
+  - livebench/livebench
+  - google/BIG-bench
+  - allenai/olmes
+
+reddit_subs:
+  - MachineLearning
+  - LocalLLaMA
+  - LanguageTechnology
+
+arxiv_queries:
+  - 'cat:cs.CL AND (evaluation OR benchmark OR leaderboard OR "LLM-as-a-judge" OR contamination)'
+  - 'cat:cs.AI AND ("language model" AND (evaluation OR benchmark OR arena))'
+
+keywords:
+  - evaluation
+  - benchmark
+  - leaderboard
+  - arena
+  - lm-eval
+  - helm
+  - mmlu
+  - contamination
+  - llm-as-judge
+  - llm as a judge
+  - preference
+  - reward model
+  - human eval
+  - automatic eval

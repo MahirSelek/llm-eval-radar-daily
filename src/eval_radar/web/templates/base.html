@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Eval Radar{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <p class="brand">Eval <span>Radar</span></p>
+      <p class="tag">Mahir · LLM evaluation harness</p>
+      <nav class="nav">
+        <a href="{{ url_for('web.home') }}" class="{% if request.endpoint == 'web.home' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('web.digests') }}" class="{% if request.endpoint and 'digest' in request.endpoint %}active{% endif %}">Digests</a>
+        <a href="{{ url_for('web.memory_page') }}" class="{% if request.endpoint == 'web.memory_page' %}active{% endif %}">Memory</a>
+        <a href="{{ url_for('web.chat_page') }}" class="{% if request.endpoint == 'web.chat_page' %}active{% endif %}">Chat LLM</a>
+        <a href="{{ url_for('web.settings_page') }}" class="{% if request.endpoint == 'web.settings_page' %}active{% endif %}">Settings</a>
+      </nav>
+      <form method="post" action="{{ url_for('web.logout') }}" style="margin-top:18px">
+        <button class="btn" type="submit" style="width:100%">Logout</button>
+      </form>
+    </aside>
+    <main class="main">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

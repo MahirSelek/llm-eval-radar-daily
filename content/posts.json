@@ -1,0 +1,11 @@
+[
+  {
+    "slug": "2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m",
+    "title": "Değerlendirme Altyapısı Düzeltmeleri, LLM-Hakem Kaymaları ve Gizli Bilgi Ölçümü",
+    "date": "2026-09-21",
+    "summary": "EleutherAI lm-evaluation-harness 0.4.12–0.4.13 yeni backend’ler ve sekiz benchmark paketi getirirken few-shot sızıntısı gibi hatalar önceki skorları yeniden yazabilir. Stanford HELM, Together AI’nin Llama 3.1 405B turbo hakeminin kullanım dışı kalmasıyla Omni-MATH ve WildBench gibi senaryolarda hakem değişimine gider; ArabicMMLU’da eksik bağlam alanı düzeltmesi de çözülemez örnekleri geri getirir. ArXiv tarafında QuranicMMLU bilişsel katmanlı yeni bir MMLU varyantı, PIR ise sandbagging ve gizli bilgiyi çıktı yerine iç durumlarla test eden bir değerlendirme metodolojisi öneriyor.",
+    "source_count": 14,
+    "model": "composer-2.5",
+    "post_path": "content/posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.json"
+  }
+]

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login · Eval Radar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+</head>
+<body>
+  <div class="shell" style="grid-template-columns: 1fr; max-width: 560px;">
+    <main class="main" style="padding: 28px;">
+      <div class="card" style="max-width: 420px; margin: 0 auto;">
+        <h1 style="margin-top:0;font-family:var(--display)">Dashboard Login</h1>
+        <p class="muted" style="margin-bottom:14px">Giriş için `.env` içindeki `DASHBOARD_PASSWORD` kullanılır.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for cat, msg in messages %}
+            <div class="flash {{ cat }}">{{ msg }}</div>
+          {% endfor %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('web.login_submit') }}">
+          <input type="hidden" name="next" value="{{ next or url_for('web.home') }}" />
+          <label>Şifre</label>
+          <input type="password" name="password" autocomplete="current-password" autofocus required />
+          <button class="btn primary" type="submit">Giriş Yap</button>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

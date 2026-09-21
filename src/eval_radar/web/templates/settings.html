@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Settings · Eval Radar{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>Settings</h1>
+    <p class="sub">Token’lar, model, kanallar, seed’ler, profil — her detay burada.</p>
+  </div>
+  <span class="pill {% if model.configured == 'yes' %}ok{% else %}warn{% endif %}">
+    {{ model.provider }} / {{ model.model }}
+  </span>
+</div>
+
+<div class="grid">
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Secrets & runtime (.env)</h3>
+    <p class="muted" style="font-size:.82rem">Secret alanlar maskeli. Değiştirmek için yeni değeri yaz; boş bırakırsan eski kalır.</p>
+    <form method="post" action="{{ url_for('web.settings_env_save') }}">
+      <label>TELEGRAM_BOT_TOKEN</label>
+      <input name="TELEGRAM_BOT_TOKEN" value="{{ env_masked.get('TELEGRAM_BOT_TOKEN','') }}" autocomplete="off" />
+      <label>TELEGRAM_CHAT_ID</label>
+      <input name="TELEGRAM_CHAT_ID" value="{{ env_masked.get('TELEGRAM_CHAT_ID','') }}" />
+      <label>FLASK_SECRET_KEY (session imzalama anahtarı)</label>
+      <input name="FLASK_SECRET_KEY" value="{{ env_masked.get('FLASK_SECRET_KEY','') }}" autocomplete="off" />
+      <label>DASHBOARD_PASSWORD (settings erişimi için zorunlu)</label>
+      <input name="DASHBOARD_PASSWORD" value="{{ env_masked.get('DASHBOARD_PASSWORD','') }}" autocomplete="off" />
+      <label>DASHBOARD_LOCAL_ONLY (1/0)</label>
+      <input name="DASHBOARD_LOCAL_ONLY" value="{{ env_masked.get('DASHBOARD_LOCAL_ONLY','1') }}" />
+      <label>CURSOR_API_KEY (Premium hesabın — öncelikli LLM)</label>
+      <input name="CURSOR_API_KEY" value="{{ env_masked.get('CURSOR_API_KEY','') }}" autocomplete="off" />
+      <p class="muted" style="font-size:.78rem;margin-top:-.5rem;margin-bottom:.9rem">
+        Al: <a href="https://cursor.com/dashboard/integrations" target="_blank" rel="noopener">cursor.com/dashboard/integrations</a>
+      </p>
+      <label>CURSOR_MODEL</label>
+      <input name="CURSOR_MODEL" value="{{ env_masked.get('CURSOR_MODEL','composer-2.5') }}" />
+      <label>PUBLISHER_MODEL (opsiyonel, ör. grok-4.5)</label>
+      <input name="PUBLISHER_MODEL" value="{{ env_masked.get('PUBLISHER_MODEL','') }}" />
+      <label>GEMINI_API_KEY (opsiyonel fallback)</label>
+      <input name="GEMINI_API_KEY" value="{{ env_masked.get('GEMINI_API_KEY','') }}" autocomplete="off" />
+      <label>OPENAI_API_KEY (opsiyonel fallback)</label>
+      <input name="OPENAI_API_KEY" value="{{ env_masked.get('OPENAI_API_KEY','') }}" autocomplete="off" />
+      <label>OPENAI_MODEL</label>
+      <input name="OPENAI_MODEL" value="{{ env_masked.get('OPENAI_MODEL','gpt-4o-mini') }}" />
+      <label>GITHUB_TOKEN</label>
+      <input name="GITHUB_TOKEN" value="{{ env_masked.get('GITHUB_TOKEN','') }}" autocomplete="off" />
+      <label>MAX_ARXIV</label>
+      <input name="MAX_ARXIV" value="{{ env_masked.get('MAX_ARXIV','10') }}" />
+      <label>MAX_GITHUB</label>
+      <input name="MAX_GITHUB" value="{{ env_masked.get('MAX_GITHUB','10') }}" />
+      <label>MAX_REDDIT</label>
+      <input name="MAX_REDDIT" value="{{ env_masked.get('MAX_REDDIT','10') }}" />
+      <label>MAX_TOTAL_ITEMS</label>
+      <input name="MAX_TOTAL_ITEMS" value="{{ env_masked.get('MAX_TOTAL_ITEMS','14') }}" />
+      <label>REPORT_TZ</label>
+      <input name="REPORT_TZ" value="{{ env_masked.get('REPORT_TZ','Europe/Istanbul') }}" />
+      <button class="btn primary" type="submit">.env kaydet</button>
+    </form>
+  </div>
+
+  <div class="card span-6">
+    <h3 style="margin-top:0;font-family:var(--display)">Preferences JSON</h3>
+    <form method="post" action="{{ url_for('web.settings_prefs_save') }}">
+      <textarea name="prefs_json">{{ prefs_json }}</textarea>
+      <button class="btn primary" type="submit">Preferences kaydet</button>
+    </form>
+  </div>
+
+  <div class="card span-12">
+    <h3 style="margin-top:0;font-family:var(--display)">Seeds & kanallar (YAML)</h3>
+    <p class="muted" style="font-size:.82rem">people, github_repos, reddit_subs, arxiv_queries, keywords</p>
+    <form method="post" action="{{ url_for('web.settings_seeds_save') }}">
+      <textarea name="seeds_raw" style="min-height:320px">{{ seeds_raw }}</textarea>
+      <button class="btn primary" type="submit">Seeds kaydet</button>
+    </form>
+  </div>
+
+  <div class="card span-12">
+    <h3 style="margin-top:0;font-family:var(--display)">Agent profile (memory)</h3>
+    <form method="post" action="{{ url_for('web.settings_profile_save') }}">
+      <textarea name="profile" style="min-height:220px;font-family:var(--font)">{{ profile }}</textarea>
+      <button class="btn primary" type="submit">Profil kaydet</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

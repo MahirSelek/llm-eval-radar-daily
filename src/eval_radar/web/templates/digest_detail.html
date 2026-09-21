@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ day }} · Digest{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>{{ day }}</h1>
+    <p class="sub">{{ digest.collected_at }} · {{ digest.counts }}</p>
+  </div>
+  <a class="btn" href="{{ url_for('web.digests') }}">← Digests</a>
+</div>
+
+{% for it in (digest.get('items') or []) %}
+<article class="item">
+  <div class="meta-row">
+    <span class="chip">{{ it.get('source', '?') }}</span>
+    <span class="chip">score {{ '%.1f'|format((it.get('score') or 0)|float) }}</span>
+    {% set meta = it.get('meta') or {} %}
+    {% for a in (meta.get('authors') or [])[:4] %}
+      <span class="chip">{{ a }}</span>
+    {% endfor %}
+    {% if meta.get('repo') %}<span class="chip">{{ meta.get('repo') }}</span>{% endif %}
+  </div>
+  <h3>{{ it.get('title', 'untitled') }}</h3>
+  <p class="muted" style="line-height:1.5">{{ it.get('summary', '') }}</p>
+  {% if it.get('url') %}<p><a href="{{ it.get('url') }}" target="_blank" rel="noopener">Kaynak →</a></p>{% endif %}
+</article>
+{% else %}
+<p class="muted">Item yok.</p>
+{% endfor %}
+{% endblock %}

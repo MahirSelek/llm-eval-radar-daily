@@ -1,0 +1,13 @@
+---
+description: Eval Radar project constraints — LLM evaluation only, token-frugal
+alwaysApply: true
+---
+
+# Eval Radar harness
+
+- Domain lock: only **LLM evaluation** (benchmarks, leaderboards, judges, contamination, eval methodology).
+- Never ask for or store X/Twitter passwords. No browser login automation for X.
+- Prefer existing CLI: `python -m eval_radar.cli collect|report|bot`.
+- Keep digests small (`MAX_*` env caps). Do not expand scrapers into full-firehose crawls.
+- Secrets live in `.env` only — never commit tokens.
+- Memory updates go to `data/memory/` via Telegram teach commands or explicit user request.

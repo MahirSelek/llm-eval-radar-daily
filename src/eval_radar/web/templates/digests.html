@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Digests · Eval Radar{% endblock %}
+{% block content %}
+<div class="top">
+  <div>
+    <h1>Digests</h1>
+    <p class="sub">Günlük toplanan radar paketleri.</p>
+  </div>
+</div>
+<div class="grid">
+  {% for d in digests %}
+  <a class="card span-4" href="{{ url_for('web.digest_detail', day=d.day) }}" style="text-decoration:none;color:inherit">
+    <div class="kpi-label">{{ d.day }}</div>
+    <div class="kpi" style="font-size:1.3rem">{{ d.item_count }} item</div>
+    <p class="muted">arXiv {{ d.counts.get('arxiv',0) }} · GitHub {{ d.counts.get('github',0) }} · Reddit {{ d.counts.get('reddit',0) }}</p>
+  </a>
+  {% else %}
+  <div class="card span-12 muted">Henüz digest yok. Dashboard’dan collect çalıştır.</div>
+  {% endfor %}
+</div>
+{% endblock %}

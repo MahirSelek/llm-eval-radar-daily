@@ -1,0 +1,24 @@
+{
+  "language": "tr+en",
+  "tone": "direct_casual_warm",
+  "include_sources": true,
+  "max_items_per_report": 10,
+  "report_style": "long_bilingual",
+  "boost_topics": [
+    "llm evaluation",
+    "benchmarks",
+    "leaderboards",
+    "llm-as-judge",
+    "contamination",
+    "arena",
+    "helm",
+    "lm-eval"
+  ],
+  "mute_topics": [
+    "crypto",
+    "politics",
+    "unrelated product marketing"
+  ],
+  "approved_extra_seeds": [],
+  "rejected_seeds": []
+}
