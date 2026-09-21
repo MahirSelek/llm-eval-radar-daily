@@ -1,5 +1,14 @@
 [
   {
+    "slug": "2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l",
+    "title": "Eval harness fixes reshape scores as HELM swaps judges and new cognitive benchmarks land",
+    "date": "2026-09-22",
+    "summary": "On 2026-09-22, LLM evaluation news centered on methodology risk more than raw leaderboard churn. EleutherAI lm-evaluation-harness v0.4.13 fixed few-shot leakage and related bugs that can change previously published numbers, while HELM retired a widely used LLM-as-judge and corrected ArabicMMLU input construction. New work on QuranicMMLU, multi-hop abstention, and internal-recognition probes further stresses stratified scoring and judge-dependent pipelines.",
+    "source_count": 14,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.json"
+  },
+  {
     "slug": "2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m",
     "title": "Değerlendirme Altyapısı Düzeltmeleri, LLM-Hakem Kaymaları ve Gizli Bilgi Ölçümü",
     "date": "2026-09-21",

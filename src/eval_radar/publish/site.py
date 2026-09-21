@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 from eval_radar.collect.pipeline import collect_all, save_digest
 from eval_radar.config import ROOT, get_settings
 from eval_radar.llm import complete
+from eval_radar.memory.usage import latest_usage_for_purpose
 from eval_radar.report.render import filter_items
 
 POSTS_DIR = ROOT / "content" / "posts"
@@ -97,6 +98,8 @@ def generate_article(payload: dict) -> dict:
         purpose="daily_publish_article",
         model_override=model_for_post,
     )
+    usage_row = latest_usage_for_purpose("daily_publish_article")
+    actual_model = str((usage_row or {}).get("model") or model_for_post)
     data = _extract_json(raw)
     title = str(data.get("title") or f"LLM Evaluation Daily — {day}").strip()
     slug = _slugify(f"{day}-{title}")[:96]
@@ -110,7 +113,8 @@ def generate_article(payload: dict) -> dict:
         "body_en": str(data.get("body_en") or "").strip(),
         "tags": _coerce_tags(data.get("tags")),
         "sources": sources,
-        "model": model_for_post,
+        "model": actual_model,
+        "requested_model": model_for_post,
     }
 
 

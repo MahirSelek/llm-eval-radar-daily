@@ -1,0 +1,93 @@
+{
+  "slug": "2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l",
+  "date": "2026-09-22",
+  "created_at": "2026-09-21T21:01:59.255937+00:00",
+  "title": "Eval harness fixes reshape scores as HELM swaps judges and new cognitive benchmarks land",
+  "summary": "On 2026-09-22, LLM evaluation news centered on methodology risk more than raw leaderboard churn. EleutherAI lm-evaluation-harness v0.4.13 fixed few-shot leakage and related bugs that can change previously published numbers, while HELM retired a widely used LLM-as-judge and corrected ArabicMMLU input construction. New work on QuranicMMLU, multi-hop abstention, and internal-recognition probes further stresses stratified scoring and judge-dependent pipelines.",
+  "body_tr": "Bugün LLM değerlendirme gündemi, yeni model eklemelerinden çok skorların yeniden yazılmasına yol açabilecek metodoloji düzeltmelerine odaklandı. EleutherAI lm-evaluation-harness v0.4.13, few-shot örneklemeye değerlendirme dokümanının sızması, çoktan seçmeli filtre hataları ve grup stderr sorunlarını giderdi; sürüm notları bu düzeltmelerin daha önce raporlanan sayıları kaydırabileceğini açıkça belirtiyor. Bir önceki v0.4.12 ise TensorRT-LLM, Megatron-LM, Intel Gaudi ve LiteLLM gibi yeni backend’ler, transformers tabanlı modellerde tensör paralelliği, yeni benchmark’lar ve TaskManager refaktörü getirdi. Bu ikili sürüm, altyapı genişlemesi ile ölçüm geçerliliği arasındaki gerilimi netleştiriyor.\n\nStanford HELM tarafında da liderlik tablolarını dolaylı etkileyen kırılmalar var. v0.5.15’te ArabicMMLU senaryosuna eksik bırakılmış context alanı eklendi; önceki hali bazı örnekleri çözülemez kılıyordu. Aynı sürüm GPT-5.4 ailesi, Llama 4 Maverick, Qwen3.5 ve Gemini 3 Flash varyantlarını eklerken Arabic Finance senaryosunu da yayınladı. v0.5.16 ise Together AI’nin meta/llama-3.1-405b-instruct-turbo modelini kullanımdan kaldırması nedeniyle Omni-MATH, WildBench, HarmBench, XSTest ve Anthropic Red Team senaryolarında LLM-as-judge olarak bu modeli bırakıyor; Arabic Legal ve Arabic Content Generation senaryoları da eklendi. Yargıç model değişimi, otomatik değerlendirme skorlarının zaman içinde doğrudan karşılaştırılmasını zorlaştırıyor.\n\nAraştırma tarafında QuranicMMLU, Kuran Arapçası için fonoloji-morfoloji-sözdizimi-anlambilim-edimbilim ekseninde bilişsel düzey ve ayet zorluğuna göre katmanlı bir benchmark öneriyor ve soru üretiminde LLM-as-judge kullanımına yaslanıyor. Çok atlamalı erişimde güven skoru ve çekimserlik çalışması, başarısızlıkların yapısal alt gruplarda kümelendiğini ve LLM-yargıç boru hatlarının yoğun erişim özelliklerinden daha güçlü sinyal taşıdığını savunuyor. Probe of Internal Recognition (PIR) ise modelin dışarıya söylemediği ama içtemsilde tanıdığı bilgiyi okuyarak sandbagging ve gizli bilgi senaryolarını değerlendirme gündemine taşıyor. Bellek karar katmanı ve AutoViewMem çalışmaları ise ajan değerlendirmesinde geri getirme kalitesinden önce güvenilirlik ve temsil girişimini ölçmenin önemini vurguluyor.\n\nPratik çıkarımlar:\n- Daha önce yayımlanmış lm-eval skorlarını v0.4.13 öncesi/sonrası olarak yeniden etiketleyin; few-shot sızıntı düzeltmesi karşılaştırılabilirliği bozabilir.\n- HELM LLM-as-judge değişimini ve ArabicMMLU context düzeltmesini aynı liderlik satırında birleştirmeyin; kırılma noktalarını ayrı sütunlarda tutun.\n- Yeni alan benchmark’larında (ör. QuranicMMLU) bilişsel katman ve zorluk stratifikasyonu olmadan tek skor raporlamayın.\n- Yargıç bağımlı metriklerde model/sağlayıcı deprecations için sürüm sabitleri ve yeniden koşum politikası tanımlayın.\n- Sandbagging ve içsel bilgi uyumsuzluğu riski için yalnızca çıktı skoruna bakmak yetersiz; iç durum veya çekimserlik sinyallerini değerlendirme tasarımına ekleyin.",
+  "body_en": "LLM evaluation today was driven by score-shifting methodology fixes more than new arena drama. EleutherAI lm-evaluation-harness v0.4.13 patched few-shot leakage into eval prompts, multiple-choice filter bugs, and group stderr issues, with explicit warnings that previously reported numbers may move. v0.4.12 had expanded backends (TensorRT-LLM, Megatron-LM, Gaudi, LiteLLM), tensor parallel hf support, and new tasks.\n\nHELM also introduced comparability breaks. v0.5.15 fixed ArabicMMLU by restoring a missing context field that had made some items unsolvable, added newer model APIs, and released an Arabic Finance scenario. v0.5.16 removed meta/llama-3.1-405b-instruct-turbo as LLM-as-judge across Omni-MATH, WildBench, HarmBench, XSTest, and Anthropic Red Team after Together deprecation, while adding Arabic Legal and Arabic Content Generation scenarios.\n\nResearch signals reinforce the same risks:\n- QuranicMMLU proposes a cognitively stratified Quranic Arabic benchmark and leans on LLM-as-judge during construction.\n- Multi-hop retrieval work argues confident failures cluster predictably and that LLM-judge pipelines carry stronger success signal than dense-only features.\n- PIR adapts a concealed-information idea to probe which answer a model internally recognizes, targeting sandbagging and hidden knowledge that output-only evals miss.\n\nTakeaway for practitioners: version-pin harnesses and judges, segregate pre/post fix leaderboard rows, and treat leakage, missing context, and judge swaps as first-class evaluation methodology risks rather than release footnotes.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "arena",
+    "llm-as-judge",
+    "lm-eval-harness",
+    "helm",
+    "methodology-risk",
+    "few-shot-leakage"
+  ],
+  "sources": [
+    {
+      "title": "[release] EleutherAI/lm-evaluation-harness: v0.4.13",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.13",
+      "source": "github"
+    },
+    {
+      "title": "[release] EleutherAI/lm-evaluation-harness: v0.4.12",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.12",
+      "source": "github"
+    },
+    {
+      "title": "QuranicMMLU: A Cognitively-Aware Benchmark for Evaluating Generative AI Solutions on Quranic Linguistic Knowledge",
+      "url": "https://arxiv.org/abs/2609.22038v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "[release] stanford-crfm/helm: v0.5.16",
+      "url": "https://github.com/stanford-crfm/helm/releases/tag/v0.5.16",
+      "source": "github"
+    },
+    {
+      "title": "[release] stanford-crfm/helm: v0.5.15",
+      "url": "https://github.com/stanford-crfm/helm/releases/tag/v0.5.15",
+      "source": "github"
+    },
+    {
+      "title": "Predictable Failure in Multi-Hop Retrieval: Score-Distributional Confidence Scoring and Abstention",
+      "url": "https://arxiv.org/abs/2609.22056v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "An Interpretable Memory Decision Controller for LLM Agents Based on Three-Signal Complementarity: Decoupling Confidence and Consistency",
+      "url": "https://arxiv.org/abs/2609.22043v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "A Lie Detector Test for Language Models: Reading Knowledge a Model Won't Reveal",
+      "url": "https://arxiv.org/abs/2609.21996v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "When Should a Failing Robot Ask? Initiating Corrective Human-Robot Dialogue from Audited Sensor Evidence",
+      "url": "https://arxiv.org/abs/2609.21942v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "AutoViewMem: Self-Configuring Orthogonal Views for Conversational Long-Term Memory",
+      "url": "https://arxiv.org/abs/2609.21940v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Cross-sector generalization of accident-process role classification in occupational accident narratives",
+      "url": "https://arxiv.org/abs/2609.22081v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "DiaVLo: Diagnosing Behaviours of Vision-Language Models",
+      "url": "https://arxiv.org/abs/2609.22008v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "NemotronLabs VoiceChat: An Open Full-duplex Speech-to-Speech Model with Tool Calling Capabilities",
+      "url": "https://arxiv.org/abs/2609.21967v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "[commit] EleutherAI/lm-evaluation-harness: fix(basqueglue): load the f1 metric with evaluate (#4076)",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness/commit/d6de81643928d653435c431bae19945d41d32520",
+      "source": "github"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

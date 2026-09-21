@@ -89,3 +89,11 @@ def usage_summary() -> dict[str, Any]:
         "last_provider": last_provider,
         "recent": rows[-12:][::-1],
     }
+
+
+def latest_usage_for_purpose(purpose: str) -> dict[str, Any] | None:
+    rows = read_usage()
+    for row in reversed(rows):
+        if (row.get("purpose") or "") == purpose:
+            return row
+    return None
