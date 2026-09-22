@@ -160,11 +160,25 @@ def settings_env_save():
         "MAX_ARXIV",
         "MAX_GITHUB",
         "MAX_REDDIT",
+        "MAX_RSS",
+        "MAX_FORUMS",
+        "MAX_HN",
+        "MAX_X",
         "MAX_TOTAL_ITEMS",
+        "MAX_AGE_HOURS",
         "REPORT_TZ",
     ]
     updates = {k: (request.form.get(k) or "").strip() for k in keys}
-    int_keys = ("MAX_ARXIV", "MAX_GITHUB", "MAX_REDDIT", "MAX_TOTAL_ITEMS")
+    int_keys = (
+        "MAX_ARXIV",
+        "MAX_GITHUB",
+        "MAX_REDDIT",
+        "MAX_RSS",
+        "MAX_FORUMS",
+        "MAX_HN",
+        "MAX_X",
+        "MAX_TOTAL_ITEMS",
+    )
     for k in int_keys:
         raw = updates.get(k, "")
         if raw:
@@ -173,6 +187,13 @@ def settings_env_save():
             except ValueError:
                 flash(f"{k} sayı olmalı (integer).", "error")
                 return redirect(url_for("web.settings_page"))
+    age = updates.get("MAX_AGE_HOURS", "")
+    if age:
+        try:
+            float(age)
+        except ValueError:
+            flash("MAX_AGE_HOURS sayı olmalı (ör. 36).", "error")
+            return redirect(url_for("web.settings_page"))
     local_only = updates.get("DASHBOARD_LOCAL_ONLY", "")
     if local_only and local_only.lower() not in {"0", "1", "true", "false", "yes", "no", "on", "off"}:
         flash("DASHBOARD_LOCAL_ONLY için 1/0 (veya true/false) kullan.", "error")

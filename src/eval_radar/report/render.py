@@ -97,9 +97,15 @@ def _render_template(payload: dict) -> str:
 
     lines = [
         f"🎯 LLM EVALUATION RADAR — {now}",
+        f"📅 Report day: {payload.get('report_day', 'today')} · freshness ≤{payload.get('freshness', {}).get('max_age_hours', '?')}h",
         f"📊 Sinyaller: arXiv {payload.get('counts', {}).get('arxiv', 0)} · "
         f"GitHub {payload.get('counts', {}).get('github', 0)} · "
-        f"Reddit {payload.get('counts', {}).get('reddit', 0)}",
+        f"Reddit {payload.get('counts', {}).get('reddit', 0)} · "
+        f"RSS {payload.get('counts', {}).get('rss', 0)} · "
+        f"Forums {payload.get('counts', {}).get('forums', 0)} · "
+        f"HN {payload.get('counts', {}).get('hackernews', 0)} · "
+        f"X {payload.get('counts', {}).get('x', 0)}",
+        f"Fresh kept: {payload.get('counts', {}).get('fresh_total', 0)} / raw {payload.get('counts', {}).get('raw_total', 0)}",
         "",
         "────────────────────────────────────────",
         "",

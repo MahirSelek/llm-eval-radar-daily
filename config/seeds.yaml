@@ -1,83 +1,119 @@
+# Eval Radar seeds — tuned for TODAY freshness + open-web coverage.
+# X/Twitter: add public RSS mirrors under x_rss_feeds (RSSHub/Nitter). No X password/API.
+
 people:
   - name: Percy Liang
     focus: HELM, CRFM, foundation model evaluation
-    queries: ["Percy Liang HELM", "Stanford CRFM evaluation"]
   - name: Wei-Lin Chiang
     focus: Chatbot Arena, LMSYS
-    queries: ["Wei-Lin Chiang Chatbot Arena", "LMSYS arena"]
   - name: Anastasios Angelopoulos
     focus: Arena statistics, ranking uncertainty
-    queries: ["Angelopoulos Chatbot Arena", "LMSYS statistical ranking"]
   - name: Yann Dubois
     focus: AlpacaEval, LLM-as-judge
-    queries: ["Yann Dubois AlpacaEval", "AlpacaEval judge"]
   - name: Clémentine Fourrier
     focus: Open LLM Leaderboard, HF eval
-    queries: ["Clémentine Fourrier Open LLM Leaderboard"]
-  - name: Lewis Tunstall
-    focus: Hugging Face evaluation tooling
-    queries: ["Lewis Tunstall evaluation Hugging Face"]
   - name: Stella Biderman
     focus: EleutherAI, open eval culture
-    queries: ["Stella Biderman EleutherAI evaluation"]
   - name: Hailey Schoelkopf
     focus: lm-evaluation-harness
-    queries: ["Hailey Schoelkopf lm-eval", "lm-evaluation-harness"]
-  - name: Leo Gao
-    focus: EleutherAI eval harness origins
-    queries: ["Leo Gao lm-evaluation-harness"]
   - name: Dan Hendrycks
     focus: MMLU, robust evaluation, safety benches
-    queries: ["Dan Hendrycks MMLU", "Hendrycks benchmark"]
   - name: Sayash Kapoor
     focus: reproducibility, eval critique
-    queries: ["Sayash Kapoor LLM evaluation", "AI Snake Oil evaluation"]
-  - name: Arvind Narayanan
-    focus: eval hype critique, methodology
-    queries: ["Arvind Narayanan LLM benchmark"]
   - name: Nathan Lambert
     focus: RLHF, preference eval, Allen AI
-    queries: ["Nathan Lambert evaluation RLHF"]
   - name: Sewon Min
     focus: data contamination, eval methodology
-    queries: ["Sewon Min contamination benchmark"]
-  - name: Douwe Kiela
-    focus: retrieval & contextual eval culture
-    queries: ["Douwe Kiela evaluation benchmark"]
-  - name: Thomas Wolf
-    focus: HF ecosystem eval announcements
-    queries: ["Thomas Wolf Open LLM Leaderboard"]
-  - name: Victor Sanh
-    focus: HF models & eval releases
-    queries: ["Victor Sanh Hugging Face evaluation"]
-  - name: Noam Shazeer
-    focus: model releases that shift eval baselines
-    queries: ["Noam Shazeer benchmark"]
-  - name: Tri Dao
-    focus: efficiency work affecting eval practice
-    queries: ["Tri Dao FlashAttention evaluation"]
-  - name: Maxime Labonne
-    focus: open LLM fine-tune eval practice
-    queries: ["Maxime Labonne LLM evaluation"]
+  - name: Noam Brown
+    focus: reasoning evals, o-series style benchmarks
+  - name: Ethan Mollick
+    focus: practical LLM eval / capability discourse
+  - name: Simon Willison
+    focus: eval tooling & LLM application reality checks
 
 github_repos:
   - EleutherAI/lm-evaluation-harness
   - stanford-crfm/helm
-  - lmsys/arena-hard-auto
+  - UKGovernmentBEIS/inspect_ai
+  - openai/simple-evals
+  - openai/evals
+  - huggingface/lighteval
   - huggingface/open-r1
   - princeton-nlp/SWE-bench
   - livebench/livebench
-  - google/BIG-bench
   - allenai/olmes
+  - allenai/reward-bench
+  - lmsys/arena-hard-auto
+  - LiveCodeBench/LiveCodeBench
+  - google/BIG-bench
 
 reddit_subs:
   - MachineLearning
   - LocalLLaMA
   - LanguageTechnology
+  - OpenAI
+  - ClaudeAI
+  - GeminiAI
+  - singularity
+  - ArtificialIntelligence
 
 arxiv_queries:
-  - 'cat:cs.CL AND (evaluation OR benchmark OR leaderboard OR "LLM-as-a-judge" OR contamination)'
-  - 'cat:cs.AI AND ("language model" AND (evaluation OR benchmark OR arena))'
+  - 'cat:cs.CL AND (evaluation OR benchmark OR leaderboard OR "LLM-as-a-judge" OR contamination OR arena)'
+  - 'cat:cs.AI AND ("language model" AND (evaluation OR benchmark OR arena OR judge))'
+  - 'all:"LLM-as-a-judge" OR all:"reward bench" OR all:"open llm leaderboard" OR all:LiveBench'
+
+# Medium + Substack + blogs via RSS (open, no API keys)
+rss_feeds:
+  - name: medium-llm-evaluation
+    url: https://medium.com/feed/tag/llm-evaluation
+  - name: medium-llm-benchmark
+    url: https://medium.com/feed/tag/llm-benchmark
+  - name: medium-ai-evaluation
+    url: https://medium.com/feed/tag/ai-evaluation
+  - name: towards-data-science
+    url: https://towardsdatascience.com/feed
+  - name: huggingface-blog
+    url: https://huggingface.co/blog/feed.xml
+  - name: openai-blog
+    url: https://openai.com/blog/rss.xml
+  - name: simonw-blog
+    url: https://simonwillison.net/atom/everything/
+  - name: interconnects
+    url: https://www.interconnects.ai/feed
+  - name: sebastian-raschka
+    url: https://magazine.sebastianraschka.com/feed
+  - name: last-week-in-ai
+    url: https://lastweekin.ai/feed
+  - name: import-ai
+    url: https://jack-clark.net/feed/
+
+# Developer / research Discourse forums (OpenAI, HF, Google AI, etc.)
+discourse_forums:
+  - name: openai-community
+    url: https://community.openai.com
+  - name: huggingface-forums
+    url: https://discuss.huggingface.co
+  - name: google-ai-developers
+    url: https://discuss.ai.google.dev
+  - name: cursor-forum
+    url: https://forum.cursor.com
+
+# Hacker News — strong same-day pulse
+hn_queries:
+  - LLM evaluation
+  - LLM benchmark
+  - LLM-as-a-judge
+  - OpenAI eval
+  - Claude benchmark
+  - Gemini evaluation
+  - Chatbot Arena
+  - lm-evaluation-harness
+
+# Optional: public RSS mirrors for X accounts (RSSHub / Nitter / similar).
+# Example (replace host if needed):
+#   - name: x-lmsys
+#     url: https://rsshub.app/twitter/user/lmsysorg
+x_rss_feeds: []
 
 keywords:
   - evaluation
@@ -94,3 +130,17 @@ keywords:
   - reward model
   - human eval
   - automatic eval
+  - inspect ai
+  - simple-evals
+  - lighteval
+  - livebench
+  - swe-bench
+  - gpt-5
+  - claude
+  - gemini
+  - openai
+  - anthropic
+  - harness
+  - judge model
+  - calibration
+  - sandbagging

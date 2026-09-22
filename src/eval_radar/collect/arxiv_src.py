@@ -68,7 +68,11 @@ def _parse_atom(xml_text: str, keywords: list[str]) -> list[Item]:
                 url=link,
                 summary=summary,
                 score=score,
-                meta={"published": published, "authors": authors},
+                meta={
+                    "published": published,
+                    "published_at": published,
+                    "authors": authors,
+                },
             )
         )
     return out

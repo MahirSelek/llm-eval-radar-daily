@@ -25,7 +25,12 @@ class Settings:
     max_arxiv: int
     max_github: int
     max_reddit: int
+    max_rss: int
+    max_forums: int
+    max_hn: int
+    max_x: int
     max_total_items: int
+    max_age_hours: float
     report_tz: str
     flask_secret_key: str
     dashboard_password: str
@@ -46,10 +51,15 @@ def get_settings() -> Settings:
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
         openai_api_key=os.getenv("OPENAI_API_KEY", "").strip(),
         openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip(),
-        max_arxiv=int(os.getenv("MAX_ARXIV", "10")),
-        max_github=int(os.getenv("MAX_GITHUB", "10")),
-        max_reddit=int(os.getenv("MAX_REDDIT", "10")),
-        max_total_items=int(os.getenv("MAX_TOTAL_ITEMS", "14")),
+        max_arxiv=int(os.getenv("MAX_ARXIV", "12")),
+        max_github=int(os.getenv("MAX_GITHUB", "12")),
+        max_reddit=int(os.getenv("MAX_REDDIT", "12")),
+        max_rss=int(os.getenv("MAX_RSS", "12")),
+        max_forums=int(os.getenv("MAX_FORUMS", "12")),
+        max_hn=int(os.getenv("MAX_HN", "10")),
+        max_x=int(os.getenv("MAX_X", "8")),
+        max_total_items=int(os.getenv("MAX_TOTAL_ITEMS", "18")),
+        max_age_hours=float(os.getenv("MAX_AGE_HOURS", "36")),
         report_tz=os.getenv("REPORT_TZ", "Europe/Istanbul"),
         flask_secret_key=os.getenv("FLASK_SECRET_KEY", "").strip(),
         dashboard_password=os.getenv("DASHBOARD_PASSWORD", "").strip(),

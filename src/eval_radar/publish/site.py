@@ -58,45 +58,54 @@ def generate_article(payload: dict) -> dict:
             "title": it.get("title"),
             "url": it.get("url"),
             "summary": (it.get("summary") or "")[:800],
+            "published_at": (it.get("meta") or {}).get("published_at")
+            or (it.get("meta") or {}).get("published"),
         }
-        for it in items[:14]
+        for it in items[:16]
     ]
 
     model_for_post = settings.publisher_model or settings.cursor_model
     system = (
-        "You are a senior LLM evaluation research editor. "
+        "You are a senior LLM evaluation research editor writing a SAME-DAY briefing. "
         "Write in English only. "
         "Return strict JSON only with keys: title, subtitle, summary, key_takeaways, body_en, methodology_risks, tags. "
-        "No markdown bold syntax (**), no code fences, no Turkish text."
+        "No markdown bold syntax (**), no code fences, no Turkish text. "
+        "CRITICAL: Only discuss signals from the provided items that belong to THIS report day. "
+        "Do not recycle old news as if it happened today. If coverage is thin, say so and analyze carefully what is actually new."
     )
     user = json.dumps(
         {
-            "date": day,
+            "report_day": day,
             "timezone": settings.report_tz,
+            "freshness": payload.get("freshness", {}),
             "counts": payload.get("counts", {}),
+            "hard_rule": (
+                f"This article is the official daily briefing for {day}. "
+                "Prioritize items whose published_at is today or within the freshness window. "
+                "Never invent events. Never present multi-day-old releases as today's news unless the item itself is in the provided list and you explicitly note the date."
+            ),
             "focus": [
-                "benchmark shifts and leaderboard validity",
-                "llm-as-judge changes and calibration drift",
-                "evaluation methodology risks",
-                "practical implications for research and infra teams",
+                "what changed TODAY in benchmarks / harnesses / judges / forums",
+                "leaderboard validity and methodology risk",
+                "practical implications for researchers and infra teams",
             ],
             "items": condensed_items,
             "required_shape": {
-                "title": "clear technical English title",
-                "subtitle": "one-line thesis statement",
-                "summary": "4-6 sentence executive summary",
-                "key_takeaways": ["3-5 concrete implications"],
+                "title": f"clear technical English title anchored to {day}",
+                "subtitle": "one-line thesis about today's shift",
+                "summary": "4-6 sentence executive summary of TODAY",
+                "key_takeaways": ["3-5 concrete same-day implications"],
                 "body_en": (
-                    "900-1600 words, deep but readable, with section headings and examples from sources. "
-                    "Explain why each development matters and what actions teams should take."
+                    "900-1600 words deep analysis grounded in provided same-day sources. "
+                    "Use concrete examples, compare signals, and explain why each matters now."
                 ),
-                "methodology_risks": "2-3 focused paragraphs on comparability, leakage, judge drift, and interpretation risk",
-                "tags": ["evaluation", "benchmark", "llm-as-judge"],
+                "methodology_risks": "2-3 focused paragraphs on comparability, leakage, judge drift",
+                "tags": ["evaluation", "benchmark", "llm-as-a-judge"],
             },
             "quality_bar": [
-                "Do not just summarize links; synthesize and interpret.",
-                "Compare signals and draw reasoned conclusions.",
-                "Write like a senior research lead briefing technical stakeholders.",
+                "Synthesize and interpret — do not dump link summaries.",
+                "Write like a senior research lead briefing stakeholders about TODAY.",
+                "If a source is older than the report day, mention the date explicitly or skip it.",
             ],
         },
         ensure_ascii=False,

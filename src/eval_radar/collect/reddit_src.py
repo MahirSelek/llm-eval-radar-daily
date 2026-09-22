@@ -45,6 +45,8 @@ def fetch_reddit(
                 # strip crude HTML
                 summary = _strip_tags(summary)[:300]
                 link = getattr(entry, "link", "") or ""
+                published = getattr(entry, "published", None) or getattr(entry, "updated", None)
+                published_parsed = getattr(entry, "published_parsed", None)
                 blob = f"{title} {summary}"
                 score = keyword_score(blob, keywords)
                 if score < 1:
@@ -56,7 +58,10 @@ def fetch_reddit(
                         url=link,
                         summary=summary,
                         score=float(score),
-                        meta={"sub": sub},
+                        meta={
+                            "sub": sub,
+                            "published_at": published or published_parsed,
+                        },
                     )
                 )
 

@@ -44,6 +44,7 @@ def fetch_github_repos(
                 title = f"[release] {repo}: {rel.get('name') or rel.get('tag_name')}"
                 body = (rel.get("body") or "")[:1200]
                 url = rel.get("html_url") or f"https://github.com/{repo}/releases"
+                published = rel.get("published_at") or rel.get("created_at") or ""
                 score = keyword_score(f"{title} {body}", keywords) + 2.0
                 items.append(
                     Item(
@@ -52,7 +53,11 @@ def fetch_github_repos(
                         url=url,
                         summary=body.replace("\r", " ").strip(),
                         score=score,
-                        meta={"repo": repo, "kind": "release"},
+                        meta={
+                            "repo": repo,
+                            "kind": "release",
+                            "published_at": published,
+                        },
                     )
                 )
 
@@ -65,6 +70,11 @@ def fetch_github_repos(
                 c0 = commits[0]
                 msg = (c0.get("commit", {}).get("message") or "").split("\n")[0][:160]
                 url = c0.get("html_url") or f"https://github.com/{repo}"
+                published = (
+                    (c0.get("commit") or {}).get("author", {}).get("date")
+                    or (c0.get("commit") or {}).get("committer", {}).get("date")
+                    or ""
+                )
                 score = keyword_score(msg, keywords) + 0.5
                 items.append(
                     Item(
@@ -73,7 +83,11 @@ def fetch_github_repos(
                         url=url,
                         summary="",
                         score=score,
-                        meta={"repo": repo, "kind": "commit"},
+                        meta={
+                            "repo": repo,
+                            "kind": "commit",
+                            "published_at": published,
+                        },
                     )
                 )
 

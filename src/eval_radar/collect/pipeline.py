@@ -6,8 +6,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from eval_radar.collect.arxiv_src import fetch_arxiv
+from eval_radar.collect.forums_src import fetch_discourse_forums
+from eval_radar.collect.freshness import apply_freshness, local_day
 from eval_radar.collect.github_src import fetch_github_repos
+from eval_radar.collect.hn_src import fetch_hackernews
 from eval_radar.collect.reddit_src import fetch_reddit
+from eval_radar.collect.rss_feeds import fetch_rss_feeds
 from eval_radar.config import get_settings, load_seeds
 from eval_radar.models import Item
 
@@ -18,9 +22,12 @@ def collect_all() -> dict:
     settings = get_settings()
     seeds = load_seeds()
     keywords = list(seeds.get("keywords") or [])
+    max_age = float(settings.max_age_hours)
 
     errors: dict[str, str] = {}
-    arxiv_items = _collect_source(
+    buckets: dict[str, list[Item]] = {}
+
+    buckets["arxiv"] = _collect_source(
         "arxiv",
         errors,
         fetch_arxiv,
@@ -28,7 +35,7 @@ def collect_all() -> dict:
         keywords,
         max_items=settings.max_arxiv,
     )
-    github_items = _collect_source(
+    buckets["github"] = _collect_source(
         "github",
         errors,
         fetch_github_repos,
@@ -37,7 +44,7 @@ def collect_all() -> dict:
         token=settings.github_token,
         max_items=settings.max_github,
     )
-    reddit_items = _collect_source(
+    buckets["reddit"] = _collect_source(
         "reddit",
         errors,
         fetch_reddit,
@@ -45,14 +52,71 @@ def collect_all() -> dict:
         keywords,
         max_items=settings.max_reddit,
     )
+    buckets["rss"] = _collect_source(
+        "rss",
+        errors,
+        fetch_rss_feeds,
+        list(seeds.get("rss_feeds") or []),
+        keywords,
+        max_items=settings.max_rss,
+    )
+    buckets["forums"] = _collect_source(
+        "forums",
+        errors,
+        fetch_discourse_forums,
+        list(seeds.get("discourse_forums") or []),
+        keywords,
+        max_items=settings.max_forums,
+    )
+    buckets["hackernews"] = _collect_source(
+        "hackernews",
+        errors,
+        fetch_hackernews,
+        list(seeds.get("hn_queries") or []),
+        keywords,
+        max_items=settings.max_hn,
+        max_age_hours=max_age,
+    )
 
-    merged = _merge_and_cap(arxiv_items + github_items + reddit_items, settings.max_total_items)
+    # Optional open RSS mirrors for X/Twitter accounts (no password / official API).
+    # Put RSSHub / Nitter / similar public feeds under seeds.x_rss_feeds.
+    buckets["x"] = _collect_source(
+        "x",
+        errors,
+        fetch_rss_feeds,
+        list(seeds.get("x_rss_feeds") or []),
+        keywords,
+        max_items=settings.max_x,
+    )
+
+    raw_all = [it for group in buckets.values() for it in group]
+    fresh = apply_freshness(
+        raw_all,
+        max_age_hours=max_age,
+        soft_fallback_hours=max(max_age * 2, 72.0),
+        min_keep=max(6, settings.max_total_items // 2),
+    )
+    merged = _merge_and_cap(fresh, settings.max_total_items)
+
+    day = local_day(settings.report_tz)
     payload = {
         "collected_at": datetime.now(timezone.utc).isoformat(),
+        "report_day": day,
+        "freshness": {
+            "max_age_hours": max_age,
+            "timezone": settings.report_tz,
+            "policy": "prefer_today_then_last_36h_then_soft_72h",
+        },
         "counts": {
-            "arxiv": len(arxiv_items),
-            "github": len(github_items),
-            "reddit": len(reddit_items),
+            "arxiv": len(buckets["arxiv"]),
+            "github": len(buckets["github"]),
+            "reddit": len(buckets["reddit"]),
+            "rss": len(buckets["rss"]),
+            "forums": len(buckets["forums"]),
+            "hackernews": len(buckets["hackernews"]),
+            "x": len(buckets["x"]),
+            "raw_total": len(raw_all),
+            "fresh_total": len(fresh),
             "total": len(merged),
         },
         "items": [i.to_dict() for i in merged],
@@ -66,7 +130,7 @@ def save_digest(payload: dict, digests_dir: Path | None = None) -> Path:
     settings = get_settings()
     out_dir = digests_dir or settings.digests_dir
     out_dir.mkdir(parents=True, exist_ok=True)
-    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    day = payload.get("report_day") or local_day(settings.report_tz)
     path = out_dir / f"{day}.json"
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     latest = out_dir / "latest.json"
