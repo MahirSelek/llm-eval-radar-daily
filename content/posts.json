@@ -1,20 +1,46 @@
 [
   {
     "slug": "2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l",
-    "title": "Eval harness fixes reshape scores as HELM swaps judges and new cognitive benchmarks land",
+    "title": "Eval Harness Fixes Reshape Scores as HELM Swaps Judges and New Cognitive Benchmarks Land",
     "date": "2026-09-22",
-    "summary": "On 2026-09-22, LLM evaluation news centered on methodology risk more than raw leaderboard churn. EleutherAI lm-evaluation-harness v0.4.13 fixed few-shot leakage and related bugs that can change previously published numbers, while HELM retired a widely used LLM-as-judge and corrected ArabicMMLU input construction. New work on QuranicMMLU, multi-hop abstention, and internal-recognition probes further stresses stratified scoring and judge-dependent pipelines.",
-    "source_count": 14,
+    "summary": "On September 22, 2026, LLM evaluation signals centered on fundamental methodology risks over routine leaderboard churn. EleutherAI's lm-evaluation-harness v0.4.13 patched critical few-shot prompt leakages and multiple-choice filtering bugs that alter historical scores. Simultaneously, Stanford HELM retired Together AI's Llama-3.1-405B-Instruct-Turbo judge across five core scenarios, mandating strict version-pinning for all benchmark pipelines.",
+    "key_takeaways": [
+      "EleutherAI lm-eval v0.4.13 fixes few-shot leakage where test documents contaminated demonstrations, altering reported baseline numbers.",
+      "Stanford HELM v0.5.16 swaps the LLM-as-a-judge backbone across Omni-MATH, WildBench, and HarmBench, breaking longitudinal ranking consistency.",
+      "HELM v0.5.15 restores missing context in ArabicMMLU, converting previously unsolvable prompt items back into valid test cases.",
+      "PIR (Probe of Internal Recognition) demonstrates that internal activation states uncover sandbagging and concealed knowledge missed by output-only leaderboards."
+    ],
+    "source_count": 7,
     "model": "grok-4.5",
+    "reading_time": "4 min read",
+    "tags": [
+      "Benchmark Leakage",
+      "LLM-as-a-Judge",
+      "lm-eval-harness",
+      "Stanford HELM",
+      "Methodology Risk"
+    ],
     "post_path": "content/posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.json"
   },
   {
     "slug": "2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m",
-    "title": "Değerlendirme Altyapısı Düzeltmeleri, LLM-Hakem Kaymaları ve Gizli Bilgi Ölçümü",
+    "title": "Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing",
     "date": "2026-09-21",
-    "summary": "EleutherAI lm-evaluation-harness 0.4.12–0.4.13 yeni backend’ler ve sekiz benchmark paketi getirirken few-shot sızıntısı gibi hatalar önceki skorları yeniden yazabilir. Stanford HELM, Together AI’nin Llama 3.1 405B turbo hakeminin kullanım dışı kalmasıyla Omni-MATH ve WildBench gibi senaryolarda hakem değişimine gider; ArabicMMLU’da eksik bağlam alanı düzeltmesi de çözülemez örnekleri geri getirir. ArXiv tarafında QuranicMMLU bilişsel katmanlı yeni bir MMLU varyantı, PIR ise sandbagging ve gizli bilgiyi çıktı yerine iç durumlarla test eden bir değerlendirme metodolojisi öneriyor.",
-    "source_count": 14,
+    "summary": "On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration while researcher probes targeted deceptive alignment and sandbagging behaviors that traditional multiple-choice evals fail to expose.",
+    "key_takeaways": [
+      "EleutherAI lm-eval v0.4.12 integrates TensorRT-LLM and Megatron-LM backends alongside tensor parallelism for HuggingFace models.",
+      "Stanford HELM expands domain-specific regional benchmarks with Arabic Legal and Content Generation scenarios.",
+      "AutoViewMem and Memory Decision Layer demonstrate that agent evaluation must measure confidence consistency over raw retrieval recall."
+    ],
+    "source_count": 4,
     "model": "composer-2.5",
+    "reading_time": "3 min read",
+    "tags": [
+      "Evaluation Harness",
+      "LLM-as-a-Judge",
+      "Agent Memory",
+      "Methodology"
+    ],
     "post_path": "content/posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.json"
   }
 ]

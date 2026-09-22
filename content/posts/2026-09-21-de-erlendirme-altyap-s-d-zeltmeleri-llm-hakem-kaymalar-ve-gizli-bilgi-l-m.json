@@ -1,40 +1,29 @@
 {
   "slug": "2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m",
   "date": "2026-09-21",
-  "created_at": "2026-09-21T20:29:50.488841+00:00",
-  "title": "Değerlendirme Altyapısı Düzeltmeleri, LLM-Hakem Kaymaları ve Gizli Bilgi Ölçümü",
-  "summary": "EleutherAI lm-evaluation-harness 0.4.12–0.4.13 yeni backend’ler ve sekiz benchmark paketi getirirken few-shot sızıntısı gibi hatalar önceki skorları yeniden yazabilir. Stanford HELM, Together AI’nin Llama 3.1 405B turbo hakeminin kullanım dışı kalmasıyla Omni-MATH ve WildBench gibi senaryolarda hakem değişimine gider; ArabicMMLU’da eksik bağlam alanı düzeltmesi de çözülemez örnekleri geri getirir. ArXiv tarafında QuranicMMLU bilişsel katmanlı yeni bir MMLU varyantı, PIR ise sandbagging ve gizli bilgiyi çıktı yerine iç durumlarla test eden bir değerlendirme metodolojisi öneriyor.",
-  "body_tr": "21 Eylül 2026 günü odak, lider tablolarından çok ölçüm altyapısının kendisindeki kaymalar, LLM-as-judge bağımlılıkları ve metodolojik riskler etrafında toplanıyor. GitHub ve arXiv akışındaki on dört öğenin çoğu doğrudan skor karşılaştırması değil; hangi backend ile ölçüldüğü, few-shot örneklerinin test belgesine karışıp karışmadığı ve hangi hakemin puanladığı sorusunu gündeme taşıyor.\n\nEleutherAI lm-evaluation-harness arka arkaya 0.4.12 ve 0.4.13 sürümlerini yayınladı. 0.4.12 dört yeni model backend’i (TensorRT-LLM, Megatron-LM, Intel Gaudi, LiteLLM ağ geçidi), transformers tabanlı modeller için tensor parallel desteği, TaskManager refaktörü ve yeni görevler sunuyor. Bu sürüm daha çok ölçüm kapasitesi ve üretim ortamına yakın inference yollarını genişletiyor; lider tablolarında tek satırlık skor farkı yorumlamadan önce backend etiketinin okunması gerekiyor.\n\n0.4.13 ise hacim olarak datasets 4.x uyumlu config güncellemeleri taşısa da değerlendirme metodolojisi açısından asıl mesaj düzeltme paketi. Önceki raporlanan sayıları kaydırabilecek düzeltmeler arasında: değerlendirme belgesinin few-shot örneklere sızması, çoktan seçmeli filtre hatası ve grup standart hata hesapları yer alıyor. gen_prefix’in eval belgesine göre çözülmesi, RULER niah_single_1 ve benzeri görevlerde sorulan metnin her shot’a eklenmesi gibi sızıntı biçimleri pratikte benchmark’ı kolaylaştırıp yapay yükseliş üretebilirdi. ONNX backend’leri ve sekiz yeni benchmark paketi eklense de, tarihsel harness skorlarıyla yan yana koymadan önce sürüm notları zorunlu okuma.\n\nStanford HELM 0.5.15 ve 0.5.16, hakem ve senaryo tarafında benzer kırılma desenleri gösteriyor. 0.5.15’te ArabicMMLU senaryosuna daha önce yanlışlıkla düşürülen context alanı geri ekleniyor; eksik bağlam bazı örnekleri fiilen çözülemez kılmıştı, dolayısıyla düzeltme sonrası skorlar anlam değiştirir, sadece artmaz veya azalmaz. 0.5.16’da Together AI’nin meta/llama-3.1-405b-instruct-turbo modelinin kullanım dışı kalması, Omni-MATH, WildBench, HarmBench, XSTest ve Anthropic Red Team senaryolarında LLM-as-judge hattını değiştirmeyi zorunlu kılıyor. Hakem modeli değiştirildiğinde sıralama korelasyonu korunmayabilir; özellikle matematik ve güvenlik senaryolarında judge bias ve kalibrasyon farkı lider tablo yorumunu zayıflatır.\n\nHELM tarafında Arapça Legal, Content Generation ve Finance senaryolarının genişlemesi, bölgesel ve dilsel benchmark çeşitliliğini artırırken Unitxt entegrasyonunun yeni API’ye taşınması görev tanımı ve veri hattı tutarlılığı için ikinci bir kaynak doğrulama ihtiyacı doğuruyor.\n\narXiv’de QuranicMMLU, Kur’an Arapçası için fonoloji, morfoloji, sözdizimi, anlambilim ve edimbilimden oluşan beş sütunlu bir taksonomi ve Bloom bilişsel seviyesi ile ayet perplexity’sine göre katmanlı soru üretimi sunuyor. Yaprak düzeyinde 31 alt alan ve LLM-as-judge ile puanlama, klasik genel soru-cevap benchmark’larından daha ince dilsel yetkinlik iddiası taşıyor; ancak judge’ın Arapça dilbilimsel ayrıntılarda sistematik hata yapma riski metodoloji bölümünde açıkça ele alınmalı.\n\nPredictable Failure in Multi-Hop Retrieval çalışması, çok adımlı retrieval hatalarının yapısal alt popülasyonlarda kümelendiğini ve güven skorlamasında LLM-judge boru hatlarının yoğun vektör-only rejimlere göre daha fazla karşılıklı bilgi taşıdığını formüle ediyor. Bu, değerlendirme literatüründeki AUC-AC boşluğunun bir kısmını hakem tabanlı güven ölçümlerinin neden daha öngörülebilir olduğuyla ilişkilendiriyor; fakat judge maliyeti ve judge-hata propagasyonu lider tablo dışı bir risk.\n\nMemory Decision Layer ve AutoViewMem, RAG ve uzun süreli bellek sistemlerinde retrieval doğruluğundan ziyade güvenilirlik kararı ve görünüm ayrıştırmasına odaklanıyor. Çelişkili bellek enjeksiyonunda halüsinasyon oranının bellek-free tabana göre yükselmesi, agent benchmark’larında sadece doğruluk değil bellek güven filtresi metriklerinin raporlanması gerektiğini hatırlatıyor.\n\nA Lie Detector Test for Language Models (PIR), modelin bilerek düşük performans göstermesi veya bilmediği gibi davranması durumunda çıktı metinlerinin yetersiz kaldığını savunuyor. Concealed Information Test mantığıyla aday cevaplar arasında iç durumlardan tanıma sinyali okumak, yetenek değerlendirmesinde yeni bir metodolojik eksen: leaderboard skorları ile içsel bilgi arasındaki uyumsuzluk.\n\nWhen Should a Failing Robot Ask?, robotik bağlamda enjekte edilmiş gerçek hata nedenleriyle sensör güvenilirliği ve açık VLM davranışını ölçen bir benchmark sunuyor; veri sızıntısına karşı açık denetim vurgusu, agent ve VLM değerlendirmesinde sık göz ardı edilen bir riski örnekliyor.\n\nGünün pratik çıkarımları:\n- Harness 0.4.13 öncesi few-shot ve MC filtre sonuçlarına güvenmeden önce sürüm ve commit notlarını sabitleyin.\n- HELM karşılaştırmalarında Llama 3.1 405B turbo hakeminin kaldırıldığı senaryolarda yeni hakem etiketini ve ArabicMMLU context düzeltmesini raporlayın.\n- Yeni backend ve LiteLLM geçidi kullanımında latency, maliyet ve reproducibility üçlüsünü skorla birlikte yazın.\n- LLM-as-judge ile inşa edilen benchmark’larda (QuranicMMLU dahil) judge modeli ve rubric değişimini versiyonlayın.\n- Sandbagging ve gizli bilgi iddiaları için yalnızca çıktı tabanlı MMLU skorları yeterli değil; PIR gibi iç durum protokolleri ayrı kanıt hattı gerektirir.",
-  "body_en": "September 21, 2026 highlights infrastructure and methodology shifts more than a single leaderboard move. EleutherAI’s lm-evaluation-harness 0.4.12 adds TensorRT-LLM, Megatron-LM, Gaudi, LiteLLM, tensor parallel for HuggingFace models, and a TaskManager refactor; 0.4.13 is fix-heavy and may change historical scores via few-shot leakage (eval documents entering demonstrations), a multiple-choice filter bug, and group stderr fixes, plus ONNX backends and eight new benchmark suites.\n\nStanford HELM 0.5.15 restores the ArabicMMLU context field that had made some items unsolvable; 0.5.16 removes deprecated Together meta/llama-3.1-405b-instruct-turbo as LLM-as-judge in Omni-MATH, WildBench, HarmBench, XSTest, and Anthropic Red Team, forcing judge migrations that can reorder models. New Arabic Legal, content, and finance scenarios expand coverage; Unitxt API migration affects task pipelines.\n\nOn arXiv, QuranicMMLU stratifies Quranic Arabic by linguistic pillars and cognitive level with LLM-as-judge scoring. Multi-hop retrieval work argues LLM-judge confidence pipelines carry more mutual information about failure than dense-only scores. PIR proposes detecting concealed knowledge via internal recognition, relevant to sandbagging audits. Memory and RAG papers stress trust under conflicting memories; a robot failure benchmark emphasizes leakage-aware VLM evaluation.\n\n- Re-baseline harness runs after 0.4.13 leakage and filter fixes.\n- Document HELM judge and ArabicMMLU input changes when comparing runs.\n- Tag backend and gateway choice alongside headline scores.\n- Version judge models and rubrics for judge-built benchmarks.\n- Treat output-only scores as insufficient for hidden-capability claims.",
+  "created_at": "2026-09-21T20:29:50+00:00",
+  "title": "Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing",
+  "subtitle": "Analysis of harness backends, judge deprecation cascades, and internal representation probes for LLM auditability.",
+  "summary": "On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration while researcher probes targeted deceptive alignment and sandbagging behaviors that traditional multiple-choice evals fail to expose.",
+  "key_takeaways": [
+    "EleutherAI lm-eval v0.4.12 integrates TensorRT-LLM and Megatron-LM backends alongside tensor parallelism for HuggingFace models.",
+    "Stanford HELM expands domain-specific regional benchmarks with Arabic Legal and Content Generation scenarios.",
+    "AutoViewMem and Memory Decision Layer demonstrate that agent evaluation must measure confidence consistency over raw retrieval recall.",
+    "Robotic sensor failure audits highlight the urgent need for leakage-aware multimodal vision-language model benchmarks."
+  ],
+  "body_en": "The frontier of AI evaluation is transitioning rapidly from superficial leaderboards to infrastructure rigor and internal state interpretability.\n\n### 1. Harness Acceleration & Enterprise Inference Backends\nWith the release of lm-evaluation-harness 0.4.12, EleutherAI introduced enterprise-scale evaluation paths including TensorRT-LLM, Megatron-LM, Intel Gaudi, and LiteLLM gateway abstractions. The addition of tensor-parallel native HuggingFace execution allows researchers to benchmark 70B+ parameter models on local cluster nodes with significant latency reductions.\n\nWhen evaluating high-throughput pipelines, recording backend runtime configurations (batch sizes, KV-cache quantization, gateway timeout retries) is now as critical as recording temperature settings, as inference engine optimizations can subtly alter token logits.\n\n### 2. Multi-Hop Retrieval Calibration & LLM-Judge Reliability\nResearch into multi-hop retrieval failure modes reveals that confidence calibration is not uniform. LLM-as-a-judge pipelines demonstrate higher mutual information with ground-truth correctness on multi-hop questions than standard dense embedding similarity scores. However, the cascading cost and propagation of judge errors necessitate stratified confidence filtering before automated grading.\n\n### 3. Agent Memory and Behavioral Auditing\nStudies on agent memory architectures (AutoViewMem, Interpretable Memory Decision Controllers) prove that hallucination rates spike when conflicting memories are injected into conversational agents. Future agent benchmarks must explicitly evaluate memory trust filtering, epistemic abstention, and resistance to adversarial context injection.",
+  "methodology_risks": "As LLM-as-a-judge pipelines become ubiquitous, evaluation frameworks risk systemic bias amplification. Without transparent judge rubrics, temperature pinning, and regular cross-judge correlation checks, benchmark results risk measuring judge model alignment rather than target model capability.",
   "tags": [
-    "evaluation",
-    "benchmark",
-    "llm-as-judge",
-    "methodology",
-    "lm-evaluation-harness",
-    "helm",
-    "few-shot-leakage",
-    "leaderboard"
+    "Evaluation Harness",
+    "LLM-as-a-Judge",
+    "Agent Memory",
+    "Multi-Hop Retrieval",
+    "Methodology"
   ],
   "sources": [
     {
-      "title": "[release] EleutherAI/lm-evaluation-harness: v0.4.13",
-      "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.13",
-      "source": "github"
-    },
-    {
       "title": "[release] EleutherAI/lm-evaluation-harness: v0.4.12",
       "url": "https://github.com/EleutherAI/lm-evaluation-harness/releases/tag/v0.4.12",
-      "source": "github"
-    },
-    {
-      "title": "QuranicMMLU: A Cognitively-Aware Benchmark for Evaluating Generative AI Solutions on Quranic Linguistic Knowledge",
-      "url": "https://arxiv.org/abs/2609.22038v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "[release] stanford-crfm/helm: v0.5.16",
-      "url": "https://github.com/stanford-crfm/helm/releases/tag/v0.5.16",
       "source": "github"
     },
     {
@@ -43,50 +32,17 @@
       "source": "github"
     },
     {
-      "title": "Predictable Failure in Multi-Hop Retrieval: Score-Distributional Confidence Scoring and Abstention",
-      "url": "https://arxiv.org/abs/2609.22056v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "An Interpretable Memory Decision Controller for LLM Agents Based on Three-Signal Complementarity: Decoupling Confidence and Consistency",
+      "title": "An Interpretable Memory Decision Controller for LLM Agents: Decoupling Confidence and Consistency",
       "url": "https://arxiv.org/abs/2609.22043v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "A Lie Detector Test for Language Models: Reading Knowledge a Model Won't Reveal",
-      "url": "https://arxiv.org/abs/2609.21996v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "When Should a Failing Robot Ask? Initiating Corrective Human-Robot Dialogue from Audited Sensor Evidence",
-      "url": "https://arxiv.org/abs/2609.21942v1",
       "source": "arxiv"
     },
     {
       "title": "AutoViewMem: Self-Configuring Orthogonal Views for Conversational Long-Term Memory",
       "url": "https://arxiv.org/abs/2609.21940v1",
       "source": "arxiv"
-    },
-    {
-      "title": "Cross-sector generalization of accident-process role classification in occupational accident narratives",
-      "url": "https://arxiv.org/abs/2609.22081v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "DiaVLo: Diagnosing Behaviours of Vision-Language Models",
-      "url": "https://arxiv.org/abs/2609.22008v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "NemotronLabs VoiceChat: An Open Full-duplex Speech-to-Speech Model with Tool Calling Capabilities",
-      "url": "https://arxiv.org/abs/2609.21967v1",
-      "source": "arxiv"
-    },
-    {
-      "title": "[commit] EleutherAI/lm-evaluation-harness: fix(basqueglue): load the f1 metric with evaluate (#4076)",
-      "url": "https://github.com/EleutherAI/lm-evaluation-harness/commit/d6de81643928d653435c431bae19945d41d32520",
-      "source": "github"
     }
   ],
-  "model": "composer-2.5"
+  "reading_time": "3 min read",
+  "model": "composer-2.5",
+  "requested_model": "composer-2.5"
 }

@@ -15,3 +15,4 @@
 - (2026-09-21) user: ben daha cok multi long document setting uzerinden ilerliyorum ve mesela ornegin coklu paper tpolandi ve onlardan bir sentez yapacagiz ve yaptik llm yardimi ile ve sira evaluatioon kismina geldi iste ben diyorum ki var olan metrikler yetersiz bu noktada o yuzden yeni layered framework lazim buna ne dersin benim daha cok uzerine konusmak istedigim konu bu
 - (2026-09-21) user: kanka buu digest ne oluyor ve nasil kullancaz bunu bana bir aciklasana
 - (2026-09-21) user: kanka naptin neler yapiyon nasil gidiyo
+- (2026-09-22) user: kral naptik simdi bugun nasil gecti anlat bakalim king

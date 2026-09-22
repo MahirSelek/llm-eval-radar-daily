@@ -1,32 +1,66 @@
 {% extends "base.html" %}
-{% block title %}Memory · Eval Radar{% endblock %}
+{% block title %}Agent Memory · Eval Radar 2026{% endblock %}
 {% block content %}
-<div class="top">
+<div class="top-bar">
   <div>
-    <h1>Agent memory</h1>
-    <p class="sub">Öğrendikleri, tercihler ve sohbet izi — seninle pekiştirme alanı.</p>
+    <h1 class="page-title">Agent Hafızası & Öğrenilmiş Profil</h1>
+    <p class="page-sub">Mahir ile olan etkileşimlerden öğrenilen tercihler, ilgi alanları ve sistem hafızası.</p>
   </div>
+  <a href="{{ url_for('web.settings_page') }}" class="btn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    Ayarlardan Düzenle
+  </a>
 </div>
 
 <div class="grid">
+  <!-- Preferences Box -->
   <div class="card span-6">
-    <h3 style="margin-top:0;font-family:var(--display)">Preferences</h3>
-    <pre class="mono" style="white-space:pre-wrap;color:var(--muted);margin:0">{{ prefs | tojson(indent=2) }}</pre>
-  </div>
-  <div class="card span-6">
-    <h3 style="margin-top:0;font-family:var(--display)">Profile</h3>
-    <pre style="white-space:pre-wrap;color:var(--muted);margin:0;font-family:var(--font)">{{ profile }}</pre>
-  </div>
-  <div class="card span-12">
-    <h3 style="margin-top:0;font-family:var(--display)">Chat log</h3>
-    {% for row in chat %}
-    <div class="bubble {{ row.role }}" style="max-width:100%">
-      <div class="muted" style="font-size:.75rem;margin-bottom:.35rem">{{ row.role }} · {{ row.ts }}</div>
-      {% if row.html %}{{ row.html|safe }}{% else %}{{ row.text }}{% endif %}
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Öğrenilmiş Tercihler (Preferences)
+      </div>
+      <span class="pill info">JSON</span>
     </div>
-    {% else %}
-    <p class="muted">Log boş.</p>
-    {% endfor %}
+    <pre class="mono" style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:1.2rem;color:var(--accent-cyan);overflow-x:auto;">{{ prefs | tojson(indent=2) }}</pre>
+  </div>
+
+  <!-- Agent Profile Box -->
+  <div class="card span-6">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Sistem Hafıza Profili (profile.md)
+      </div>
+      <span class="pill">Markdown</span>
+    </div>
+    <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:1.2rem;max-height:350px;overflow-y:auto;font-size:0.9rem;line-height:1.6;color:var(--text-main);white-space:pre-wrap;">{{ profile }}</div>
+  </div>
+
+  <!-- Full Conversation Trace -->
+  <div class="card span-12">
+    <div class="card-header">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Geçmiş Sohbet & Öğrenme İzi
+      </div>
+      <span class="pill">{{ chat|length }} Etkileşim</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      {% for row in chat %}
+      <div class="bubble {{ row.role }}" style="max-width:100%;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim);margin-bottom:0.4rem;font-weight:700;">
+          <span>{{ row.role|upper }}</span>
+          <span class="mono">{{ row.ts }}</span>
+        </div>
+        <div style="font-size:0.92rem;line-height:1.6;">
+          {% if row.html %}{{ row.html|safe }}{% else %}{{ row.text }}{% endif %}
+        </div>
+      </div>
+      {% else %}
+      <p class="muted" style="text-align:center;padding:2rem;">Hafızada kayıtlı sohbet bulunmuyor.</p>
+      {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}

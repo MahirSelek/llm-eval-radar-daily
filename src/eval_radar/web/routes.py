@@ -288,11 +288,18 @@ def api_collect():
 
 
 @bp.post("/api/report-preview")
+@bp.post("/api/report/preview")
 def api_report_preview():
     try:
+        from eval_radar.format_text import to_web_html
         payload = collect_all()
         save_digest(payload)
         text = render_report(payload)
-        return jsonify({"ok": True, "report": text, "counts": payload.get("counts")})
+        return jsonify({
+            "ok": True,
+            "report": text,
+            "report_html": to_web_html(text),
+            "counts": payload.get("counts")
+        })
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500

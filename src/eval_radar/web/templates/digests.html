@@ -1,21 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Digests · Eval Radar{% endblock %}
+{% block title %}Digests · Eval Radar 2026{% endblock %}
 {% block content %}
-<div class="top">
+<div class="top-bar">
   <div>
-    <h1>Digests</h1>
-    <p class="sub">Günlük toplanan radar paketleri.</p>
+    <h1 class="page-title">Toplanan Digest Arşivi</h1>
+    <p class="page-sub">Açık webden toplanan günlük ham ve filtrelenmiş eval sinyal paketleri.</p>
   </div>
 </div>
+
 <div class="grid">
   {% for d in digests %}
-  <a class="card span-4" href="{{ url_for('web.digest_detail', day=d.day) }}" style="text-decoration:none;color:inherit">
-    <div class="kpi-label">{{ d.day }}</div>
-    <div class="kpi" style="font-size:1.3rem">{{ d.item_count }} item</div>
-    <p class="muted">arXiv {{ d.counts.get('arxiv',0) }} · GitHub {{ d.counts.get('github',0) }} · Reddit {{ d.counts.get('reddit',0) }}</p>
+  <a class="card span-4" href="{{ url_for('web.digest_detail', day=d.day) }}" style="text-decoration:none;color:inherit;transition:all 0.2s ease;">
+    <div class="card-header">
+      <span class="pill info">{{ d.day }}</span>
+      <span class="mono" style="font-size:0.8rem;color:var(--text-dim)">{{ d.collected_at[:16] if d.collected_at else '' }}</span>
+    </div>
+    <div class="kpi-value" style="font-size:1.4rem;margin:0.4rem 0;">{{ d.item_count }} Sinyal Kaydı</div>
+    <div style="display:flex;gap:0.4rem;margin-top:0.8rem;">
+      <span class="pill">arXiv {{ d.counts.get('arxiv',0) }}</span>
+      <span class="pill">GitHub {{ d.counts.get('github',0) }}</span>
+      <span class="pill">Reddit {{ d.counts.get('reddit',0) }}</span>
+    </div>
   </a>
   {% else %}
-  <div class="card span-12 muted">Henüz digest yok. Dashboard’dan collect çalıştır.</div>
+  <div class="card span-12 muted" style="text-align:center;padding:3rem">
+    Henüz kayıtlı digest paketi bulunmuyor. Dashboard üzerinden "Sinyalleri Tara" butonunu çalıştırın.
+  </div>
   {% endfor %}
 </div>
 {% endblock %}

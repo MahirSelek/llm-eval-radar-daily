@@ -3,32 +3,71 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}Eval Radar{% endblock %}</title>
+  <title>{% block title %}Eval Radar 2026{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+  {% block head %}{% endblock %}
 </head>
 <body>
   <div class="shell">
     <aside class="side">
-      <p class="brand">Eval <span>Radar</span></p>
-      <p class="tag">Mahir · LLM evaluation harness</p>
+      <div class="brand-wrap">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          Eval <span>Radar</span>
+        </div>
+        <p class="tagline">LLM Evaluation Command Center</p>
+      </div>
+
       <nav class="nav">
-        <a href="{{ url_for('web.home') }}" class="{% if request.endpoint == 'web.home' %}active{% endif %}">Dashboard</a>
-        <a href="{{ url_for('web.digests') }}" class="{% if request.endpoint and 'digest' in request.endpoint %}active{% endif %}">Digests</a>
-        <a href="{{ url_for('web.memory_page') }}" class="{% if request.endpoint == 'web.memory_page' %}active{% endif %}">Memory</a>
-        <a href="{{ url_for('web.chat_page') }}" class="{% if request.endpoint == 'web.chat_page' %}active{% endif %}">Chat LLM</a>
-        <a href="{{ url_for('web.settings_page') }}" class="{% if request.endpoint == 'web.settings_page' %}active{% endif %}">Settings</a>
+        <a href="{{ url_for('web.home') }}" class="nav-item {% if request.endpoint == 'web.home' %}active{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="{{ url_for('web.digests') }}" class="nav-item {% if request.endpoint and 'digest' in request.endpoint %}active{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+          Digests
+        </a>
+        <a href="{{ url_for('web.chat_page') }}" class="nav-item {% if request.endpoint == 'web.chat_page' %}active{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Chat Assistant
+        </a>
+        <a href="{{ url_for('web.memory_page') }}" class="nav-item {% if request.endpoint == 'web.memory_page' %}active{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Agent Memory
+        </a>
+        <a href="{{ url_for('web.settings_page') }}" class="nav-item {% if request.endpoint == 'web.settings_page' %}active{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          Settings
+        </a>
       </nav>
-      <form method="post" action="{{ url_for('web.logout') }}" style="margin-top:18px">
-        <button class="btn" type="submit" style="width:100%">Logout</button>
-      </form>
+
+      <div class="side-footer">
+        <div class="user-badge">
+          <div class="user-avatar">M</div>
+          <div class="user-info">
+            <span class="user-name">Mahir Selek</span>
+            <span class="user-role">Harness Admin</span>
+          </div>
+        </div>
+        <form method="post" action="{{ url_for('web.logout') }}">
+          <button class="btn danger" type="submit" style="width:100%;font-size:0.8rem;padding:0.45rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            Oturumu Kapat
+          </button>
+        </form>
+      </div>
     </aside>
+
     <main class="main">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% for cat, msg in messages %}
-          <div class="flash {{ cat }}">{{ msg }}</div>
+          <div class="flash {{ cat }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ msg }}
+          </div>
         {% endfor %}
       {% endwith %}
       {% block content %}{% endblock %}
