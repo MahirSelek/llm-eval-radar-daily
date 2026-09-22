@@ -31,8 +31,10 @@ def publish_daily_post(*, dry_run: bool = False) -> dict:
     post_row = {
         "slug": article["slug"],
         "title": article["title"],
+        "subtitle": article.get("subtitle", ""),
         "date": article["date"],
         "summary": article["summary"],
+        "key_takeaways": article.get("key_takeaways", []),
         "source_count": len(article["sources"]),
         "model": article["model"],
         "post_path": str(post_path.relative_to(ROOT)),
@@ -47,8 +49,7 @@ def publish_daily_post(*, dry_run: bool = False) -> dict:
 def generate_article(payload: dict) -> dict:
     settings = get_settings()
     tz = ZoneInfo(settings.report_tz)
-    now = datetime.now(tz)
-    day = now.strftime("%Y-%m-%d")
+    day = datetime.now(tz).strftime("%Y-%m-%d")
     sources = _sources_from_payload(payload)
     items = filter_items(payload)
     condensed_items = [
@@ -56,17 +57,17 @@ def generate_article(payload: dict) -> dict:
             "source": it.get("source"),
             "title": it.get("title"),
             "url": it.get("url"),
-            "summary": (it.get("summary") or "")[:700],
+            "summary": (it.get("summary") or "")[:800],
         }
-        for it in items[:12]
+        for it in items[:14]
     ]
 
     model_for_post = settings.publisher_model or settings.cursor_model
     system = (
-        "You are an expert technical writer focusing ONLY on large language model evaluation. "
-        "Return strict JSON with keys: title, summary, body_tr, body_en, tags. "
-        "body_tr and body_en must be plain text paragraphs and bullet lines prefixed by '- '. "
-        "No markdown bold syntax (**), no code fences."
+        "You are a senior LLM evaluation research editor. "
+        "Write in English only. "
+        "Return strict JSON only with keys: title, subtitle, summary, key_takeaways, body_en, methodology_risks, tags. "
+        "No markdown bold syntax (**), no code fences, no Turkish text."
     )
     user = json.dumps(
         {
@@ -74,19 +75,29 @@ def generate_article(payload: dict) -> dict:
             "timezone": settings.report_tz,
             "counts": payload.get("counts", {}),
             "focus": [
-                "benchmark shifts",
-                "leaderboards",
-                "llm-as-judge trends",
+                "benchmark shifts and leaderboard validity",
+                "llm-as-judge changes and calibration drift",
                 "evaluation methodology risks",
+                "practical implications for research and infra teams",
             ],
             "items": condensed_items,
             "required_shape": {
-                "title": "string",
-                "summary": "short paragraph",
-                "body_tr": "long Turkish article with bullet points",
-                "body_en": "shorter English recap",
-                "tags": ["evaluation", "benchmark", "arena"],
+                "title": "clear technical English title",
+                "subtitle": "one-line thesis statement",
+                "summary": "4-6 sentence executive summary",
+                "key_takeaways": ["3-5 concrete implications"],
+                "body_en": (
+                    "900-1600 words, deep but readable, with section headings and examples from sources. "
+                    "Explain why each development matters and what actions teams should take."
+                ),
+                "methodology_risks": "2-3 focused paragraphs on comparability, leakage, judge drift, and interpretation risk",
+                "tags": ["evaluation", "benchmark", "llm-as-judge"],
             },
+            "quality_bar": [
+                "Do not just summarize links; synthesize and interpret.",
+                "Compare signals and draw reasoned conclusions.",
+                "Write like a senior research lead briefing technical stakeholders.",
+            ],
         },
         ensure_ascii=False,
         indent=2,
@@ -94,23 +105,25 @@ def generate_article(payload: dict) -> dict:
     raw = complete(
         system,
         user,
-        max_tokens=2200,
+        max_tokens=3200,
         purpose="daily_publish_article",
         model_override=model_for_post,
     )
     usage_row = latest_usage_for_purpose("daily_publish_article")
     actual_model = str((usage_row or {}).get("model") or model_for_post)
     data = _extract_json(raw)
-    title = str(data.get("title") or f"LLM Evaluation Daily — {day}").strip()
+    title = str(data.get("title") or f"LLM Evaluation Daily - {day}").strip()
     slug = _slugify(f"{day}-{title}")[:96]
     return {
         "slug": slug,
         "date": day,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "title": title,
+        "subtitle": str(data.get("subtitle") or "").strip(),
         "summary": str(data.get("summary") or "").strip(),
-        "body_tr": str(data.get("body_tr") or "").strip(),
+        "key_takeaways": _coerce_list(data.get("key_takeaways"))[:8],
         "body_en": str(data.get("body_en") or "").strip(),
+        "methodology_risks": str(data.get("methodology_risks") or "").strip(),
         "tags": _coerce_tags(data.get("tags")),
         "sources": sources,
         "model": actual_model,
@@ -149,17 +162,20 @@ def build_docs_site(posts: list[dict]) -> None:
 
     cards = []
     for row in posts[:120]:
+        subtitle = row.get("subtitle") or ""
+        subtitle_html = f'<p class="sub">{html.escape(subtitle)}</p>' if subtitle else ""
         cards.append(
             f"""
             <article class="card">
               <div class="meta">{html.escape(row.get('date', ''))} · {html.escape(row.get('model', ''))}</div>
               <h2><a href="./posts/{html.escape(row.get('slug', ''))}.html">{html.escape(row.get('title', ''))}</a></h2>
+              {subtitle_html}
               <p>{html.escape(row.get('summary', ''))}</p>
             </article>
             """
         )
     index_html = f"""<!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -169,10 +185,10 @@ def build_docs_site(posts: list[dict]) -> None:
 <body>
   <header class="wrap">
     <h1>LLM Evaluation Daily</h1>
-    <p>Günlük teknik yazılar — evaluation, benchmarks, leaderboard shifts.</p>
+    <p>Daily technical briefings on evaluation, benchmarks, and leaderboard reliability.</p>
   </header>
   <main class="wrap grid">
-    {"".join(cards) if cards else "<p>Henüz yazı yok.</p>"}
+    {''.join(cards) if cards else '<p>No posts yet.</p>'}
   </main>
 </body>
 </html>
@@ -196,30 +212,38 @@ def _render_post_html(article: dict) -> str:
         f'<li><a href="{html.escape(s["url"])}" target="_blank" rel="noopener">{html.escape(s["title"])}</a> <span class="muted">({html.escape(s["source"])})</span></li>'
         for s in article.get("sources", [])
     )
-    body_tr = _paragraphize(article.get("body_tr", ""))
     body_en = _paragraphize(article.get("body_en", ""))
+    takeaways = _listify_takeaways(article.get("key_takeaways") or [])
+    methodology = _paragraphize(article.get("methodology_risks", ""))
+    subtitle = article.get("subtitle") or ""
+    subtitle_html = f'<p class="lead">{html.escape(subtitle)}</p>' if subtitle else ""
     return f"""<!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{html.escape(article.get("title", ""))}</title>
+  <title>{html.escape(article.get('title', ''))}</title>
   <link rel="stylesheet" href="../assets/site.css" />
 </head>
 <body>
   <main class="wrap post">
-    <a class="back" href="../index.html">← Tüm yazılar</a>
-    <h1>{html.escape(article.get("title", ""))}</h1>
-    <p class="meta">{html.escape(article.get("date", ""))} · model: {html.escape(article.get("model", ""))}</p>
-    <p class="lead">{html.escape(article.get("summary", ""))}</p>
+    <a class="back" href="../index.html">← All posts</a>
+    <h1>{html.escape(article.get('title', ''))}</h1>
+    <p class="meta">{html.escape(article.get('date', ''))} · model: {html.escape(article.get('model', ''))}</p>
+    {subtitle_html}
+    <p class="lead">{html.escape(article.get('summary', ''))}</p>
     <div class="tags">{tags}</div>
     <section>
-      <h2>TR Analysis</h2>
-      {body_tr}
+      <h2>Key Takeaways</h2>
+      {takeaways}
     </section>
     <section>
-      <h2>EN Recap</h2>
+      <h2>Deep Analysis</h2>
       {body_en}
+    </section>
+    <section>
+      <h2>Methodology Risks</h2>
+      {methodology}
     </section>
     <section>
       <h2>Sources</h2>
@@ -240,8 +264,8 @@ def _write_docs_assets() -> None:
   background: #0b0f14;
   color: #e8eef3;
 }
-.wrap { max-width: 880px; margin: 0 auto; padding: 24px 18px; }
-h1, h2 { letter-spacing: -0.02em; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px; }
+h1, h2, h3 { letter-spacing: -0.02em; }
 .grid { display: grid; gap: 14px; }
 .card {
   background: #131a21;
@@ -250,11 +274,12 @@ h1, h2 { letter-spacing: -0.02em; }
   padding: 14px 16px;
 }
 .card h2 { margin: 0 0 8px; font-size: 1.2rem; }
-.card p { margin: 0; color: #b5c3d0; line-height: 1.45; }
+.card p { margin: 0; color: #b5c3d0; line-height: 1.5; }
+.card .sub { margin-bottom: 8px; color: #9fc2dc; }
 .meta { color: #93a5b7; font-size: 0.88rem; }
 a { color: #66d9ef; text-decoration: none; }
 a:hover { text-decoration: underline; }
-.post .lead { color: #bdd0df; font-size: 1.04rem; line-height: 1.5; }
+.post .lead { color: #cddceb; font-size: 1.03rem; line-height: 1.6; }
 .tag {
   display: inline-block;
   padding: 0.2rem 0.55rem;
@@ -266,9 +291,13 @@ a:hover { text-decoration: underline; }
   font-size: 0.82rem;
 }
 .back { display: inline-block; margin-bottom: 8px; color: #9ec3df; }
-ul { line-height: 1.55; }
+ul, ol { line-height: 1.65; }
+ul li, ol li { margin-bottom: 0.35rem; }
 .muted { color: #93a5b7; }
-section p { line-height: 1.66; color: #d8e3ec; }
+section { margin-top: 18px; }
+section p { line-height: 1.7; color: #d8e3ec; }
+section h2 { margin-bottom: 10px; }
+section h3 { margin: 14px 0 8px; }
 """
     (assets / "site.css").write_text(css, encoding="utf-8")
 
@@ -285,12 +314,13 @@ def _extract_json(raw: str) -> dict:
         except json.JSONDecodeError:
             pass
 
-    # Fallback if model ignored JSON requirement
     return {
         "title": "LLM Evaluation Daily",
-        "summary": text[:300] if text else "Daily update",
-        "body_tr": text,
-        "body_en": "See Turkish section.",
+        "subtitle": "Daily research briefing",
+        "summary": text[:500] if text else "Daily update",
+        "key_takeaways": [],
+        "body_en": text,
+        "methodology_risks": "",
         "tags": ["evaluation", "benchmark"],
     }
 
@@ -305,6 +335,14 @@ def _coerce_tags(tags: object) -> list[str]:
             continue
         out.append(t[:32])
     return out[:8] or ["evaluation", "benchmark"]
+
+
+def _coerce_list(items: object) -> list[str]:
+    if isinstance(items, list):
+        return [str(i).strip() for i in items if str(i).strip()]
+    if isinstance(items, str):
+        return [ln.strip() for ln in items.splitlines() if ln.strip()]
+    return []
 
 
 def _sources_from_payload(payload: dict) -> list[dict]:
@@ -330,6 +368,14 @@ def _slugify(text: str) -> str:
     return s or "post"
 
 
+def _clean_inline_markdown(text: str) -> str:
+    t = str(text).strip()
+    t = re.sub(r"\*\*(.+?)\*\*", r"\1", t)
+    t = re.sub(r"__(.+?)__", r"\1", t)
+    t = re.sub(r"`([^`]+)`", r"\1", t)
+    return t
+
+
 def _paragraphize(text: str) -> str:
     lines = [line.strip() for line in str(text).splitlines()]
     blocks = []
@@ -340,17 +386,33 @@ def _paragraphize(text: str) -> str:
                 blocks.append("</ul>")
                 bullet_open = False
             continue
+
         if line.startswith("- "):
             if not bullet_open:
                 blocks.append("<ul>")
                 bullet_open = True
-            blocks.append(f"<li>{html.escape(line[2:].strip())}</li>")
+            blocks.append(f"<li>{html.escape(_clean_inline_markdown(line[2:].strip()))}</li>")
+            continue
+
+        if bullet_open:
+            blocks.append("</ul>")
+            bullet_open = False
+
+        if line.startswith("### "):
+            blocks.append(f"<h3>{html.escape(_clean_inline_markdown(line[4:].strip()))}</h3>")
+        elif line.startswith("## "):
+            blocks.append(f"<h3>{html.escape(_clean_inline_markdown(line[3:].strip()))}</h3>")
         else:
-            if bullet_open:
-                blocks.append("</ul>")
-                bullet_open = False
-            blocks.append(f"<p>{html.escape(line)}</p>")
+            blocks.append(f"<p>{html.escape(_clean_inline_markdown(line))}</p>")
+
     if bullet_open:
         blocks.append("</ul>")
     return "\n".join(blocks)
 
+
+def _listify_takeaways(items: list[str]) -> str:
+    cleaned = [i for i in (_clean_inline_markdown(x) for x in items) if i]
+    if not cleaned:
+        return "<p class=\"muted\">No explicit takeaways provided.</p>"
+    lis = "".join(f"<li>{html.escape(x)}</li>" for x in cleaned)
+    return f"<ul>{lis}</ul>"

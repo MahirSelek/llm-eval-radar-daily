@@ -4,8 +4,8 @@ body {
   background: #0b0f14;
   color: #e8eef3;
 }
-.wrap { max-width: 880px; margin: 0 auto; padding: 24px 18px; }
-h1, h2 { letter-spacing: -0.02em; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 18px; }
+h1, h2, h3 { letter-spacing: -0.02em; }
 .grid { display: grid; gap: 14px; }
 .card {
   background: #131a21;
@@ -14,11 +14,12 @@ h1, h2 { letter-spacing: -0.02em; }
   padding: 14px 16px;
 }
 .card h2 { margin: 0 0 8px; font-size: 1.2rem; }
-.card p { margin: 0; color: #b5c3d0; line-height: 1.45; }
+.card p { margin: 0; color: #b5c3d0; line-height: 1.5; }
+.card .sub { margin-bottom: 8px; color: #9fc2dc; }
 .meta { color: #93a5b7; font-size: 0.88rem; }
 a { color: #66d9ef; text-decoration: none; }
 a:hover { text-decoration: underline; }
-.post .lead { color: #bdd0df; font-size: 1.04rem; line-height: 1.5; }
+.post .lead { color: #cddceb; font-size: 1.03rem; line-height: 1.6; }
 .tag {
   display: inline-block;
   padding: 0.2rem 0.55rem;
@@ -30,6 +31,10 @@ a:hover { text-decoration: underline; }
   font-size: 0.82rem;
 }
 .back { display: inline-block; margin-bottom: 8px; color: #9ec3df; }
-ul { line-height: 1.55; }
+ul, ol { line-height: 1.65; }
+ul li, ol li { margin-bottom: 0.35rem; }
 .muted { color: #93a5b7; }
-section p { line-height: 1.66; color: #d8e3ec; }
+section { margin-top: 18px; }
+section p { line-height: 1.7; color: #d8e3ec; }
+section h2 { margin-bottom: 10px; }
+section h3 { margin: 14px 0 8px; }
