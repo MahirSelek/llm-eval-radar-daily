@@ -3,168 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LLM Evaluation Radar — Daily Intelligence on AI Benchmarks & Methodology</title>
-  <meta name="description" content="Autonomous daily research intelligence tracking LLM evaluation methodology, benchmark contamination, judge model drift, and leaderboard shifts." />
+  <title>LLM Evaluation Radar</title>
+  <meta name="description" content="Daily analysis of LLM evaluation methodology and benchmark shifts." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./assets/site.css" />
 </head>
 <body>
-  <!-- Top Global Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">
-        <a href="./index.html" class="logo">
-          <span class="logo-pulse"></span>
-          <span class="logo-text">LLM Eval <strong>Radar</strong></span>
-        </a>
-        <span class="status-badge">
-          <span class="status-dot"></span> 2026 Live Radar
-        </span>
-      </div>
-      <nav class="nav-links">
-        <a href="#featured">Featured</a>
-        <a href="#archive">Archive</a>
-        <a href="https://github.com/MahirSelek/llm-eval-radar-daily" target="_blank" rel="noopener" class="github-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
-        </a>
-      </nav>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./index.html">LLM Evaluation Radar</a>
+      <a class="repo-link" href="https://github.com/MahirSelek/llm-eval-radar-daily" target="_blank" rel="noopener">Repository</a>
     </div>
   </header>
 
-  <main class="site-main">
-    <!-- Hero Banner -->
-    <section class="hero-section">
-      <div class="hero-glow"></div>
-      <div class="hero-content">
-        <div class="hero-eyebrow">
-          <span class="pulse-indicator"></span> Autonomous Research Intelligence
-        </div>
-        <h1 class="hero-title">Tracking LLM Benchmarks, Judge Drift & Evaluation Rigor</h1>
-        <p class="hero-lead">
-          Daily analytical syntheses on evaluation methodology shifts, harness bug fixes, benchmark contamination, and leaderboard validity.
-        </p>
-        <div class="hero-metrics">
-          <div class="metric-item">
-            <span class="metric-val">2</span>
-            <span class="metric-lbl">Daily Editions</span>
-          </div>
-          <div class="metric-divider"></div>
-          <div class="metric-item">
-            <span class="metric-val">3</span>
-            <span class="metric-lbl">Ingest Streams (arXiv / GitHub / Community)</span>
-          </div>
-          <div class="metric-divider"></div>
-          <div class="metric-item">
-            <span class="metric-val">05:00 UTC</span>
-            <span class="metric-lbl">Autonomous Daily Dispatch</span>
-          </div>
-        </div>
-      </div>
+  <main class="container">
+    <section class="hero">
+      <p class="kicker">Daily LLM evaluation intelligence</p>
+      <h1>Clean, trackable analysis without noise</h1>
+      <p class="hero-sub">Focused reporting on benchmark methodology, judge drift, and reliability risks.</p>
     </section>
 
-    <!-- Featured Spotlight Article -->
-    <section id="featured" class="featured-section">
-      <div class="section-header">
-        <div class="section-title-wrap">
-          <span class="badge badge-primary">Latest Intelligence</span>
-          <h2>Featured Daily Synthesis</h2>
-        </div>
-        <span class="featured-date-badge">2026-09-22</span>
-      </div>
-
-      <div class="featured-card">
-        <div class="featured-card-header">
-          <div class="featured-meta">
-            <span class="badge badge-model">grok-4.5</span>
-            <span class="reading-time">⏱️ 4 min read</span>
-            <span class="source-count">📊 7 Verified Sources</span>
-          </div>
-          <div class="featured-tags"><span class="badge badge-accent">Benchmark Leakage</span><span class="badge badge-accent">LLM-as-a-Judge</span><span class="badge badge-accent">lm-eval-harness</span><span class="badge badge-accent">Stanford HELM</span></div>
-        </div>
-
-        <h2 class="featured-headline">
-          <a href="./posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.html">Eval Harness Fixes Reshape Scores as HELM Swaps Judges and New Cognitive Benchmarks Land</a>
-        </h2>
-
-        <p class="featured-subtitle">How lm-eval v0.4.13 few-shot prompt leakage patches and Stanford HELM judge model migrations invalidate historical leaderboard comparisons.</p>
-
-        <p class="featured-summary">On September 22, 2026, LLM evaluation signals centered on fundamental methodology risks over routine leaderboard churn. EleutherAI&#x27;s lm-evaluation-harness v0.4.13 patched critical few-shot prompt leakages and multiple-choice filtering bugs that alter historical scores. Simultaneously, Stanford HELM retired Together AI&#x27;s Llama-3.1-405B-Instruct-Turbo judge across five core scenarios, mandating strict version-pinning for all benchmark pipelines.</p>
-
-        
-        <div class="featured-takeaways">
-          <h4 class="takeaways-title">⚡ Key Strategic Signals</h4>
-          <ul class="takeaways-list">
-            <li><span class="bullet-dot"></span><span>EleutherAI lm-eval v0.4.13 fixes few-shot leakage where test documents contaminated demonstrations, altering reported baseline numbers.</span></li><li><span class="bullet-dot"></span><span>Stanford HELM v0.5.16 swaps the LLM-as-a-judge backbone across Omni-MATH, WildBench, and HarmBench, breaking longitudinal ranking consistency.</span></li><li><span class="bullet-dot"></span><span>HELM v0.5.15 restores missing context in ArabicMMLU, converting previously unsolvable prompt items back into valid test cases.</span></li><li><span class="bullet-dot"></span><span>PIR (Probe of Internal Recognition) demonstrates that internal activation states uncover sandbagging and concealed knowledge missed by output-only leaderboards.</span></li>
-          </ul>
-        </div>
-        
-
-        <div class="featured-cta">
-          <a href="./posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.html" class="btn-primary">
-            Read Full Technical Analysis
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
+    <section class="featured">
+      <p class="section-title">Latest</p>
+      <article class="featured-card">
+        <p class="meta">2026-09-22 · grok-4.5 · 4 min read</p>
+        <h2><a href="./posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.html">Eval Harness Fixes Reshape Scores as HELM Swaps Judges and New Cognitive Benchmarks Land</a></h2>
+        <p class="subtitle">How lm-eval v0.4.13 few-shot prompt leakage patches and Stanford HELM judge model migrations invalidate historical leaderboard comparisons.</p>
+        <p class="summary">On September 22, 2026, LLM evaluation signals centered on fundamental methodology risks over routine leaderboard churn. EleutherAI&#x27;s lm-evaluation-harness v0.4.13 patched critical few-shot prompt leakages and multiple-choice filtering bugs that alter historical scores. Simultaneously, Stanford HELM retired Together AI&#x27;s Llama-3.1-405B-Instruct-Turbo judge across five core scenarios, mandating strict version-pinning for all benchmark pipelines.</p>
+        <p class="tags">Benchmark Leakage LLM-as-a-Judge lm-eval-harness Stanford HELM Methodology Risk</p>
+      </article>
     </section>
 
-    <!-- Archive & Previous Reports -->
-    <section id="archive" class="archive-section">
-      <div class="section-header">
-        <div class="section-title-wrap">
-          <span class="badge">Archive</span>
-          <h2>All Intelligence Editions</h2>
-        </div>
-        <div class="filter-controls">
-          <div class="search-wrap">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="report-search" placeholder="Search benchmark, harness, judge..." autocomplete="off" />
-          </div>
-        </div>
+    <section class="archive">
+      <div class="archive-head">
+        <p class="section-title">Archive</p>
+        <input id="search" placeholder="Search posts" />
       </div>
-
-      <div class="tag-filters">
-        <button class="tag-filter-btn active" data-tag="all">All Topics</button>
-        <button class="tag-filter-btn" data-tag="Agent Memory">Agent Memory</button><button class="tag-filter-btn" data-tag="Benchmark Leakage">Benchmark Leakage</button><button class="tag-filter-btn" data-tag="Cognitive Benchmarks">Cognitive Benchmarks</button><button class="tag-filter-btn" data-tag="Evaluation Harness">Evaluation Harness</button><button class="tag-filter-btn" data-tag="LLM-as-a-Judge">LLM-as-a-Judge</button><button class="tag-filter-btn" data-tag="Methodology">Methodology</button><button class="tag-filter-btn" data-tag="Methodology Risk">Methodology Risk</button><button class="tag-filter-btn" data-tag="Multi-Hop Retrieval">Multi-Hop Retrieval</button>
+      <div class="tags-row">
+        <button class="tag-btn active" data-tag="all">All</button>
+        <button class="tag-btn" data-tag="Agent Memory">Agent Memory</button><button class="tag-btn" data-tag="Benchmark Leakage">Benchmark Leakage</button><button class="tag-btn" data-tag="Cognitive Benchmarks">Cognitive Benchmarks</button><button class="tag-btn" data-tag="Evaluation Harness">Evaluation Harness</button><button class="tag-btn" data-tag="LLM-as-a-Judge">LLM-as-a-Judge</button><button class="tag-btn" data-tag="Methodology">Methodology</button><button class="tag-btn" data-tag="Methodology Risk">Methodology Risk</button><button class="tag-btn" data-tag="Multi-Hop Retrieval">Multi-Hop Retrieval</button><button class="tag-btn" data-tag="Stanford HELM">Stanford HELM</button><button class="tag-btn" data-tag="lm-eval-harness">lm-eval-harness</button>
       </div>
-
-      <div class="reports-grid" id="reports-grid">
+      <div class="archive-grid" id="archive-grid">
         
-            <article class="report-card" data-tags="Evaluation Harness LLM-as-a-Judge Agent Memory Multi-Hop Retrieval Methodology">
-              <div class="card-meta">
-                <span class="date">2026-09-21</span>
-                <span class="dot">·</span>
-                <span class="model-tag">composer-2.5</span>
-                <span class="dot">·</span>
-                <span class="reading-time">3 min read</span>
-              </div>
-              <h3 class="card-title">
-                <a href="./posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.html">Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing</a>
-              </h3>
-              <p class="card-summary">On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration whi...</p>
-              <div class="card-footer">
-                <div class="card-tags"><span class="badge">Evaluation Harness</span><span class="badge">LLM-as-a-Judge</span><span class="badge">Agent Memory</span></div>
-                <a class="read-link" href="./posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.html">Read Analysis →</a>
-              </div>
+            <article class="archive-card" data-tags="Evaluation Harness LLM-as-a-Judge Agent Memory Multi-Hop Retrieval Methodology">
+              <p class="meta">2026-09-21 · composer-2.5</p>
+              <h3><a href="./posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.html">Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing</a></h3>
+              <p class="summary">On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration while researcher probes targeted deceptive </p>
+              <p class="tags">Evaluation Harness LLM-as-a-Judge Agent Memory Multi-Hop Retrieval</p>
             </article>
             
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-left">
-        <p class="footer-brand">LLM Evaluation Radar</p>
-        <p class="footer-sub">Autonomous research intelligence curated by Mahir Selek.</p>
-      </div>
-      <div class="footer-right">
-        <p class="footer-note">Open-source & published automatically via GitHub Actions.</p>
-        <p class="footer-copy">© 2026 LLM Eval Radar · Verified with arXiv & GitHub Releases</p>
-      </div>
+  <footer class="footer">
+    <div class="container">
+      <p>Published daily via GitHub Actions</p>
     </div>
   </footer>
 
