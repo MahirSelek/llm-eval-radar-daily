@@ -12,21 +12,26 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 
-def cmd_collect(_: argparse.Namespace) -> None:
-    from eval_radar.collect.pipeline import collect_all, save_digest
+def cmd_collect(args: argparse.Namespace) -> None:
+    if args.accumulate:
+        from eval_radar.jobs.dispatch import collect_and_accumulate
 
-    payload = collect_all()
-    path = save_digest(payload)
-    print(json.dumps({"saved": str(path), "counts": payload["counts"]}, indent=2))
+        payload = collect_and_accumulate()
+        path = f"day-pool:{payload.get('report_day')}"
+    else:
+        from eval_radar.collect.pipeline import collect_all, save_digest
+
+        payload = collect_all()
+        path = str(save_digest(payload))
+    print(json.dumps({"saved": path, "counts": payload.get("counts")}, indent=2))
 
 
 def cmd_report(args: argparse.Namespace) -> None:
-    from eval_radar.collect.pipeline import collect_all, save_digest
+    from eval_radar.jobs.dispatch import collect_and_accumulate
     from eval_radar.report.render import render_report
     from eval_radar.telegram.send import send_message
 
-    payload = collect_all()
-    save_digest(payload)
+    payload = collect_and_accumulate()
     text = render_report(payload)
     if args.print_only:
         print(text)
@@ -53,7 +58,14 @@ def cmd_publish(args: argparse.Namespace) -> None:
     from eval_radar.publish.site import publish_daily_post
 
     result = publish_daily_post(dry_run=args.dry_run)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
+
+
+def cmd_dispatch(args: argparse.Namespace) -> None:
+    from eval_radar.jobs.dispatch import daily_dispatch
+
+    result = daily_dispatch(force=args.force, dry_run=args.dry_run)
+    print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
 
 
 def main() -> None:
@@ -61,13 +73,18 @@ def main() -> None:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     c = sub.add_parser("collect", help="Fetch arXiv/GitHub/Reddit digest")
+    c.add_argument(
+        "--accumulate",
+        action="store_true",
+        help="Merge into today's day-pool instead of overwriting",
+    )
     c.set_defaults(func=cmd_collect)
 
-    r = sub.add_parser("report", help="Collect + render + Telegram send")
+    r = sub.add_parser("report", help="Accumulate day-pool + Telegram send")
     r.add_argument("--print-only", action="store_true", help="Do not send Telegram")
     r.set_defaults(func=cmd_report)
 
-    b = sub.add_parser("bot", help="Run interactive Telegram bot (polling)")
+    b = sub.add_parser("bot", help="Run interactive Telegram bot (polling + scheduler)")
     b.set_defaults(func=cmd_bot)
 
     d = sub.add_parser("dashboard", help="Local Flask control center")
@@ -79,6 +96,14 @@ def main() -> None:
     pub = sub.add_parser("publish", help="Generate daily article + static docs site")
     pub.add_argument("--dry-run", action="store_true", help="Generate content without writing files")
     pub.set_defaults(func=cmd_publish)
+
+    disp = sub.add_parser(
+        "dispatch",
+        help="Daily coordinated run: accumulate + Telegram + GitHub Pages (+ optional git push)",
+    )
+    disp.add_argument("--force", action="store_true", help="Ignore once-per-day marker")
+    disp.add_argument("--dry-run", action="store_true")
+    disp.set_defaults(func=cmd_dispatch)
 
     args = p.parse_args()
     args.func(args)

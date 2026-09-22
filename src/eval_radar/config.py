@@ -32,6 +32,11 @@ class Settings:
     max_total_items: int
     max_age_hours: float
     report_tz: str
+    collect_interval_minutes: int
+    daily_dispatch_hour: int
+    daily_dispatch_minute: int
+    auto_git_push: bool
+    enable_local_scheduler: bool
     flask_secret_key: str
     dashboard_password: str
     dashboard_local_only: bool
@@ -61,6 +66,11 @@ def get_settings() -> Settings:
         max_total_items=int(os.getenv("MAX_TOTAL_ITEMS", "18")),
         max_age_hours=float(os.getenv("MAX_AGE_HOURS", "36")),
         report_tz=os.getenv("REPORT_TZ", "Europe/Istanbul"),
+        collect_interval_minutes=int(os.getenv("COLLECT_INTERVAL_MINUTES", "90")),
+        daily_dispatch_hour=int(os.getenv("DAILY_DISPATCH_HOUR", "8")),
+        daily_dispatch_minute=int(os.getenv("DAILY_DISPATCH_MINUTE", "0")),
+        auto_git_push=_parse_bool(os.getenv("AUTO_GIT_PUSH", "1")),
+        enable_local_scheduler=_parse_bool(os.getenv("ENABLE_LOCAL_SCHEDULER", "1")),
         flask_secret_key=os.getenv("FLASK_SECRET_KEY", "").strip(),
         dashboard_password=os.getenv("DASHBOARD_PASSWORD", "").strip(),
         dashboard_local_only=_parse_bool(os.getenv("DASHBOARD_LOCAL_ONLY", "1")),

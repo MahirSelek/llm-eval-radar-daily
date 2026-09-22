@@ -19,9 +19,11 @@ DOCS_DIR = ROOT / "docs"
 DOCS_POSTS = DOCS_DIR / "posts"
 
 
-def publish_daily_post(*, dry_run: bool = False) -> dict:
-    payload = collect_all()
-    save_digest(payload)
+def publish_daily_post(*, dry_run: bool = False, payload: dict | None = None) -> dict:
+    """Write Telegram-aligned site post. Pass payload to reuse today's day-pool."""
+    if payload is None:
+        payload = collect_all()
+        save_digest(payload)
     article = generate_article(payload)
     if dry_run:
         return {"article": article, "counts": payload.get("counts", {})}

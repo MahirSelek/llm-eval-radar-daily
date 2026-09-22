@@ -25,15 +25,22 @@ python -m eval_radar.cli bot
 Telegram’da botuna git → **Start** / `/start`  
 Chat id `data/memory/chat_id.txt` içine yazılır. İstersen aynı id’yi `.env` → `TELEGRAM_CHAT_ID=` olarak da koy.
 
-### 2) Manuel rapor dene
+Bot **açıkken** otomatik:
+- her `COLLECT_INTERVAL_MINUTES` (varsayılan 90) → taze sinyal toplayıp **aynı gün havuzuna** merge
+- `DAILY_DISPATCH_HOUR:MINUTE` (varsayılan 08:00 `REPORT_TZ`) → **Telegram + GitHub Pages aynı havuzdan**, günde bir kez
+- `AUTO_GIT_PUSH=1` ise `docs/` / `content/` commit+push → github.io güncellenir
 
-Başka terminalde (venv açık):
+Mac kapalıysa yedek: Actions `05:00 UTC` publish.
+
+### 2) Manuel rapor / ortak dispatch
 
 ```bash
-python -m eval_radar.cli report
-# veya sadece konsola:
-python -m eval_radar.cli report --print-only
+python -m eval_radar.cli collect --accumulate   # sadece gün havuzuna ekle
+python -m eval_radar.cli report                 # havuz + Telegram
+python -m eval_radar.cli dispatch --force       # Telegram + site (+ git push)
 ```
+
+Telegram: `/report` · `/dispatch` (hemen ortak yayın)
 
 ### LLM (Cursor Premium — tercih edilen)
 
@@ -49,7 +56,8 @@ IDE sohbeti otomatik akmaz. Cursor hesabından API key gerekir (usage aynı hesa
 
 | Komut | Ne yapar |
 |-------|----------|
-| `/report` | Topla + rapor at |
+| `/report` | Gün havuzuna ekle + rapor at |
+| `/dispatch` | Telegram + github.io aynı havuzdan |
 | `/memory` | Öğrenilen tercihler |
 | `/help` | Yardım |
 | `boost: topic` | Öncelik |
@@ -88,13 +96,16 @@ Yerelde test:
 
 ```bash
 python -m eval_radar.cli publish
+# veya aynı havuzdan Telegram+site:
+python -m eval_radar.cli dispatch --force
 ```
 
-Bu komut:
-- yeni digest toplar,
-- LLM ile günlük makale üretir,
-- `content/posts/*.json` içine kaydeder,
-- `docs/index.html` + `docs/posts/*.html` sayfalarını günceller.
+`dispatch` / bot saati:
+- gün boyu biriken digest’ten LLM makale üretir,
+- Telegram uzun raporu + `docs/` site’ini **aynı payload** ile basar,
+- `AUTO_GIT_PUSH=1` ise push eder.
+
+`publish` tek başına hâlâ taze collect + site (Actions yedeği).
 
 Model seçimi:
 - varsayılan: `CURSOR_MODEL`

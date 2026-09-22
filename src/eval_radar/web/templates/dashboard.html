@@ -15,6 +15,10 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       Rapor Üret
     </button>
+    <button class="btn" id="btn-dispatch">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Günlük Dispatch
+    </button>
     <a href="https://mahirselek.github.io/llm-eval-radar-daily/" target="_blank" rel="noopener" class="btn">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       Canlı Site
@@ -269,6 +273,31 @@ document.getElementById('btn-report').onclick = async () => {
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Rapor Üret';
+  }
+};
+
+document.getElementById('btn-dispatch').onclick = async () => {
+  const btn = document.getElementById('btn-dispatch');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="pill info">Dispatch...</span>';
+  try {
+    const r = await fetch('/api/dispatch', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({force: true})
+    });
+    const data = await r.json();
+    if (data.ok) {
+      alert('Dispatch OK — pool ' + (data.pool_items || '?') + ' · telegram=' + ((data.telegram||{}).ok) + ' · publish=' + ((data.publish||{}).ok));
+      location.reload();
+    } else {
+      alert('Dispatch hatası: ' + data.error);
+    }
+  } catch (err) {
+    alert('Hata: ' + err);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Günlük Dispatch';
   }
 };
 

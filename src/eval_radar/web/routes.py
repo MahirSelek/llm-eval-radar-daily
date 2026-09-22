@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 from flask import Blueprint, Response, flash, jsonify, redirect, render_template, request, session, url_for
 
-from eval_radar.collect.pipeline import collect_all, save_digest
+from eval_radar.jobs.dispatch import collect_and_accumulate, daily_dispatch
 from eval_radar.config import get_settings
 from eval_radar.llm import active_model_info, build_agent_system_prompt, complete, llm_configured
 from eval_radar.memory.store import append_chat, learn_from_user_message, load_preferences, memory_paths, recent_chat
@@ -302,9 +302,15 @@ ASLA markdown kullanma (** ## __ yok). Düz, okunaklı metin yaz.
 @bp.post("/api/collect")
 def api_collect():
     try:
-        payload = collect_all()
-        path = save_digest(payload)
-        return jsonify({"ok": True, "path": str(path), "counts": payload.get("counts")})
+        payload = collect_and_accumulate()
+        return jsonify(
+            {
+                "ok": True,
+                "path": f"day-pool:{payload.get('report_day')}",
+                "counts": payload.get("counts"),
+                "pool_mode": payload.get("pool_mode"),
+            }
+        )
     except Exception as e:
         return jsonify({"ok": False, "error": str(e), "trace": traceback.format_exc()}), 500
 
@@ -314,8 +320,8 @@ def api_collect():
 def api_report_preview():
     try:
         from eval_radar.format_text import to_web_html
-        payload = collect_all()
-        save_digest(payload)
+
+        payload = collect_and_accumulate()
         text = render_report(payload)
         return jsonify({
             "ok": True,
@@ -325,3 +331,13 @@ def api_report_preview():
         })
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@bp.post("/api/dispatch")
+def api_dispatch():
+    try:
+        force = bool((request.get_json(silent=True) or {}).get("force"))
+        result = daily_dispatch(force=force, dry_run=False)
+        return jsonify({"ok": True, **result})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e), "trace": traceback.format_exc()}), 500

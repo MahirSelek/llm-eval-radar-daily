@@ -32,6 +32,9 @@ jobs:
           PUBLISHER_MODEL: ${{ secrets.PUBLISHER_MODEL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_TZ: Europe/Istanbul
+          # Cloud backup when Mac/agent is off — local AUTO_GIT_PUSH handles Mac-on path
+          AUTO_GIT_PUSH: "0"
+          ENABLE_LOCAL_SCHEDULER: "0"
         run: python -m eval_radar.cli publish
 
       - name: Commit generated content

@@ -7,9 +7,10 @@ import logging
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-from eval_radar.collect.pipeline import collect_all, save_digest
 from eval_radar.config import get_settings
 from eval_radar.format_text import polish_llm_text, strip_markdown
+from eval_radar.jobs.dispatch import collect_and_accumulate, daily_dispatch
+from eval_radar.jobs.scheduler import scheduler_loop
 from eval_radar.llm import build_agent_system_prompt, complete, llm_configured
 from eval_radar.memory.store import (
     append_chat,
@@ -29,22 +30,21 @@ log = logging.getLogger("eval-radar-bot")
 HELP = """🤖 <b>LLM Eval Radar — 2026 Intelligence Harness</b>
 
 ⚡ <b>Komutlar:</b>
-• /report — Günlük detaylı LLM evaluation & benchmark brifingi
-• /memory — Öğrenilmiş tercihler ve agent hafıza profili
-• /help — Komut ve yetenek listesi
+• /report — Günlük detaylı brifing (gün havuzuna ekleyerek)
+• /dispatch — Telegram + GitHub Pages’i aynı havuzdan şimdi üret
+• /memory — Öğrenilmiş tercihler
+• /help — Komut listesi
 
-💬 <b>Doğrudan Sohbet:</b>
-Herhangi bir soru, model karşılaştırması veya benchmark metodolojisi sorusu yaz — senin için analiz edip yanıtlayayım.
+⏱ <b>Otomatik (bot açıkken):</b>
+Periyodik collect → aynı gün havuzu.
+Günün ayarlı saatinde Telegram + github.io birlikte güncellenir.
+Mac kapalıysa GitHub Actions yedek yayın yapar.
 
-🧠 <b>Hafıza Öğretme:</b>
-• <code>boost: contamination</code>
-• <code>mute: crypto</code>
-• <code>takip et: John Schulman</code>
+💬 Doğrudan soru yaz — analiz edeyim.
 """
 
 
 async def _typing_loop(chat) -> None:
-    """Keep Telegram typing status active while processing LLM tasks."""
     try:
         while True:
             await chat.send_action("typing")
@@ -74,14 +74,23 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     save_chat_id(chat_id)
     append_chat("user", "/start", {"chat_id": chat_id})
+    settings = get_settings()
     llm_note = (
-        "🟢 <b>Cursor Premium LLM Aktif</b> (Uzun analiz, derin değerlendirme ve sohbet hazır)."
+        "🟢 <b>Cursor Premium LLM Aktif</b>."
         if llm_configured()
-        else "⚠️ <b>LLM Key Eksik</b>: <code>.env</code> dosyasına <code>CURSOR_API_KEY</code> ekleyin."
+        else "⚠️ <b>LLM Key Eksik</b>: <code>.env</code> → <code>CURSOR_API_KEY</code>."
+    )
+    sched = (
+        f"⏱ Scheduler: her {settings.collect_interval_minutes} dk collect · "
+        f"dispatch {settings.daily_dispatch_hour:02d}:{settings.daily_dispatch_minute:02d} "
+        f"({settings.report_tz})"
+        if settings.enable_local_scheduler
+        else "⏱ Scheduler kapalı"
     )
     await _reply(
         update,
-        f"👋 <b>Selam Mahir!</b> Eval Radar sistemine bağlandın.\nChat ID kaydedildi: <code>{chat_id}</code>\n\n{llm_note}\n\n{HELP}",
+        f"👋 <b>Selam Mahir!</b> Eval Radar bağlandı.\n"
+        f"Chat ID: <code>{chat_id}</code>\n\n{llm_note}\n{sched}\n\n{HELP}",
     )
 
 
@@ -109,19 +118,17 @@ async def cmd_report(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     if not update.message or not update.effective_chat:
         return
     save_chat_id(update.effective_chat.id)
-    
+
     status_msg = await update.message.reply_text(
-        "📡 <b>Radar taranıyor ve analiz hazırlanıyor...</b>\n<i>arXiv, GitHub Releases ve topluluk sinyalleri taranıyor.</i>",
-        parse_mode="HTML"
+        "📡 <b>Gün havuzu güncelleniyor + rapor…</b>",
+        parse_mode="HTML",
     )
 
     typing_task = asyncio.create_task(_typing_loop(update.message.chat))
     try:
-        payload = await asyncio.to_thread(collect_all)
-        await asyncio.to_thread(save_digest, payload)
+        payload = await asyncio.to_thread(collect_and_accumulate)
         report = await asyncio.to_thread(render_report, payload)
-        
-        # Delete temporary status
+
         with contextlib.suppress(Exception):
             await status_msg.delete()
 
@@ -136,6 +143,38 @@ async def cmd_report(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     except Exception as e:
         log.exception("report failed")
         await update.message.reply_text(f"❌ Rapor oluşturulamadı: {e}")
+    finally:
+        typing_task.cancel()
+
+
+async def cmd_dispatch(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not update.message or not update.effective_chat:
+        return
+    save_chat_id(update.effective_chat.id)
+    status = await update.message.reply_text(
+        "🚀 <b>Günlük dispatch:</b> Telegram + GitHub Pages aynı havuzdan…",
+        parse_mode="HTML",
+    )
+    typing_task = asyncio.create_task(_typing_loop(update.message.chat))
+    try:
+        result = await asyncio.to_thread(daily_dispatch, force=True, dry_run=False)
+        with contextlib.suppress(Exception):
+            await status.delete()
+        tg = result.get("telegram") or {}
+        pub = result.get("publish") or {}
+        git = result.get("git_push") or {}
+        await _reply(
+            update,
+            "✅ <b>Dispatch bitti</b>\n"
+            f"Gün: <code>{result.get('day')}</code>\n"
+            f"Havuz: <code>{result.get('pool_items')}</code> item\n"
+            f"Telegram: {'ok' if tg.get('ok') else tg.get('error', '?')}\n"
+            f"Publish: {'ok' if pub.get('ok') else pub.get('error', '?')}\n"
+            f"Git push: {'ok' if git.get('ok') else git.get('skipped') or git.get('error', '?')}",
+        )
+    except Exception as e:
+        log.exception("dispatch failed")
+        await update.message.reply_text(f"❌ Dispatch hata: {e}")
     finally:
         typing_task.cancel()
 
@@ -208,18 +247,53 @@ GÖREVİN VE YAZIM KURALLARI:
     return complete(system, user, max_tokens=2000, purpose="telegram_chat")
 
 
+async def _on_startup(app: Application) -> None:
+    settings = get_settings()
+    if not settings.enable_local_scheduler:
+        log.info("local scheduler disabled via ENABLE_LOCAL_SCHEDULER")
+        return
+    stop = asyncio.Event()
+    app.bot_data["scheduler_stop"] = stop
+    app.bot_data["scheduler_task"] = asyncio.create_task(scheduler_loop(stop))
+    log.info("local day-pool scheduler started")
+
+
+async def _on_shutdown(app: Application) -> None:
+    stop = app.bot_data.get("scheduler_stop")
+    task = app.bot_data.get("scheduler_task")
+    if stop:
+        stop.set()
+    if task:
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
+
+
 def main() -> None:
     settings = get_settings()
     if not settings.telegram_bot_token:
         raise SystemExit("Set TELEGRAM_BOT_TOKEN in .env first")
 
-    app = Application.builder().token(settings.telegram_bot_token).build()
+    app = (
+        Application.builder()
+        .token(settings.telegram_bot_token)
+        .post_init(_on_startup)
+        .post_shutdown(_on_shutdown)
+        .build()
+    )
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("help", cmd_help))
     app.add_handler(CommandHandler("memory", cmd_memory))
     app.add_handler(CommandHandler("report", cmd_report))
+    app.add_handler(CommandHandler("dispatch", cmd_dispatch))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
-    log.info("Eval Radar bot polling... llm=%s", llm_configured())
+    log.info(
+        "Eval Radar bot polling… llm=%s scheduler=%s dispatch=%02d:%02d",
+        llm_configured(),
+        settings.enable_local_scheduler,
+        settings.daily_dispatch_hour,
+        settings.daily_dispatch_minute,
+    )
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
