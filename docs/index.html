@@ -1,69 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LLM Evaluation Radar</title>
-  <meta name="description" content="Daily analysis of LLM evaluation methodology and benchmark shifts." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LLM Evaluation Daily</title>
   <link rel="stylesheet" href="./assets/site.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="./index.html">LLM Evaluation Radar</a>
-      <a class="repo-link" href="https://github.com/MahirSelek/llm-eval-radar-daily" target="_blank" rel="noopener">Repository</a>
-    </div>
+  <header class="wrap">
+    <h1>LLM Evaluation Daily</h1>
+    <p>Günlük teknik yazılar — evaluation, benchmarks, leaderboard shifts.</p>
   </header>
-
-  <main class="container">
-    <section class="hero">
-      <p class="kicker">Daily LLM evaluation intelligence</p>
-      <h1>Clean, trackable analysis without noise</h1>
-      <p class="hero-sub">Focused reporting on benchmark methodology, judge drift, and reliability risks.</p>
-    </section>
-
-    <section class="featured">
-      <p class="section-title">Latest</p>
-      <article class="featured-card">
-        <p class="meta">2026-09-22 · grok-4.5 · 4 min read</p>
-        <h2><a href="./posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.html">Eval Harness Fixes Reshape Scores as HELM Swaps Judges and New Cognitive Benchmarks Land</a></h2>
-        <p class="subtitle">How lm-eval v0.4.13 few-shot prompt leakage patches and Stanford HELM judge model migrations invalidate historical leaderboard comparisons.</p>
-        <p class="summary">On September 22, 2026, LLM evaluation signals centered on fundamental methodology risks over routine leaderboard churn. EleutherAI&#x27;s lm-evaluation-harness v0.4.13 patched critical few-shot prompt leakages and multiple-choice filtering bugs that alter historical scores. Simultaneously, Stanford HELM retired Together AI&#x27;s Llama-3.1-405B-Instruct-Turbo judge across five core scenarios, mandating strict version-pinning for all benchmark pipelines.</p>
-        <p class="tags">Benchmark Leakage LLM-as-a-Judge lm-eval-harness Stanford HELM Methodology Risk</p>
-      </article>
-    </section>
-
-    <section class="archive">
-      <div class="archive-head">
-        <p class="section-title">Archive</p>
-        <input id="search" placeholder="Search posts" />
-      </div>
-      <div class="tags-row">
-        <button class="tag-btn active" data-tag="all">All</button>
-        <button class="tag-btn" data-tag="Agent Memory">Agent Memory</button><button class="tag-btn" data-tag="Benchmark Leakage">Benchmark Leakage</button><button class="tag-btn" data-tag="Cognitive Benchmarks">Cognitive Benchmarks</button><button class="tag-btn" data-tag="Evaluation Harness">Evaluation Harness</button><button class="tag-btn" data-tag="LLM-as-a-Judge">LLM-as-a-Judge</button><button class="tag-btn" data-tag="Methodology">Methodology</button><button class="tag-btn" data-tag="Methodology Risk">Methodology Risk</button><button class="tag-btn" data-tag="Multi-Hop Retrieval">Multi-Hop Retrieval</button><button class="tag-btn" data-tag="Stanford HELM">Stanford HELM</button><button class="tag-btn" data-tag="lm-eval-harness">lm-eval-harness</button>
-      </div>
-      <div class="archive-grid" id="archive-grid">
-        
-            <article class="archive-card" data-tags="Evaluation Harness LLM-as-a-Judge Agent Memory Multi-Hop Retrieval Methodology">
-              <p class="meta">2026-09-21 · composer-2.5</p>
-              <h3><a href="./posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.html">Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing</a></h3>
-              <p class="summary">On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration while researcher probes targeted deceptive </p>
-              <p class="tags">Evaluation Harness LLM-as-a-Judge Agent Memory Multi-Hop Retrieval</p>
+  <main class="wrap grid">
+    
+            <article class="card">
+              <div class="meta">2026-09-22 · grok-4.5</div>
+              <h2><a href="./posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.html">Eval harness fixes reshape scores as HELM swaps judges and new cognitive benchmarks land</a></h2>
+              <p>On 2026-09-22, LLM evaluation news centered on methodology risk more than raw leaderboard churn. EleutherAI lm-evaluation-harness v0.4.13 fixed few-shot leakage and related bugs that can change previously published numbers, while HELM retired a widely used LLM-as-judge and corrected ArabicMMLU input construction. New work on QuranicMMLU, multi-hop abstention, and internal-recognition probes further stresses stratified scoring and judge-dependent pipelines.</p>
             </article>
             
-      </div>
-    </section>
+            <article class="card">
+              <div class="meta">2026-09-21 · composer-2.5</div>
+              <h2><a href="./posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.html">Değerlendirme Altyapısı Düzeltmeleri, LLM-Hakem Kaymaları ve Gizli Bilgi Ölçümü</a></h2>
+              <p>EleutherAI lm-evaluation-harness 0.4.12–0.4.13 yeni backend’ler ve sekiz benchmark paketi getirirken few-shot sızıntısı gibi hatalar önceki skorları yeniden yazabilir. Stanford HELM, Together AI’nin Llama 3.1 405B turbo hakeminin kullanım dışı kalmasıyla Omni-MATH ve WildBench gibi senaryolarda hakem değişimine gider; ArabicMMLU’da eksik bağlam alanı düzeltmesi de çözülemez örnekleri geri getirir. ArXiv tarafında QuranicMMLU bilişsel katmanlı yeni bir MMLU varyantı, PIR ise sandbagging ve gizli bilgiyi çıktı yerine iç durumlarla test eden bir değerlendirme metodolojisi öneriyor.</p>
+            </article>
+            
   </main>
-
-  <footer class="footer">
-    <div class="container">
-      <p>Published daily via GitHub Actions</p>
-    </div>
-  </footer>
-
-  <script src="./assets/site.js"></script>
 </body>
 </html>
