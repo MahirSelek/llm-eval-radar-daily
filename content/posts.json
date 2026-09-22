@@ -1,5 +1,22 @@
 [
   {
+    "slug": "2026-09-22-2026-09-22-eval-briefing-niche-benchmarks-expand-while-forum-claims-outpace-verified-",
+    "title": "2026-09-22 Eval Briefing: Niche Benchmarks Expand While Forum Claims Outpace Verified Leaderboard Movement",
+    "subtitle": "Same-day signals favor specialized harnesses and reliability complaints over clean, comparable frontier-model score shifts.",
+    "date": "2026-09-22",
+    "summary": "Today’s evaluation surface is active but uneven. Two new or newly promoted technical benchmarks—JevBench for typed decision models and LinearSolveBench for sparse linear solvers—point evaluation attention toward reproducibility and algorithmic competence rather than generic chat arenas. In parallel, forums and Reddit treat Claude Opus 5.5 availability as a live competitive shock, while Google AI Developers threads emphasize Gemini 3.8 reliability failures, outdated retrieval, and a concrete telemetry-pollution risk from UI evaluation intercepts. Coverage of formal leaderboard resets, judge-model revisions, or standardized harness releases is thin for 2026-09-22. The practical read for research and infra teams is to treat today’s model chatter as deployment-pressure, not as validated ranking evidence, and to prioritize auditability in any same-day comparison claims.",
+    "key_takeaways": [
+      "JevBench and LinearSolveBench are the clearest same-day evaluation additions: both push toward task-specific, reproducible measurement instead of broad preference leaderboards.",
+      "Opus 5.5 access and pricing discussion on Cursor and Gemini-focused Reddit is a real product-availability signal for 2026-09-22, but it is not by itself a methodology-safe ranking update.",
+      "Google developer forum traffic today clusters around Gemini hallucination, stale GitHub-derived guidance, and UI evaluation intercepts that may pollute deferred telemetry—directly relevant to judge and harness integrity.",
+      "A forum claim that Gemini 3.8 Flash High beats Claude Opus 5 on contradictory-law and institutional-gaslighting prompts should be treated as an unverified epistemic-alignment anecdote until protocols, prompts, and scoring rules are public and comparable.",
+      "Infra teams should separate serving/runtime interest (InstinctFlash) from evaluation validity; researchers should demand date-stamped protocols before recycling today’s release chatter into scorecards."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-09-22-2026-09-22-eval-briefing-niche-benchmarks-expand-while-forum-claims-outpace-verified-.json"
+  },
+  {
     "slug": "2026-09-22-same-day-eval-pulse-new-solver-and-retrieval-benchmarks-meet-gemini-forum-stress-test",
     "title": "Same-Day Eval Pulse: New Solver and Retrieval Benchmarks Meet Gemini Forum Stress Tests (2026-09-22)",
     "subtitle": "Today’s signal is less about leaderboard upheaval and more about fresh task-specific benches plus sharp methodology warnings from Google AI developer forums.",
