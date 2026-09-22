@@ -9,7 +9,7 @@ from flask import Blueprint, Response, flash, jsonify, redirect, render_template
 
 from eval_radar.collect.pipeline import collect_all, save_digest
 from eval_radar.config import get_settings
-from eval_radar.llm import build_agent_system_prompt, complete, llm_configured
+from eval_radar.llm import active_model_info, build_agent_system_prompt, complete, llm_configured
 from eval_radar.memory.store import append_chat, learn_from_user_message, load_preferences, memory_paths, recent_chat
 from eval_radar.report.render import render_report
 from eval_radar.web.services import (
@@ -219,6 +219,7 @@ def chat_page():
     return render_template(
         "chat.html",
         chat=chat,
+        model=active_model_info(),
         llm_ok=llm_configured(),
     )
 
