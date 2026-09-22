@@ -1,30 +1,49 @@
 {% extends "base.html" %}
-{% block title %}{{ day }} · Digest{% endblock %}
+{% block title %}{{ day }} Sinyal Paketi · Eval Radar{% endblock %}
 {% block content %}
-<div class="top">
+<div class="top-bar">
   <div>
-    <h1>{{ day }}</h1>
-    <p class="sub">{{ digest.collected_at }} · {{ digest.counts }}</p>
+    <h1 class="page-title">{{ day }} Sinyal Detayı</h1>
+    <p class="page-sub">Toplanma Zamanı: {{ digest.collected_at }} · arXiv: {{ digest.counts.arxiv }} · GitHub: {{ digest.counts.github }} · Reddit: {{ digest.counts.reddit }}</p>
   </div>
-  <a class="btn" href="{{ url_for('web.digests') }}">← Digests</a>
+  <a class="btn" href="{{ url_for('web.digests') }}">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Tüm Digestler
+  </a>
 </div>
 
-{% for it in (digest.get('items') or []) %}
-<article class="item">
-  <div class="meta-row">
-    <span class="chip">{{ it.get('source', '?') }}</span>
-    <span class="chip">score {{ '%.1f'|format((it.get('score') or 0)|float) }}</span>
+<div style="display:flex;flex-direction:column;gap:1rem;">
+  {% for it in (digest.get('items') or []) %}
+  <article class="item-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.5rem;">
+      <div style="display:flex;gap:0.4rem;align-items:center;">
+        <span class="pill info" style="text-transform:uppercase;font-weight:700;">{{ it.get('source', '?') }}</span>
+        <span class="pill">Skor: {{ '%.1f'|format((it.get('score') or 0)|float) }}</span>
+      </div>
+      {% if it.get('url') %}
+        <a href="{{ it.get('url') }}" target="_blank" rel="noopener" class="btn" style="padding:0.25rem 0.65rem;font-size:0.78rem;">
+          Kaynağa Git ↗
+        </a>
+      {% endif %}
+    </div>
+
+    <h3 class="item-card-title">{{ it.get('title', 'Başlıksız') }}</h3>
+    <p class="item-card-summary">{{ it.get('summary', 'Özet bulunmuyor.') }}</p>
+
     {% set meta = it.get('meta') or {} %}
-    {% for a in (meta.get('authors') or [])[:4] %}
-      <span class="chip">{{ a }}</span>
-    {% endfor %}
-    {% if meta.get('repo') %}<span class="chip">{{ meta.get('repo') }}</span>{% endif %}
-  </div>
-  <h3>{{ it.get('title', 'untitled') }}</h3>
-  <p class="muted" style="line-height:1.5">{{ it.get('summary', '') }}</p>
-  {% if it.get('url') %}<p><a href="{{ it.get('url') }}" target="_blank" rel="noopener">Kaynak →</a></p>{% endif %}
-</article>
-{% else %}
-<p class="muted">Item yok.</p>
-{% endfor %}
+    {% if meta.get('authors') or meta.get('repo') %}
+      <div style="display:flex;gap:0.4rem;margin-top:0.8rem;flex-wrap:wrap;">
+        {% for a in (meta.get('authors') or [])[:4] %}
+          <span class="chip" style="font-size:0.75rem;">👤 {{ a }}</span>
+        {% endfor %}
+        {% if meta.get('repo') %}
+          <span class="chip" style="font-size:0.75rem;">📦 {{ meta.get('repo') }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </article>
+  {% else %}
+  <div class="card muted" style="text-align:center;padding:2rem;">Bu digest içinde öğe bulunmuyor.</div>
+  {% endfor %}
+</div>
 {% endblock %}

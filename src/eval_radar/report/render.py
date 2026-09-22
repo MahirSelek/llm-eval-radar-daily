@@ -5,6 +5,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from eval_radar.config import get_settings
+from eval_radar.format_text import polish_llm_text
 from eval_radar.llm import LLMError, build_agent_system_prompt, complete, llm_configured
 from eval_radar.memory.store import load_preferences, memory_paths
 
@@ -38,8 +39,8 @@ def render_report(payload: dict) -> str:
         except Exception as e:
             fallback = _render_template(payload)
             return (
-                f"(LLM özet başarısız: {e})\n\n"
-                "Aşağıda genişletilmiş kaynaklı taslak var:\n\n"
+                f"(LLM raporu oluşturulamadı: {e})\n\n"
+                "Aşağıda kaynak bazlı taslak brifing yer almaktadır:\n\n"
                 f"{fallback}"
             )
     return _render_template(payload)
@@ -54,95 +55,74 @@ def _render_llm(payload: dict) -> str:
     now = datetime.now(tz).strftime("%Y-%m-%d %H:%M %Z")
 
     system = build_agent_system_prompt(profile, prefs)
-    user = f"""Bugünün LLM evaluation radar verisini Mahir için UZUN bir brifinge çevir.
+    user = f"""Bugünün LLM evaluation ve benchmark sinyallerini Mahir için profesyonel, ferah ve derin bir araştırma brifingine dönüştür.
 
 Zaman: {now}
-Ham sayılar: {json.dumps(payload.get('counts') or {}, ensure_ascii=False)}
-Kaynak hataları (varsa): {json.dumps(payload.get('errors') or {}, ensure_ascii=False)}
-
-Öğeler (JSON):
+Ham Sinyal Dağılımı: {json.dumps(payload.get('counts') or {}, ensure_ascii=False)}
+Sinyal Maddeleri (JSON):
 {json.dumps(items, ensure_ascii=False, indent=2)}
 
-FORMAT ZORUNLU:
-1) Giriş: 1 kısa Türkçe paragraf + 1 short English paragraph (bugünün teması).
-2) Her önemli sinyal için:
-   - Başlık (düz metin, yıldız yok)
-   - Türkçe: 4–7 cümlelik derin özet
-   - English: 3–5 sentence deep summary
-   - Kaynak URL (aynen)
-3) Ne izlemeli / What to watch — 3–5 madde (• ile)
-4) Kapanış: Mahir'e samimi 1–2 cümle.
+FORMAT VE YAZIM DÜZENİ KURALLARI:
+1. Kesinlikle çorba veya sıkışık metin olmasın. Her ana bölüm ve paragraf arasında 2 satır boşluk bırak.
+2. Aşağıdaki temiz yapılandırılmış şablonu takip et:
 
-YASAK: **, __, ##, markdown. Sadece düz okunaklı metin.
-Uzun yaz ama boş dolgu yapma (~1200–2200 kelime hedef).
+🎯 EXECUTIVE BRIEF / GÜNÜN TEMASI
+(Kısa, çarpıcı Türkçe paragraf + ardından kısa İngilizce özet paragraf)
+
+🔬 KRİTİK METODOLOJİ & BENCHMARK GELİŞMELERİ
+(En önemli 3–5 madde için:
+• [KAYNAK / BAŞLIK]
+  - TR Derinlikli Açıklama (3-5 cümle: ne değişti, neden önemli?)
+  - EN Key Takeaway (2-3 sentences)
+  - URL)
+
+🚨 HAKEM & SIZINTI ALARMLARI (LLM-as-a-Judge / Leakage / Leaderboard)
+(Hakem modellerindeki kaymalar, contamination veya harness düzeltmeleri hakkında 2-3 madde)
+
+💡 EYLEM PLANI & GÖZLEM LİSTESİ
+(Mahir'in bu hafta takip etmesi veya dikkat etmesi gereken 3-4 net madde)
+
+YASAK: Markdown bold (**), başlık etiketi (##) gibi ham işaretler KULLANMA. Düz, temiz, okunabilir metin formatında yaz.
 """
     raw = complete(system, user, max_tokens=3500, purpose="daily_report")
-    from eval_radar.format_text import polish_llm_text
-
     return polish_llm_text(raw)
 
 
 def _render_template(payload: dict) -> str:
     settings = get_settings()
-    prefs = load_preferences()
     tz = ZoneInfo(settings.report_tz)
     now = datetime.now(tz).strftime("%Y-%m-%d %H:%M %Z")
     filtered = filter_items(payload)
     errors = payload.get("errors") or {}
 
     lines = [
-        f"LLM Eval Radar — {now}",
-        f"Sinyaller / Signals: arXiv {payload.get('counts', {}).get('arxiv', 0)} · "
+        f"🎯 LLM EVALUATION RADAR — {now}",
+        f"📊 Sinyaller: arXiv {payload.get('counts', {}).get('arxiv', 0)} · "
         f"GitHub {payload.get('counts', {}).get('github', 0)} · "
         f"Reddit {payload.get('counts', {}).get('reddit', 0)}",
         "",
-        "Not: Daha zengin sohbet + uzun TR/EN özet için .env içine GEMINI_API_KEY ekle "
-        "(ücretsiz: https://aistudio.google.com/apikey), botu yeniden başlat.",
-        "",
-        "=== Bugünün maddeleri / Today's items ===",
+        "────────────────────────────────────────",
         "",
     ]
 
     if errors:
-        lines.append("Kaynak uyarıları / Source warnings:")
+        lines.append("⚠️ Kaynak Uyarıları:")
         for src, err in errors.items():
-            lines.append(f"- {src}: {err}")
+            lines.append(f"• {src}: {err}")
         lines.append("")
 
     if not filtered:
-        lines.append("Bugün güçlü sinyal yok / No strong signals today.")
+        lines.append("Bugün kaydedilen kritik sinyal bulunamadı.")
     else:
         for i, it in enumerate(filtered, 1):
-            src = it.get("source", "?")
+            src = it.get("source", "?").upper()
             title = it.get("title") or "untitled"
             url = it.get("url") or ""
             summary = (it.get("summary") or "").strip()
             lines.append(f"{i}. [{src}] {title}")
-            lines.append("")
-            lines.append("TR:")
-            lines.append(
-                summary
-                if summary
-                else "Özet metni kaynakta sınırlı; linkten detaya bak."
-            )
-            lines.append("")
-            lines.append("EN:")
-            lines.append(summary if summary else "Limited source blurb; open the link for depth.")
+            lines.append(f"   {summary}")
             if url:
-                lines.append(f"Source: {url}")
-            lines.append("")
-            lines.append("-" * 40)
+                lines.append(f"   🔗 {url}")
             lines.append("")
 
-    extra = prefs.get("approved_extra_seeds") or []
-    if extra:
-        lines.append("Onaylı ekstra seed / Approved extra seeds: " + ", ".join(extra[:10]))
-
-    lines.extend(
-        [
-            "",
-            "Komutlar: /report /memory /help",
-            "Öğret: boost: … | mute: … | takip et: …",
-        ]
-    )
-    return "\n".join(lines).strip()
+    return "\n".join(lines)

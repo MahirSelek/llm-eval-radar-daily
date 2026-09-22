@@ -1,26 +1,70 @@
 {% extends "base.html" %}
-{% block title %}Chat · Eval Radar{% endblock %}
+{% block title %}Chat Araştırmacısı · Eval Radar 2026{% endblock %}
 {% block content %}
-<div class="top">
+<div class="top-bar" style="margin-bottom:1.2rem;">
   <div>
-    <h1>Senin LLM’in</h1>
-    <p class="sub">Dashboard sohbeti — agent memory ile pekiştirir. Telegram ile aynı beyin.</p>
+    <h1 class="page-title">LLM Değerlendirme Asistanı</h1>
+    <p class="page-sub">Açık web sinyalleri, bellek ve benchmark bilgisiyle donatılmış interaktif araştırma sohbeti.</p>
   </div>
-  {% if llm_ok %}<span class="pill ok">LLM ready</span>{% else %}<span class="pill warn">CURSOR_API_KEY ekle</span>{% endif %}
+  {% if llm_ok %}
+    <span class="pill ok"><span class="dot-status"></span> Zeka Motoru Hazır ({{ model.model }})</span>
+  {% else %}
+    <span class="pill warn"><span class="dot-status"></span> CURSOR_API_KEY Gerekli</span>
+  {% endif %}
 </div>
 
-<div class="chat-box">
-  <div class="chat-log" id="log">
+<div class="chat-workspace">
+  <!-- Header -->
+  <div class="chat-header">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span class="brand-dot"></span>
+      <span style="font-weight:700;font-size:0.95rem;">Eval Brain Chat</span>
+      <span class="pill info" style="font-size:0.72rem;">{{ model.provider }} / {{ model.model }}</span>
+    </div>
+    <div style="font-size:0.8rem;color:var(--text-dim)">
+      Ortak Hafıza Senkronize (Telegram + Web)
+    </div>
+  </div>
+
+  <!-- Prompt Starters -->
+  <div class="chat-suggestions">
+    <button class="suggestion-btn" onclick="sendSuggestion('Son 24 saatteki en kritik benchmark ve metodoloji sinyallerini analiz et.')">🔍 Kritik Benchmark Sinyalleri</button>
+    <button class="suggestion-btn" onclick="sendSuggestion('EleutherAI lm-eval 0.4.13 few-shot sızıntı düzeltmesi liderlik tablolarını nasıl etkiler?')">🚨 lm-eval Few-Shot Sızıntısı</button>
+    <button class="suggestion-btn" onclick="sendSuggestion('Stanford HELM Llama 3.1 405B hakem modelini neden kaldırdı ve bu hakem kayması ne yaratır?')">⚖️ HELM Hakem Değişimi</button>
+    <button class="suggestion-btn" onclick="sendSuggestion('Agent bellek değerlendirmesinde (AutoViewMem vb.) hangi metrikler öne çıkıyor?')">🧠 Agent Bellek Metrikleri</button>
+  </div>
+
+  <!-- Chat Log Stream -->
+  <div class="chat-stream" id="log">
     {% for row in chat %}
-    <div class="bubble {{ row.role }}">{% if row.html %}{{ row.html|safe }}{% else %}{{ row.text }}{% endif %}</div>
+      <div class="bubble {{ row.role }}">
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.35rem;font-weight:700;text-transform:uppercase;">
+          {{ row.role }}
+        </div>
+        {% if row.html %}
+          {{ row.html|safe }}
+        {% else %}
+          {{ row.text }}
+        {% endif %}
+      </div>
     {% else %}
-    <p class="muted">İlk mesajı yaz — eval dünyasını birlikte konuşalım.</p>
+      <div style="text-align:center;padding:3rem 1rem;color:var(--text-dim);">
+        <p style="font-size:1.1rem;color:var(--text-main);font-weight:700;margin-bottom:0.5rem">Eval Radar Sohbetine Hoş Geldin</p>
+        <p style="font-size:0.9rem;max-width:500px;margin:0 auto">Aşağıdaki hızlı konulardan birini seçebilir veya doğrudan benchmark'lar, LLM hakemleri ve metodoloji hakkında sorularını sorabilirsin.</p>
+      </div>
     {% endfor %}
   </div>
-  <form class="composer" id="composer">
-    <input id="msg" placeholder="Ne düşünüyorsun / neyi önceliklendirelim?" autocomplete="off" />
-    <button class="btn primary" type="submit" id="send-btn">Gönder</button>
-  </form>
+
+  <!-- Message Composer -->
+  <div class="chat-composer-wrap">
+    <form class="chat-form" id="composer">
+      <textarea id="msg" class="chat-input" placeholder="Bir soru sor, benchmark tartış veya yeni bir konuyu analiz ettir... (Enter: Gönder, Shift+Enter: Yeni satır)" rows="1" autofocus></textarea>
+      <button class="btn primary" type="submit" id="send-btn" style="height:48px;padding:0 1.4rem;">
+        <span>Gönder</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </form>
+  </div>
 </div>
 {% endblock %}
 
@@ -31,13 +75,29 @@ const form = document.getElementById('composer');
 const input = document.getElementById('msg');
 const sendBtn = document.getElementById('send-btn');
 
+function scrollToBottom() {
+  log.scrollTop = log.scrollHeight;
+}
+
 function addBubble(role, text, html) {
   const d = document.createElement('div');
   d.className = 'bubble ' + role;
-  if (html) d.innerHTML = html;
-  else d.textContent = text || '';
+  
+  const meta = document.createElement('div');
+  meta.style.cssText = 'font-size:0.72rem;color:var(--text-dim);margin-bottom:0.35rem;font-weight:700;text-transform:uppercase;';
+  meta.textContent = role;
+  d.appendChild(meta);
+
+  const content = document.createElement('div');
+  if (html) {
+    content.innerHTML = html;
+  } else {
+    content.textContent = text || '';
+  }
+  d.appendChild(content);
+
   log.appendChild(d);
-  log.scrollTop = log.scrollHeight;
+  scrollToBottom();
   return d;
 }
 
@@ -45,10 +105,9 @@ function showThinking() {
   const d = document.createElement('div');
   d.className = 'bubble assistant thinking';
   d.id = 'thinking-bubble';
-  d.innerHTML = '<span class="thinking-label">Mesaj alındı · cevaplıyor</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+  d.innerHTML = '<span>Analiz ediliyor ve yanıt üretiliyor</span><span class="thinking-dots"><i></i><i></i><i></i></span>';
   log.appendChild(d);
-  log.scrollTop = log.scrollHeight;
-  return d;
+  scrollToBottom();
 }
 
 function clearThinking() {
@@ -56,13 +115,12 @@ function clearThinking() {
   if (el) el.remove();
 }
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const text = input.value.trim();
+async function sendMessage(text) {
   if (!text || sendBtn.disabled) return;
 
   addBubble('user', text);
   input.value = '';
+  input.style.height = '48px';
   sendBtn.disabled = true;
   input.disabled = true;
   showThinking();
@@ -77,19 +135,44 @@ form.addEventListener('submit', async (e) => {
     clearThinking();
     addBubble(
       'assistant',
-      data.reply || data.error || 'Bir hata oldu, tekrar dene.',
+      data.reply || data.error || 'Yanıt alınamadı.',
       data.reply_html
     );
   } catch (err) {
     clearThinking();
-    addBubble('assistant', 'Bağlantı hatası — dashboard çalışıyor mu? ' + err);
+    addBubble('assistant', 'Bağlantı hatası: ' + err);
   } finally {
     sendBtn.disabled = false;
     input.disabled = false;
     input.focus();
+    scrollToBottom();
+  }
+}
+
+function sendSuggestion(text) {
+  input.value = text;
+  sendMessage(text);
+}
+
+// Auto-expand textarea & Enter handling
+input.addEventListener('input', () => {
+  input.style.height = '48px';
+  input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+});
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    form.dispatchEvent(new Event('submit'));
   }
 });
 
-log.scrollTop = log.scrollHeight;
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  sendMessage(text);
+});
+
+scrollToBottom();
 </script>
 {% endblock %}
