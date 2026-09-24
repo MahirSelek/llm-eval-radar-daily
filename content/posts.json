@@ -1,5 +1,22 @@
 [
   {
+    "slug": "2026-09-24-2026-09-24-eval-radar-thin-formal-benchmark-day-loud-harness-satire-and-provider-foru",
+    "title": "2026-09-24 Eval Radar: Thin Formal Benchmark Day, Loud Harness Satire and Provider Forum Friction",
+    "subtitle": "Today’s signal is not a new leaderboard release—it is skepticism toward harness ‘intelligence’ plus same-day forum evidence that reasoning mode and API surface behavior remain uneven.",
+    "date": "2026-09-24",
+    "summary": "Coverage for 2026-09-24 is thin on peer-reviewed benchmarks, judge suites, or official harness releases. The clearest evaluation-shaped item is a same-day Hacker News pointer to AssBench, a satirical framing of LLM harness intelligence that lands as a critique of how teams score scaffolding rather than models. Parallel same-day forum traffic on OpenAI and Google developer communities centers on product behavior and infra: GPT-5.6 feature and cost threads, a late-23 September report of inconsistent extended reasoning on GPT-5.6 Sol High, and multiple Gemini 3.x threads on structured-output failures, billing caps, Live voice options, and feature requests. For evaluation and infra stakeholders, the actionable story is reliability and comparability under changing product surfaces—not a fresh SOTA claim. Treat anecdotal forum wins and multi-agent science chatter as directional mood, not validated methodology updates.",
+    "key_takeaways": [
+      "AssBench (HN, 2026-09-24) is the day’s only explicit harness/benchmark meme: treat it as a warning about measuring orchestration cleverness instead of model capability.",
+      "OpenAI Community same-day threads stress cost levers and GPT-5.6 wishlist pressure; a 2026-09-23 Sol High thread flags inconsistent extended-reasoning engagement—high risk for any LLM-as-judge or agent eval that assumes stable ‘think hard’ behavior.",
+      "Google AI Developers same-day posts cluster on Gemini 3.1 / 3.8 operational friction (structured output 400s, billing caps) more than new public leaderboards—freeze API modes and schemas before comparing runs.",
+      "No same-day arXiv/GitHub/RSS eval releases appear in this item set; do not inflate forum anecdotes into leaderboard movements.",
+      "A 2026-09-23 r/singularity post on Anthropic multi-agent genomic search is within the freshness window but is capability narrative, not a controlled benchmark result—cite date and exclude from method scores."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-09-24-2026-09-24-eval-radar-thin-formal-benchmark-day-loud-harness-satire-and-provider-foru.json"
+  },
+  {
     "slug": "2026-09-22-2026-09-22-eval-briefing-niche-benchmarks-expand-while-forum-claims-outpace-verified-",
     "title": "2026-09-22 Eval Briefing: Niche Benchmarks Expand While Forum Claims Outpace Verified Leaderboard Movement",
     "subtitle": "Same-day signals favor specialized harnesses and reliability complaints over clean, comparable frontier-model score shifts.",
