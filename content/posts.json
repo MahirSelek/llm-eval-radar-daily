@@ -1,16 +1,33 @@
 [
   {
-    "slug": "2026-09-24-2026-09-24-eval-radar-thin-formal-benchmark-day-loud-harness-satire-and-provider-foru",
-    "title": "2026-09-24 Eval Radar: Thin Formal Benchmark Day, Loud Harness Satire and Provider Forum Friction",
-    "subtitle": "Today’s signal is not a new leaderboard release—it is skepticism toward harness ‘intelligence’ plus same-day forum evidence that reasoning mode and API surface behavior remain uneven.",
-    "date": "2026-09-24",
-    "summary": "Coverage for 2026-09-24 is thin on peer-reviewed benchmarks, judge suites, or official harness releases. The clearest evaluation-shaped item is a same-day Hacker News pointer to AssBench, a satirical framing of LLM harness intelligence that lands as a critique of how teams score scaffolding rather than models. Parallel same-day forum traffic on OpenAI and Google developer communities centers on product behavior and infra: GPT-5.6 feature and cost threads, a late-23 September report of inconsistent extended reasoning on GPT-5.6 Sol High, and multiple Gemini 3.x threads on structured-output failures, billing caps, Live voice options, and feature requests. For evaluation and infra stakeholders, the actionable story is reliability and comparability under changing product surfaces—not a fresh SOTA claim. Treat anecdotal forum wins and multi-agent science chatter as directional mood, not validated methodology updates.",
+    "slug": "2026-09-25-2026-09-25-eval-radar-thin-formal-benchmark-day-harness-satire-rag-adversarial-ambiti",
+    "title": "2026-09-25 Eval Radar: Thin Formal Benchmark Day — Harness Satire, RAG Adversarial Ambition, and Provider Forum Friction",
+    "subtitle": "Today’s signal is not a new leaderboard drop; it is platform-side evaluation tooling noise plus Gemini access and safety-policy friction that quietly threatens reproducible runs.",
+    "date": "2026-09-25",
+    "summary": "Coverage for 2026-09-25 is thin on formal benchmarks, judges, and public leaderboard updates. The clearest same-day evaluation artifact is a Medium write-up describing an integration of Jev into Rubric, framed as a practitioner critique of how fast model releases outpace trustworthy scoring. Adjacent research-community signal appears on Hugging Face forums as an endorsement request for arXiv cs.CR work on AI security and LLM RAG adversarial evaluation, suggesting continued interest in attack-aware retrieval testing rather than a published result today. Google AI developer forums dominate volume with Gemini API 403s, free-tier restrictions, IDE eligibility loops, and Flash prefill-queue overload reports—operational noise, not methodology news, but material for anyone running live eval harnesses against Gemini. A same-day policy-guidance thread on safety evaluation with fictional distress scenarios is the only explicit judge/safety-eval governance signal. Researchers and infra teams should treat today as a low-signal day: update runbooks for provider access failure modes, watch the Rubric/Jev framing for harness-design ideas, and do not inflate forum volume into a benchmark story.",
     "key_takeaways": [
-      "AssBench (HN, 2026-09-24) is the day’s only explicit harness/benchmark meme: treat it as a warning about measuring orchestration cleverness instead of model capability.",
-      "OpenAI Community same-day threads stress cost levers and GPT-5.6 wishlist pressure; a 2026-09-23 Sol High thread flags inconsistent extended-reasoning engagement—high risk for any LLM-as-judge or agent eval that assumes stable ‘think hard’ behavior.",
-      "Google AI Developers same-day posts cluster on Gemini 3.1 / 3.8 operational friction (structured output 400s, billing caps) more than new public leaderboards—freeze API modes and schemas before comparing runs.",
-      "No same-day arXiv/GitHub/RSS eval releases appear in this item set; do not inflate forum anecdotes into leaderboard movements.",
-      "A 2026-09-23 r/singularity post on Anthropic multi-agent genomic search is within the freshness window but is capability narrative, not a controlled benchmark result—cite date and exclude from method scores."
+      "No major same-day benchmark release or leaderboard reset appears in the provided pool; do not treat provider-forum volume as evaluation progress.",
+      "The Rubric+Jev Medium post is today’s only direct harness/tooling narrative—useful as practitioner skepticism about headline scores, not as a validated new metric.",
+      "Hugging Face’s cs.CR endorsement request flags upcoming RAG adversarial-evaluation work; treat it as pipeline intent, not a peer-reviewed finding published today.",
+      "Gemini 403 / free-tier / IDE eligibility / PREFILL_QUEUE_OVERLOADED threads imply same-day risk to continuous eval jobs that assume stable Gemini availability.",
+      "The fictional-distress safety-evaluation policy thread is a reminder that judge and safety rubrics still collide with provider content policies mid-experiment."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-09-25-2026-09-25-eval-radar-thin-formal-benchmark-day-harness-satire-rag-adversarial-ambiti.json"
+  },
+  {
+    "slug": "2026-09-24-2026-09-24-eval-radar-thin-formal-benchmark-day-loud-harness-satire-and-provider-foru",
+    "title": "2026-09-24 Eval Radar: Thin Formal Benchmark Day, Loud Harness Satire, and Provider Forum Friction",
+    "subtitle": "Today’s signal is not a new leaderboard release—it is satire about harness intelligence plus same-day provider forums stressing reasoning consistency, structured-output breakage, and infra cost ceilings.",
+    "date": "2026-09-24",
+    "summary": "Formal benchmark and judge releases are thin for 2026-09-24. The clearest same-day eval-adjacent artifact is AssBench, a satirical Hacker News post that mocks the industry habit of treating harness cleverness as model progress. Provider forums dominate the day: OpenAI Community threads ask for GPT-5.6 product fixes and cost controls, while a late-23 September report flags inconsistent extended reasoning on GPT-5.6 Sol High. Google AI Developers threads report Gemini 3.1 Pro anecdotal “show-out” claims, Gemini 3.8 Flash structured-output HTTP 400 failures, Live voice-design requests, billing-cap blocks, and longer video-generation asks. A 23 September Reddit singularity thread amplifies multi-agent scientific discovery narratives; treat it as community hype, not a verified eval result. For researchers and infra teams, today’s actionable story is methodology risk under thin coverage: satirical harness critiques, opaque reasoning engagement, and API reliability/cost constraints matter more than any new public leaderboard delta.",
+    "key_takeaways": [
+      "Do not treat 2026-09-24 as a leaderboard-update day; formal arXiv/GitHub benchmark signals are effectively absent from this publishable set, so any “what moved” narrative must stay forum- and satire-grounded.",
+      "AssBench (HN, today) is useful as a methodology reminder: if a score mostly tracks scaffolding, tool loops, or prompt wrappers, it is not a clean model capability claim.",
+      "OpenAI forum traffic today centers on GPT-5.6 product asks and API cost levers; pair that with the 23 September Sol High thread on inconsistent extended reasoning when designing judge or agent evals that assume stable “think longer” behavior.",
+      "Google Developer Forum same-day threads highlight evaluation confounders for Gemini stacks: structured-output API errors, billing caps that silence production A/B tests, and anecdotal model praise that is not protocolized.",
+      "The 23 September Anthropic multi-agent CRISPR narrative is socially loud but scientifically unverified in this item set—do not promote it as a benchmark win or a reproducible eval protocol."
     ],
     "source_count": 16,
     "model": "grok-4.5",
