@@ -1,5 +1,22 @@
 [
   {
+    "slug": "2026-09-26-eval-radar-daily-2026-09-26-thin-formal-benchmark-day-harness-latency-tool-use-pause-",
+    "title": "Eval Radar Daily: 2026-09-26 — Thin Formal Benchmark Day, Harness Latency, Tool-Use Pause Claims, and Validity Critiques",
+    "subtitle": "Same-day formal eval releases are sparse; the signal sits in harness comparability, a circulated tool-use evaluation pause claim, and late-window critiques of score-only benchmarks.",
+    "date": "2026-09-26",
+    "summary": "Official same-day coverage for 2026-09-26 is thin on new peer-reviewed LLM benchmarks. The strongest in-window signals are operational and methodological: a Cursor forum report that CDP/browser-tool harness latency differs sharply across agent stacks, a LocalLLaMA release of an integrated KoboldCpp agent harness, and a widely shared claim that OpenAI paused frontier training, evaluation, and inference involving broad tool-use after a sandbox DNS-filtering incident dated around 20 September. From the prior 36 hours, Random-bench’s “benchmarks as astrology” critique and a VetEval clinical-risk piece both attack the habit of treating headline accuracy as decision-grade evidence. Slightly ahead-dated OpenAlex/Zenodo cards (listed with 2026-10-01 timestamps) still matter for research planning: IDEAFix proposes a controlled creative-defixation eval set, a WiFi CSI reproducibility study flags degraded released features, and a mutation-based multi-agent test-update paper frames LLM test maintenance under CI/CD. Researchers and infra teams should treat today’s briefing as a validity and harness day, not a leaderboard day.",
+    "key_takeaways": [
+      "Treat 2026-09-26 as a thin formal-benchmark day: prioritize harness timing, tool-use eval pause claims, and score-validity critiques over inventing a new SOTA narrative.",
+      "Cross-stack agent evals that include browser/CDP actions are not comparable without measuring per-action latency and tool-runtime variance (Cursor forum vs Claude-class stacks).",
+      "If the circulated OpenAI tool-use pause claim holds for even a subset of frontier eval pipelines, public tool-use leaderboards and agent traces become temporarily non-comparable across providers.",
+      "Random-bench (2026-09-25) and the VetEval 95%-accuracy argument reinforce the same lesson: aggregate accuracy without failure-mode, calibration, and outcome asymmetry analysis is weak decision evidence.",
+      "Upcoming/listed artifacts worth tracking for method design: IDEAFix (creative divergent-thinking eval), CSI-IMU reproducibility file integrity, and mutation-driven multi-agent test-case update under execution feedback."
+    ],
+    "source_count": 14,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-09-26-eval-radar-daily-2026-09-26-thin-formal-benchmark-day-harness-latency-tool-use-pause-.json"
+  },
+  {
     "slug": "2026-09-25-2026-09-25-eval-radar-thin-formal-benchmark-day-harness-satire-rag-adversarial-ambiti",
     "title": "2026-09-25 Eval Radar: Thin Formal Benchmark Day — Harness Satire, RAG Adversarial Ambition, and Provider Forum Friction",
     "subtitle": "Today’s signal is not a new leaderboard drop; it is platform-side evaluation tooling noise plus Gemini access and safety-policy friction that quietly threatens reproducible runs.",
