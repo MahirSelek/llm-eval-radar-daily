@@ -1,0 +1,101 @@
+{
+  "slug": "2026-10-01-eval-radar-daily-2026-10-01-verifiable-worlds-contaminated-harnesses-and-what-clean-b",
+  "date": "2026-10-01",
+  "created_at": "2026-10-01T12:16:27.476047+00:00",
+  "title": "Eval Radar Daily 2026-10-01: Verifiable Worlds, Contaminated Harnesses, and What Clean Benchmarks Miss",
+  "subtitle": "Today’s arXiv wave argues that static task scores overstate agent competence once harness drift, world interference, and integration failure enter the test.",
+  "summary": "Same-day formal coverage for 2026-10-01 is strong: multiple new benchmarks target gaps that standard accuracy numbers hide. ArgGYM and PhantomEnvironments (the latter dated 2026-09-30) push for engine- or rule-verified environments that reduce leakage and judge ambiguity. BACKDROP and KlinikeBench stress-test agents in disrupted or incomplete information settings rather than clean casebooks. MedKIT separates knowledge insertion from usable generalization in medicine, while self-evolving harness work and Magnitude’s HN launch (2026-09-30) make harness code itself a first-class experimental variable. Safety and political-stance papers add multi-turn and prompt-framing reliability concerns that single-shot evals miss. The practical message for researchers and infra teams is clear: treat harness version, environment stability, and evaluation protocol as part of the claim, not footnotes.",
+  "key_takeaways": [
+    "Prefer engine-verified or rule-generated tasks when claiming progress; they cut judge subjectivity and lower contamination risk relative to LLM-authored testbeds.",
+    "Report harness identity and evolution policy alongside model scores; self-optimizing harnesses change the system under test and break cross-paper comparability if ignored.",
+    "Add interference and incomplete-information protocols (BACKDROP-style hazards; KlinikeBench-style information gathering) before treating clean-world agent scores as deployment evidence.",
+    "For knowledge updates, measure use and transfer after integration, not only factual recall—especially in safety-critical domains like medicine (MedKIT).",
+    "Extend safety and stance evaluations to multi-turn adversarial persistence and user-framing effects; single-prompt refusal rates are an incomplete reliability signal."
+  ],
+  "body_en": "The 2026-10-01 briefing pool is not thin. A dense set of same-day arXiv items, plus a few high-signal pieces from 2026-09-30 inside the freshness window, converge on one evaluation thesis: capability measured in a still world with a frozen harness is an optimistic upper bound. What matters now is whether gains survive procedural verification, harness self-modification, world interference, and knowledge that must be used rather than merely recalled.\n\nStart with benchmark design under verifiable rewards. ArgGYM (arXiv:2609.38409, announced 2026-10-01) frames structured defeasible reasoning as a procedural, engine-verified setting. That design choice is evaluation-first: automatic checking reduces dependence on LLM-as-a-judge for the primary score, and procedural generation raises the bar for memorization of a fixed item bank. The paper’s own framing—that success under fixed specifications may not transfer to messier reasoning—should be read as a warning label for leaderboard chasing in math, code, and formal logic. Transfer claims need an explicit second protocol, not a narrative leap from a verifiable niche to “reasoning in general.”\n\nPhantomEnvironments (arXiv:2609.40221v1, published 2026-09-30) belongs in the same methodological cluster even though it is one day older. It attacks the RL-environment bottleneck by generating fictional, rule-based multi-turn search worlds with zero LLM authoring cost and no shared facts with the real world. The evaluation relevance is dual: (1) training and testing in synthetic worlds can reduce contamination relative to LLM-generated environments that may leak real benchmarks; (2) transfer from fiction to real multi-hop search becomes the claim to audit, not in-world accuracy alone. For contamination-aware labs, the important practice is to keep train and eval generators disjoint, version generation seeds, and report whether any real-world retrieval corpus touched training.\n\nHarness change is the second major axis. Self-Evolving Harness on Multiple Tasks with the Agent as Its Own Optimizer (arXiv:2609.38372, 2026-10-01) argues that prior self-evolving setups often keep a human-designed proposer harness and evolve a separate solver harness per benchmark. Real deployments do not enjoy that separation. If the agent can rewrite prompts, tool wiring, context management, and control flow, then the “model score” is a joint score of model plus evolving code. Comparability collapses when papers omit harness diffs, evolution budgets, and whether evolution was allowed at test time. Magnitude’s Launch HN thread (2026-09-30; GitHub magnitudedev/magnitude, strong engagement) is not an academic benchmark, but it is an infra signal that self-optimizing agent stacks are entering practitioner discourse. Treat such systems as moving targets: pin harness commits, freeze evolution for reported evals, and publish both frozen and allowed-to-adapt numbers if adaptation is part of the product claim.\n\nBACKDROP (arXiv:2609.38469, 2026-10-01) makes the complementary point on the world side. Agent benchmarks typically hold the environment still; deployed agents share worlds that other actors change. BACKDROP plants everyday hazards into the execution environment and asks how much clean-world capability survives. That is a construct-validity upgrade: it measures robustness to distraction, social engineering-like interrupts, and concurrent world edits rather than only task completion in isolation. For agent infra teams, the actionable pattern is to keep a “clean” regression suite and a “contaminated world” suite, and never market the former as the latter.\n\nClinical evaluation papers today push a similar honesty standard. KlinikeBench (arXiv:2609.38480) rejects diagnosis-from-complete-casebook as sufficient. Real clinical work requires gathering history and choosing examinations; diagnostic accuracy alone does not prove appropriate assessment. That distinction matters for agent evals beyond medicine: any benchmark that hands the model a fully packaged state overstates competence relative to interactive information acquisition. MedKIT (arXiv:2609.38543) targets a different failure mode—knowledge integration versus usable generalization. Factual recall after updates is a weak proxy when outdated medical knowledge has safety consequences. Granular checks on whether newly integrated knowledge is actually applied and transferred should become table stakes for continual-learning claims.\n\nTwo reliability papers widen the judge and protocol problem. Evaluating Language Model Safety Across Long Adversarial Conversations (arXiv:2609.38357) notes that many safety tests use a single harmful prompt, while real abuse is multi-turn and adaptive. Even with a narrow model set and two harmful prompts, the methodological signal is that refusal rates can look fine at turn one and degrade under persistence, seed variation, and conversation length. Framing the Narrative: Ideological Mimicry in Large Language Models (arXiv:2609.38256) challenges the assumption that political stance is a stable model property; user terminology and framing can shift expressed stance. For evaluation design, that means stance and safety scores need prompt-family sweeps and conversation-length axes, not a single templated query per topic.\n\nPeripheral items in the window still carry evaluation lessons if dated carefully. Lathoa (Show HN, 2026-09-30), a math app that makes the AI wrong on purpose, is not a research benchmark release, but it illustrates intentional error as a pedagogical and evaluative device: if students must detect mistakes, the system’s “accuracy” is not the product metric—error detectability and calibration are. Do not present it as a new academic leaderboard; present it as a reminder that task framing defines what a good score means.\n\nAcross the day, the comparative pattern is consistent. Verifiable procedural environments (ArgGYM, PhantomEnvironments) improve score honesty and leakage posture. Harness self-evolution and productized inference optimizers (self-evolving harness paper; Magnitude) make the experimental unit larger than the model weights. BACKDROP and KlinikeBench attack over-clean worlds and over-complete inputs. MedKIT attacks over-thin knowledge-update metrics. Multi-turn safety and ideological mimicry attack over-thin reliability protocols. Researchers should update reporting checklists accordingly: environment generator and seeds, harness commit and evolution policy, interference protocol, information-acquisition protocol, integration-versus-use metrics, and multi-turn adversarial sweeps. Infra teams should version those artifacts the same way they version model checkpoints. Without that discipline, today’s rising scores will remain hard to reproduce and easy to over-interpret.",
+  "methodology_risks": "Comparability is the first risk. Self-evolving harnesses, adaptive inference engines, and per-benchmark harness specialization mean two papers can cite the same base model and measure different systems. Without pinned harness commits, frozen evolution at test time, and disclosed tool/context policies, leaderboard deltas are not interpretable. Clean-world agent scores and BACKDROP-style interfered scores should never be averaged or substituted for each other.\n\nLeakage and contamination remain central. LLM-authored environments can hallucinate and may overlap real benchmarks; PhantomEnvironments’ rule-only fiction is a mitigation pattern, not a guarantee if real corpora later enter training or if eval questions recycle public multi-hop sets. Procedural generators help only if seeds, grammars, and held-out splits are published. For knowledge-integration suites like MedKIT, contamination includes pretraining exposure to “new” clinical facts—document cutoff assumptions and whether items could appear in public text.\n\nJudge drift and protocol thinness affect safety and stance work especially. Single-prompt safety tests understate multi-turn adversarial risk; ideological mimicry shows that framing changes the measured property. Prefer automatic verifiers where the task allows (ArgGYM-style engines), and when human or LLM judges are required, fix rubrics, report inter-rater or cross-judge agreement, and sweep seeds and conversation lengths. Otherwise reliability claims will drift with the evaluation harness as much as with the model.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "contamination",
+    "agent-harness",
+    "reproducibility",
+    "safety-eval",
+    "knowledge-integration"
+  ],
+  "sources": [
+    {
+      "title": "Launch HN: Magnitude (YC S25) – Self-optimizing inference engine for agents",
+      "url": "https://github.com/magnitudedev/magnitude",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: Lathoa, a math app for kids where the AI is wrong on purpose",
+      "url": "https://lathoa.ai/en",
+      "source": "hackernews"
+    },
+    {
+      "title": "MedKIT: Evaluating Knowledge Integration and Generalization in Large Language Models",
+      "url": "https://arxiv.org/abs/2609.38543",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Self-Evolving Harness on Multiple Tasks with the Agent as Its Own Optimizer",
+      "url": "https://arxiv.org/abs/2609.38372",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "ArgGYM: A Procedural, Engine-Verified Benchmark for Structured Defeasible Reasoning",
+      "url": "https://arxiv.org/abs/2609.38409",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Framing the Narrative: Ideological Mimicry in Large Language Models",
+      "url": "https://arxiv.org/abs/2609.38256",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Evaluating Language Model Safety Across Long Adversarial Conversations",
+      "url": "https://arxiv.org/abs/2609.38357",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "The Backdrop Exposes What the World Around an Agent Costs It",
+      "url": "https://arxiv.org/abs/2609.38469",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "KlinikeBench: Evaluating Language Models Beyond Diagnostic Accuracy",
+      "url": "https://arxiv.org/abs/2609.38480",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "PhantomEnvironments: Training LLM Agents in Fictional Worlds",
+      "url": "https://arxiv.org/abs/2609.40221v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Gemini is number one on arena.ai.",
+      "url": "https://www.reddit.com/r/GeminiAI/comments/1wun8j2/gemini_is_number_one_on_arenaai/",
+      "source": "reddit/r/GeminiAI"
+    },
+    {
+      "title": "DeepSeek harness 0.2 - Optional Bundle Architecture, Windows Sandbox improvements, Async Question Mode, Desktop release, Web Search without key",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1wutkgt/deepseek_harness_02_optional_bundle_architecture/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "Gemini 4 Argon - 1 Million Output Headroom. Hype or a Leap? [D]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1wuvmpo/gemini_4_argon_1_million_output_headroom_hype_or/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Where WiFi Sensing Fails:A Reproducibility Study of CSI-IMU Substitution for Human Activity Recognition",
+      "url": "https://openalex.org/W7208797711",
+      "source": "openalex"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

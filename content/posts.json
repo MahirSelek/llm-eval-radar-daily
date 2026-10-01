@@ -1,5 +1,22 @@
 [
   {
+    "slug": "2026-10-01-eval-radar-daily-2026-10-01-verifiable-worlds-contaminated-harnesses-and-what-clean-b",
+    "title": "Eval Radar Daily 2026-10-01: Verifiable Worlds, Contaminated Harnesses, and What Clean Benchmarks Miss",
+    "subtitle": "Today’s arXiv wave argues that static task scores overstate agent competence once harness drift, world interference, and integration failure enter the test.",
+    "date": "2026-10-01",
+    "summary": "Same-day formal coverage for 2026-10-01 is strong: multiple new benchmarks target gaps that standard accuracy numbers hide. ArgGYM and PhantomEnvironments (the latter dated 2026-09-30) push for engine- or rule-verified environments that reduce leakage and judge ambiguity. BACKDROP and KlinikeBench stress-test agents in disrupted or incomplete information settings rather than clean casebooks. MedKIT separates knowledge insertion from usable generalization in medicine, while self-evolving harness work and Magnitude’s HN launch (2026-09-30) make harness code itself a first-class experimental variable. Safety and political-stance papers add multi-turn and prompt-framing reliability concerns that single-shot evals miss. The practical message for researchers and infra teams is clear: treat harness version, environment stability, and evaluation protocol as part of the claim, not footnotes.",
+    "key_takeaways": [
+      "Prefer engine-verified or rule-generated tasks when claiming progress; they cut judge subjectivity and lower contamination risk relative to LLM-authored testbeds.",
+      "Report harness identity and evolution policy alongside model scores; self-optimizing harnesses change the system under test and break cross-paper comparability if ignored.",
+      "Add interference and incomplete-information protocols (BACKDROP-style hazards; KlinikeBench-style information gathering) before treating clean-world agent scores as deployment evidence.",
+      "For knowledge updates, measure use and transfer after integration, not only factual recall—especially in safety-critical domains like medicine (MedKIT).",
+      "Extend safety and stance evaluations to multi-turn adversarial persistence and user-framing effects; single-prompt refusal rates are an incomplete reliability signal."
+    ],
+    "source_count": 14,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-10-01-eval-radar-daily-2026-10-01-verifiable-worlds-contaminated-harnesses-and-what-clean-b.json"
+  },
+  {
     "slug": "2026-09-26-eval-radar-daily-2026-09-26-thin-formal-benchmark-day-harness-latency-tool-use-pause-",
     "title": "Eval Radar Daily: 2026-09-26 — Thin Formal Benchmark Day, Harness Latency, Tool-Use Pause Claims, and Validity Critiques",
     "subtitle": "Same-day formal eval releases are sparse; the signal sits in harness comparability, a circulated tool-use evaluation pause claim, and late-window critiques of score-only benchmarks.",
