@@ -1,0 +1,111 @@
+{
+  "slug": "2026-10-02-daily-eval-briefing-2026-10-02-agent-harness-validity-cheap-apo-benchmarks-and-causal",
+  "date": "2026-10-02",
+  "created_at": "2026-10-02T14:23:55.059194+00:00",
+  "title": "Daily Eval Briefing 2026-10-02: Agent Harness Validity, Cheap APO Benchmarks, and Causal Recovery Metrics",
+  "subtitle": "Today’s papers push evaluation past average success toward disentangled retention, causal recovery, and contamination-resistant prompt-optimization loops.",
+  "summary": "Same-day coverage for 2026-10-02 is strong on the arXiv side and thin on practitioner discussion channels, with fourteen publishable items after freshness filtering. The clearest methodological shift is from scalar task success toward designs that separate confounded agent decisions: retention versus retrieval in memory, and recovery interventions that can help or hurt from the same execution state. A chess-based automatic prompt optimization (APO) benchmark directly targets saturation, contamination, and expensive grading as blockers for repeated evaluation during prompt search. MedKIT and HalluScoring 2026 extend validity pressure into knowledge integration usability and Arabic hallucination detection under unseen-question and unseen-model generalization. For infra teams, microtask eligibility for small language models (SLMs) and KernelBench-style executable coding evals raise practical questions about where harness automation is trustworthy and how reproducibility should be enforced when execution itself is the judge.",
+  "key_takeaways": [
+    "Treat agent memory and recovery as factorial or causal designs, not single-score leaderboards: hold access fixed when claiming retention gains, and compare intervene-versus-not from identical states before shipping harness auto-recovery.",
+    "Prefer APO and search-loop benchmarks that are cheap, deterministic, and hard to contaminate; chess-style executable grading is a template when public NLP suites saturate under repeated prompt evaluation.",
+    "Score knowledge updates on usable transfer, not recall alone: MedKIT-style granular integration checks matter more for safety-critical domains than factual quiz accuracy after continual update.",
+    "Before replacing frontier-model microtasks with off-the-shelf SLMs, require fixed-prompt automatic metrics and quantify the eligibility gap, including quantization effects on approval, memory write, tool select, and ranking.",
+    "Shared-task and longitudinal score tables help comparability only if harness versions, judge settings, and contamination windows are logged; otherwise daily aggregates remain cross-study noise."
+  ],
+  "body_en": "For 2026-10-02 (Europe/Istanbul), the day pool is methodologically dense rather than newsy. Fresh arXiv items dominate; GitHub and X contribute nothing in the collected set, Reddit is a single thin signal, and Hacker News posts are low-engagement pointers rather than deep threads. That distribution is itself an evaluation note: when same-day community commentary is thin, the briefing should extract design lessons from the freshest technical papers without inventing adoption claims or treating lightly scored HN links as consensus.\n\nThe strongest shared theme is benchmark validity under agent scaffolding. “What Should an Agent Remember? Disentangling Retention from Retrieval in Bounded-Memory Evaluation” (arXiv:2610.00366, announced 2026-10-02) attacks a classic confound. Persistent agents must decide what to keep as information arrives and what to surface once a query appears, yet many memory papers compare methods that change both policies at once. The authors cross retention and selection rules on the same 300 seeded episodes, which is the right reproducibility move: identical episode seeds make factorial contrasts interpretable. Holding access fixed, query-aware selection improves required-fact recall by a reported 15-point class effect in the abstract fragment. The editorial implication is immediate for agent infra: if your eval changes the store and the retriever together, you cannot attribute gains to “better memory.” Publish crossed conditions, seed locks, and access-matched baselines before claiming a retention advance.\n\nA parallel validity move appears in “When Harnesses Lose the Signal: Causal Evaluation of Recovery in LLM Agents” (arXiv:2610.00372, 2026-10-02). Harnesses pass information between model and environment and attempt recovery from execution errors, but recovery is usually scored only by average task success. That metric hides a directional risk: the same recovery operation can rescue a failing trajectory or disrupt one that would otherwise succeed. Framing recovery as a causal decision from a shared execution state—compare intervene versus not intervene—forces harness teams to measure treatment effect, not only post-hoc win rate. For researchers, this is closer to offline policy evaluation than classic agent leaderboards. For infra, it argues against unconditional auto-recovery toggles unless you can show positive average treatment effect across failure modes and, ideally, that successful trajectories are not degraded.\n\nAutomatic prompt optimization makes these measurement problems recursive. “Benchmarking Prompt Optimization of Large Language Models With Chess” (arXiv:2610.00416, 2026-10-02) states the practical trap clearly: as models advance, benchmarks saturate, public tests leak, and harder tasks demand costly grading or execution. APO amplifies all three because evaluation runs repeatedly during search. A chess-centered benchmark is attractive for evaluation quality precisely where NLP suites fail APO: outcomes can be checked by game rules and engines rather than rubric judges; difficulty can be scaled without rewriting open-ended gold labels; and contamination risk differs from static multiple-choice corpora that already circulate in pretraining mixes. Teams running prompt search should treat this as a design checklist: Is the inner-loop metric cheap enough to run thousands of times? Is grading deterministic? Is the task distribution unlikely to be memorized as “the APO benchmark”? If any answer is no, APO leaderboards will overfit the eval harness rather than discover transferable prompts.\n\nAgent cost and delegation get a more operational treatment in “Measuring the Microtask Eligibility Gap: When Is an Off-the-Shelf SLM Enough for an Agent Harness?” (arXiv:2610.00025, 2026-10-02). Harnesses increasingly want SLMs on microtasks around a frontier planner: auto-approving shell commands, writing memory, selecting tools, ranking past turns. The paper builds a four-microtask benchmark with fixed prompts and automatic metrics, then asks whether off-the-shelf SLMs meet practitioner thresholds, why they fail, and whether quantization changes the answer. Fixed prompts matter: if eligibility claims depend on per-model prompt craft, you are not measuring model fitness for a harness slot; you are measuring prompt search again. Automatic metrics matter equally: human or LLM judges on approval and ranking tasks inject judge drift into a decision that will later run unsupervised. Infra implication: define pass thresholds per microtask before model shopping; measure the eligibility gap under the exact quantization you will deploy; keep planner and microtask models version-pinned in harness configs so ablation remains reproducible.\n\nExecutable coding evaluation remains a complementary path when natural-language judges are noisy. KernelBench (HN, 2026-10-02) asks whether models can write GPU kernels, with Torch-to-CUDA tooling. Even with low HN points in this collection, the eval idea is methodologically aligned with the chess APO paper: correctness and performance can be checked by compilation and runtime rather than preference labels. The reproducibility risk is harness drift—CUDA versions, GPU SKUs, timing noise, and allowed library surfaces. Any lab adopting KernelBench-like suites should freeze environment manifests beside model scores, or cross-lab comparisons will look like model progress when they are toolchain progress.\n\nKnowledge and factuality evaluation on the same day push beyond static recall. MedKIT (arXiv:2609.38543, announced 2026-10-02) targets medical knowledge integration and transfer when clinical evidence changes. Existing evaluations often stop at factual recall after updates, which understates the safety question: is newly integrated knowledge usable in downstream reasoning? Granular integration and generalization metrics are the right severity ladder for medicine-adjacent systems. Separately, HalluScoring 2026 (arXiv:2609.38355v2, announced 2026-10-02) frames Arabic hallucination detection and answer verification as a shared task with explicit generalization axes: unseen questions and responses from unseen LLMs, plus verification beyond binary detection. That structure is a direct antidote to contamination and judge overfitting. Detector papers that only report in-distribution accuracy on responses from one generator family are not ready for deployment claims.\n\nTwo adjacent items widen the validity frame without dominating the day. “Framing the Narrative: Ideological Mimicry in Large Language Models” (arXiv:2609.38256, 2026-10-02) challenges the assumption that political stance is a stable model property. If user terminology and context shift expressed stance, then stance benchmarks that ignore prompt framing will mis-estimate alignment and safety behavior. Evaluation protocols should treat framing as a factor, not a nuisance. On the tooling side, Causeval (HN, 2026-10-02) advertises statistically rigorous causal evaluation for LLM apps, resonating with the recovery paper’s causal framing; treat it as a related signal in the freshness window, not as independently audited evidence from this collection alone. The longitudinal “table of 1,200 model benchmarks since 2019, updated daily” (HN, 2026-10-02) is useful meta-infrastructure if scores are provenance-linked; without harness and contamination metadata, daily aggregates remain hard to interpret.\n\nNet for 2026-10-02: same-day coverage is not thin on primary technical items, but community amplification is thin. The actionable synthesis is to upgrade agent and APO evaluation from average success to disentangled, causal, executable, and generalization-aware designs, and to refuse harness changes that alter retention, recovery, judge, or runtime simultaneously while claiming a clean model delta.",
+  "methodology_risks": "Comparability risk is highest where harness and metric change together. Memory papers that alter retention and retrieval jointly, recovery features judged only by end-task success, and APO loops that swap graders mid-search all produce non-transportable rankings. Seeded episode locks, intervene-versus-control from identical states, and frozen harness manifests are minimum controls before cross-paper or cross-day comparison.\n\nLeakage and contamination remain structural for public static suites and for any detector trained on a narrow generator set. Chess-style and KernelBench-style executable tasks reduce some text-memorization pathways but introduce environment leakage: engine versions, GPU stacks, and allowed APIs can become accidental parts of the “dataset.” HalluScoring’s unseen-question and unseen-LLM splits are the right template; labs should treat seen-generator accuracy as a development metric only.\n\nJudge reliability is a quieter failure mode on this day because several strong items wisely prefer automatic or causal metrics, yet stance, hallucination verification, and some microtasks still invite LLM-as-a-judge drift. Fixed prompts, automatic eligibility metrics, and shared-task scoring rules reduce degrees of freedom. Where human or model judges remain necessary, report judge model, temperature, rubric version, and agreement; otherwise day-over-day movement cannot be attributed to system quality rather than judge shift.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "agent-harness",
+    "contamination",
+    "reproducibility",
+    "causal-eval",
+    "apo"
+  ],
+  "sources": [
+    {
+      "title": "Benchmarking Prompt Optimization of Large Language Models With Chess",
+      "url": "https://arxiv.org/abs/2610.00416",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "MedKIT: Evaluating Knowledge Integration and Generalization in Large Language Models",
+      "url": "https://arxiv.org/abs/2609.38543",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Measuring the Microtask Eligibility Gap: When Is an Off-the-Shelf SLM Enough for an Agent Harness?",
+      "url": "https://arxiv.org/abs/2610.00025",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "What Should an Agent Remember? Disentangling Retention from Retrieval in Bounded-Memory Evaluation",
+      "url": "https://arxiv.org/abs/2610.00366",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "When Harnesses Lose the Signal: Causal Evaluation of Recovery in LLM Agents",
+      "url": "https://arxiv.org/abs/2610.00372",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "KernelBench: Can LLMs Write GPU Kernels? – Benchmark and Toolkit, Torch –> CUDA",
+      "url": "https://github.com/ScalingIntelligence/KernelBench",
+      "source": "hackernews"
+    },
+    {
+      "title": "A table of 1,200 model benchmarks since 2019, updated daily",
+      "url": "https://mostlyright.md/datasets/llm-benchmark-scores-by-model-since-2019",
+      "source": "hackernews"
+    },
+    {
+      "title": "Causeval – statistically rigorous, causal evaluation for LLM apps",
+      "url": "https://github.com/routsom/causeval",
+      "source": "hackernews"
+    },
+    {
+      "title": "Framing the Narrative: Ideological Mimicry in Large Language Models",
+      "url": "https://arxiv.org/abs/2609.38256",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Halluscoring 2026: The first shared task on llms hallucination detection and answer verification",
+      "url": "https://arxiv.org/abs/2609.38355",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Evaluating Language Model Safety Across Long Adversarial Conversations",
+      "url": "https://arxiv.org/abs/2609.38357",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "While Claude and GPT are still the two best choices, Gemini seems to be catching up on coding agent index with agy-cli",
+      "url": "https://www.reddit.com/r/singularity/comments/1wvnh2d/while_claude_and_gpt_are_still_the_two_best/",
+      "source": "reddit/r/singularity"
+    },
+    {
+      "title": "Decision models like Jev don't beat LLM-as-a-judge or traditional classifiers",
+      "url": "https://developers.redhat.com/articles/2026/10/02/benchmarking-ai-decision-models-against-traditional-guardrails",
+      "source": "hackernews"
+    },
+    {
+      "title": "PARMAN: testing approval and evidence retrieval for agent-to-human tasks",
+      "url": "https://discuss.huggingface.co/t/parman-testing-approval-and-evidence-retrieval-for-agent-to-human-tasks/182795",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Human Baselines for Benchmarks: AI Now Outperforms Junior Accountants",
+      "url": "https://www.reddit.com/r/singularity/comments/1wvik8x/human_baselines_for_benchmarks_ai_now_outperforms/",
+      "source": "reddit/r/singularity"
+    },
+    {
+      "title": "I benchmarked Jev 1.13 against 4 local LLMs on RTX5070 12GB - amazing.",
+      "url": "https://www.reddit.com/r/singularity/comments/1wvnrep/i_benchmarked_jev_113_against_4_local_llms_on/",
+      "source": "reddit/r/singularity"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

@@ -1,5 +1,40 @@
 [
   {
+    "slug": "2026-10-02-daily-eval-briefing-2026-10-02-agent-harness-validity-cheap-apo-benchmarks-and-causal",
+    "title": "Daily Eval Briefing 2026-10-02: Agent Harness Validity, Cheap APO Benchmarks, and Causal Recovery Metrics",
+    "subtitle": "Today’s papers push evaluation past average success toward disentangled retention, causal recovery, and contamination-resistant prompt-optimization loops.",
+    "date": "2026-10-02",
+    "summary": "Same-day coverage for 2026-10-02 is strong on the arXiv side and thin on practitioner discussion channels, with fourteen publishable items after freshness filtering. The clearest methodological shift is from scalar task success toward designs that separate confounded agent decisions: retention versus retrieval in memory, and recovery interventions that can help or hurt from the same execution state. A chess-based automatic prompt optimization (APO) benchmark directly targets saturation, contamination, and expensive grading as blockers for repeated evaluation during prompt search. MedKIT and HalluScoring 2026 extend validity pressure into knowledge integration usability and Arabic hallucination detection under unseen-question and unseen-model generalization. For infra teams, microtask eligibility for small language models (SLMs) and KernelBench-style executable coding evals raise practical questions about where harness automation is trustworthy and how reproducibility should be enforced when execution itself is the judge.",
+    "key_takeaways": [
+      "Treat agent memory and recovery as factorial or causal designs, not single-score leaderboards: hold access fixed when claiming retention gains, and compare intervene-versus-not from identical states before shipping harness auto-recovery.",
+      "Prefer APO and search-loop benchmarks that are cheap, deterministic, and hard to contaminate; chess-style executable grading is a template when public NLP suites saturate under repeated prompt evaluation.",
+      "Score knowledge updates on usable transfer, not recall alone: MedKIT-style granular integration checks matter more for safety-critical domains than factual quiz accuracy after continual update.",
+      "Before replacing frontier-model microtasks with off-the-shelf SLMs, require fixed-prompt automatic metrics and quantify the eligibility gap, including quantization effects on approval, memory write, tool select, and ranking.",
+      "Shared-task and longitudinal score tables help comparability only if harness versions, judge settings, and contamination windows are logged; otherwise daily aggregates remain cross-study noise."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-10-02-daily-eval-briefing-2026-10-02-agent-harness-validity-cheap-apo-benchmarks-and-causal.json"
+  },
+  {
+    "slug": "2026-10-02-eval-radar-daily-2026-10-02-harness-causality-cheap-verifiable-benchmarks-and-what-ag",
+    "title": "Eval Radar Daily 2026-10-02: Harness Causality, Cheap Verifiable Benchmarks, and What Agent Microtasks Actually Measure",
+    "subtitle": "Today’s strongest signal is methodological: recovery, memory, and prompt search are being reframed as controlled comparisons rather than average-success leaderboards.",
+    "date": "2026-10-02",
+    "summary": "Coverage for 2026-10-02 is substantive rather than thin: multiple same-day arXiv releases and two evaluation-tool drops converge on how agent harnesses and automated search loops should be scored. The clearest theme is causal and factorial design—separating retention from retrieval, recovery that helps versus recovery that hurts, and whether off-the-shelf small models clear practitioner thresholds on fixed microtasks. Parallel work attacks saturation and contamination by proposing cheap, det-style settings such as chess for prompt optimization, plus knowledge-integration and hallucination-detection protocols that demand usable transfer rather than surface recall. For researchers and infra teams, the practical implication is that harness changes and judge/protocol choices are now first-class experimental variables, not implementation detail.",
+    "key_takeaways": [
+      "Treat agent recovery and memory as causal or factorial experiments: average task success can hide interventions that rescue some trajectories while damaging others that would have succeeded.",
+      "For automatic prompt optimization, prefer cheap, deterministic, hard-to-contaminate task loops; chess-style execution benchmarks are being positioned explicitly against saturated public suites and expensive grading stacks.",
+      "Before routing planner-adjacent microtasks to SLMs, measure eligibility against fixed prompts and automatic metrics; quantization can change pass/fail relative to practitioner thresholds.",
+      "Medical and factual update evals should score whether integrated knowledge is usable and transferable, not only whether facts can be recited after fine-tuning or retrieval.",
+      "Safety and ideology evals that assume single-turn stance stability understate risk: multi-turn adversarial persistence and user-framing mimicry both shift measured behavior.",
+      "Causal evaluation tooling (Causeval; harness recovery framing) is moving from research narrative into implementable app/agent measurement practice."
+    ],
+    "source_count": 14,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-10-02-eval-radar-daily-2026-10-02-harness-causality-cheap-verifiable-benchmarks-and-what-ag.json"
+  },
+  {
     "slug": "2026-10-01-eval-radar-daily-2026-10-01-verifiable-worlds-contaminated-harnesses-and-what-clean-b",
     "title": "Eval Radar Daily 2026-10-01: Verifiable Worlds, Contaminated Harnesses, and What Clean Benchmarks Miss",
     "subtitle": "Today’s arXiv wave argues that static task scores overstate agent competence once harness drift, world interference, and integration failure enter the test.",
