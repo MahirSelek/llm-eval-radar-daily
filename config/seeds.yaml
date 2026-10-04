@@ -46,6 +46,9 @@ github_repos:
   - lmsys/arena-hard-auto
   - LiveCodeBench/LiveCodeBench
   - google/BIG-bench
+  - open-compass/opencompass
+  - EvolvingLMMs-Lab/lmms-eval
+  - explaindev/ragas
 
 reddit_subs:
   - MachineLearning
@@ -54,16 +57,34 @@ reddit_subs:
   - OpenAI
   - ClaudeAI
   - GeminiAI
-  - singularity
-  - ArtificialIntelligence
 
 arxiv_queries:
   - 'cat:cs.CL AND (evaluation OR benchmark OR leaderboard OR "LLM-as-a-judge" OR contamination OR arena)'
   - 'cat:cs.AI AND ("language model" AND (evaluation OR benchmark OR arena OR judge))'
   - 'all:"LLM-as-a-judge" OR all:"reward bench" OR all:"open llm leaderboard" OR all:LiveBench'
+  - 'ti:"large language model evaluation" OR abs:"evaluation methodology" OR abs:"benchmark design"'
+  - 'all:"judge model" OR all:"judge drift" OR all:"benchmark contamination" OR all:"data leakage"'
+
+# OpenAlex works (open index). Query daily with freshness window.
+# Includes journals/conferences that also surface Scopus/WoS-indexed literature.
+openalex_queries:
+  - large language model evaluation benchmark methodology
+  - llm-as-a-judge benchmark contamination leakage
+  - rewardbench alpacaeval livebench arena hard judge reliability
+  - swe-bench livecodebench code generation evaluation harness
+  - rag evaluation benchmark retrieval faithfulness hallucination
+  - helm lighteval inspect ai lm-evaluation-harness
+  - mmlu gpqa mmmu math arena benchmark reproducibility
+  - openreview neurips iclr icml emnlp acl evaluation benchmark
 
 # Medium + Substack + blogs via RSS (open, no API keys)
 rss_feeds:
+  - name: paperswithcode-latest
+    url: https://paperswithcode.com/rss/latest
+  - name: arxiv-cscl-rss
+    url: https://export.arxiv.org/rss/cs.CL
+  - name: arxiv-csai-rss
+    url: https://export.arxiv.org/rss/cs.AI
   - name: medium-llm-evaluation
     url: https://medium.com/feed/tag/llm-evaluation
   - name: medium-llm-benchmark
@@ -103,11 +124,14 @@ hn_queries:
   - LLM evaluation
   - LLM benchmark
   - LLM-as-a-judge
-  - OpenAI eval
-  - Claude benchmark
-  - Gemini evaluation
+  - evaluation methodology
+  - benchmark contamination
+  - judge model drift
   - Chatbot Arena
   - lm-evaluation-harness
+  - RewardBench
+  - LiveBench
+  - SWE-bench
 
 # Optional: public RSS mirrors for X accounts (RSSHub / Nitter / similar).
 # Example (replace host if needed):
@@ -135,12 +159,17 @@ keywords:
   - lighteval
   - livebench
   - swe-bench
-  - gpt-5
-  - claude
-  - gemini
-  - openai
-  - anthropic
   - harness
   - judge model
+  - judge drift
+  - benchmark contamination
+  - data leakage
+  - methodological validity
+  - reproducibility
+  - rewardbench
+  - alpacaeval
+  - arena hard
+  - mmmu
+  - gpqa
   - calibration
   - sandbagging
