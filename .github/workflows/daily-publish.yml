@@ -37,7 +37,6 @@ jobs:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
           CURSOR_MODEL: ${{ secrets.CURSOR_MODEL }}
           PUBLISHER_MODEL: ${{ secrets.PUBLISHER_MODEL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_TZ: Europe/Istanbul
           # Cloud backup when Mac/agent is off — local AUTO_GIT_PUSH handles Mac-on path
           AUTO_GIT_PUSH: "0"
@@ -54,7 +53,9 @@ jobs:
             exit 0
           fi
           git commit -m "chore: daily eval post"
-          git push || echo "main branch protected; skipping direct push"
+          # Keep history persistent across runs; fail loudly instead of silently dropping state.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

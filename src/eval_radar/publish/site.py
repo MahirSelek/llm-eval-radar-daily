@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from eval_radar.collect.freshness import assess_publish_gate, local_day, select_publishable_items
 from eval_radar.collect.pipeline import collect_all, save_digest
 from eval_radar.config import ROOT, get_settings
 from eval_radar.llm import complete
@@ -19,11 +20,57 @@ DOCS_DIR = ROOT / "docs"
 DOCS_POSTS = DOCS_DIR / "posts"
 
 
-def publish_daily_post(*, dry_run: bool = False, payload: dict | None = None) -> dict:
-    """Write Telegram-aligned site post. Pass payload to reuse today's day-pool."""
+def today_post_exists(day: str | None = None) -> bool:
+    settings = get_settings()
+    day = day or local_day(settings.report_tz)
+    for p in load_posts_index():
+        if str(p.get("date") or "") == day:
+            return True
+        slug = str(p.get("slug") or "")
+        if slug.startswith(day):
+            return True
+    return False
+
+
+def publish_daily_post(
+    *,
+    dry_run: bool = False,
+    payload: dict | None = None,
+    force: bool = False,
+    force_stale: bool = False,
+) -> dict:
+    """Write site post only when TODAY has enough fresh signals."""
     if payload is None:
         payload = collect_all()
         save_digest(payload)
+
+    settings = get_settings()
+    day = local_day(settings.report_tz)
+    gate = assess_publish_gate(
+        payload,
+        force=force,
+        force_stale=force_stale,
+        today_post_exists=today_post_exists(day),
+    )
+    if not gate.get("ok"):
+        return {
+            "skipped": True,
+            "reason": gate.get("reason"),
+            "gate": {k: v for k, v in gate.items() if k != "fresh_items"},
+            "counts": payload.get("counts", {}),
+        }
+
+    fresh_items = gate.get("fresh_items") or select_publishable_items(payload)
+    payload = {
+        **payload,
+        "report_day": day,
+        "items": fresh_items,
+        "counts": {
+            **(payload.get("counts") or {}),
+            "publishable_fresh": len(fresh_items),
+        },
+    }
+
     article = generate_article(payload)
     if dry_run:
         return {"article": article, "counts": payload.get("counts", {})}
@@ -51,9 +98,11 @@ def publish_daily_post(*, dry_run: bool = False, payload: dict | None = None) ->
 def generate_article(payload: dict) -> dict:
     settings = get_settings()
     tz = ZoneInfo(settings.report_tz)
-    day = datetime.now(tz).strftime("%Y-%m-%d")
+    day = payload.get("report_day") or datetime.now(tz).strftime("%Y-%m-%d")
     sources = _sources_from_payload(payload)
-    items = filter_items(payload)
+    items = filter_items(payload, publishable_only=True)
+    if not items:
+        items = filter_items(payload)
     condensed_items = [
         {
             "source": it.get("source"),
@@ -68,12 +117,12 @@ def generate_article(payload: dict) -> dict:
 
     model_for_post = settings.publisher_model or settings.cursor_model
     system = (
-        "You are a senior LLM evaluation research editor writing a SAME-DAY briefing. "
+        "You are a senior LLM evaluation research editor writing a daily technical briefing. "
         "Write in English only. "
         "Return strict JSON only with keys: title, subtitle, summary, key_takeaways, body_en, methodology_risks, tags. "
         "No markdown bold syntax (**), no code fences, no Turkish text. "
-        "CRITICAL: Only discuss signals from the provided items that belong to THIS report day. "
-        "Do not recycle old news as if it happened today. If coverage is thin, say so and analyze carefully what is actually new."
+        "Focus on evaluation quality: benchmark design, judge reliability, contamination/leakage, harness changes, and reproducibility. "
+        "Use only provided items. If same-day coverage is thin, explicitly say so and extract insight from the freshest available technical items without inventing news."
     )
     user = json.dumps(
         {
@@ -87,18 +136,18 @@ def generate_article(payload: dict) -> dict:
                 "Never invent events. Never present multi-day-old releases as today's news unless the item itself is in the provided list and you explicitly note the date."
             ),
             "focus": [
-                "what changed TODAY in benchmarks / harnesses / judges / forums",
-                "leaderboard validity and methodology risk",
+                "evaluation methodology and benchmark validity first",
+                "judge reliability, leakage risk, and comparability constraints",
                 "practical implications for researchers and infra teams",
             ],
             "items": condensed_items,
             "required_shape": {
                 "title": f"clear technical English title anchored to {day}",
-                "subtitle": "one-line thesis about today's shift",
-                "summary": "4-6 sentence executive summary of TODAY",
-                "key_takeaways": ["3-5 concrete same-day implications"],
+                "subtitle": "one-line thesis about the freshest meaningful eval shift",
+                "summary": "4-6 sentence executive summary centered on evaluation quality",
+                "key_takeaways": ["3-5 concrete research/infra implications"],
                 "body_en": (
-                    "900-1600 words deep analysis grounded in provided same-day sources. "
+                    "900-1600 words deep analysis grounded in provided sources from the freshness window. "
                     "Use concrete examples, compare signals, and explain why each matters now."
                 ),
                 "methodology_risks": "2-3 focused paragraphs on comparability, leakage, judge drift",
@@ -106,8 +155,8 @@ def generate_article(payload: dict) -> dict:
             },
             "quality_bar": [
                 "Synthesize and interpret — do not dump link summaries.",
-                "Write like a senior research lead briefing stakeholders about TODAY.",
-                "If a source is older than the report day, mention the date explicitly or skip it.",
+                "Write like a senior research lead briefing stakeholders with evidence discipline.",
+                "If a source is older than the report day, mention the date explicitly and justify why it still matters.",
             ],
         },
         ensure_ascii=False,
@@ -150,15 +199,15 @@ def save_article(article: dict) -> Path:
 
 
 def load_posts_index() -> list[dict]:
-    if not INDEX_FILE.exists():
-        return []
+    rows: list[dict] = []
     try:
-        data = json.loads(INDEX_FILE.read_text(encoding="utf-8"))
+        if INDEX_FILE.exists():
+            data = json.loads(INDEX_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, list):
+                rows = [r for r in data if isinstance(r, dict)]
     except json.JSONDecodeError:
-        return []
-    if isinstance(data, list):
-        return data
-    return []
+        rows = []
+    return _merge_rows_with_post_files(rows)
 
 
 def write_posts_index(posts: list[dict]) -> None:
@@ -370,6 +419,67 @@ def _sources_from_payload(payload: dict) -> list[dict]:
         seen.add(url)
         out.append({"title": title, "url": url, "source": source})
     return out[:16]
+
+
+def _merge_rows_with_post_files(index_rows: list[dict]) -> list[dict]:
+    """
+    Self-heal posts index from article files.
+    If posts.json gets truncated/corrupted, we rebuild missing rows from content/posts/*.json.
+    """
+    by_slug: dict[str, dict] = {}
+    for row in index_rows:
+        slug = str(row.get("slug") or "").strip()
+        if not slug:
+            continue
+        by_slug[slug] = dict(row)
+
+    if POSTS_DIR.exists():
+        for p in POSTS_DIR.glob("*.json"):
+            try:
+                article = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            slug = str(article.get("slug") or p.stem).strip()
+            if not slug:
+                continue
+            rebuilt = _row_from_article(article, p)
+            existing = by_slug.get(slug)
+            if existing:
+                merged = dict(rebuilt)
+                merged.update(existing)
+                merged["slug"] = slug
+                merged["post_path"] = rebuilt.get("post_path")
+                by_slug[slug] = merged
+            else:
+                by_slug[slug] = rebuilt
+
+    rows = list(by_slug.values())
+    rows.sort(
+        key=lambda r: (
+            str(r.get("date") or ""),
+            str(r.get("created_at") or ""),
+            str(r.get("slug") or ""),
+        ),
+        reverse=True,
+    )
+    return rows
+
+
+def _row_from_article(article: dict, path: Path) -> dict:
+    sources = article.get("sources")
+    source_count = len(sources) if isinstance(sources, list) else int(article.get("source_count") or 0)
+    return {
+        "slug": str(article.get("slug") or path.stem),
+        "title": str(article.get("title") or path.stem),
+        "subtitle": str(article.get("subtitle") or ""),
+        "date": str(article.get("date") or ""),
+        "summary": str(article.get("summary") or ""),
+        "key_takeaways": article.get("key_takeaways") or [],
+        "source_count": source_count,
+        "model": str(article.get("model") or ""),
+        "created_at": str(article.get("created_at") or ""),
+        "post_path": str(path.relative_to(ROOT)),
+    }
 
 
 def _slugify(text: str) -> str:
