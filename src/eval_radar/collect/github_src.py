@@ -14,27 +14,20 @@ def fetch_github_repos(
     repos: list[str],
     keywords: list[str],
     *,
-    token: str = "",
     max_items: int = 8,
     timeout: float = 30.0,
 ) -> list[Item]:
-    base_headers = {
+    headers = {
         "Accept": "application/vnd.github+json",
         "User-Agent": "eval-radar/0.1",
     }
-    headers = dict(base_headers)
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
 
     items: list[Item] = []
     failed = 0
     last_error = ""
-    auth_disabled = False
     failed_repos: list[str] = []
-    active_repos = repos
-    if not token and len(repos) > 8:
-        # Unauthenticated GitHub quota is tight; sample a focused subset to avoid hard 403 storms.
-        active_repos = repos[:8]
+    # Anonymous GitHub API quota is limited. Sample a focused subset to avoid noisy 403 storms.
+    active_repos = repos[:8] if len(repos) > 8 else repos
 
     rate_limited = False
     with httpx.Client(
@@ -47,12 +40,6 @@ def fetch_github_repos(
             if rate_limited:
                 break
             releases, err1, code1 = _safe_get(client, f"{API}/repos/{repo}/releases?per_page=3")
-            if token and code1 == 401 and not auth_disabled:
-                # Invalid/expired token: continue unauthenticated instead of failing the whole source.
-                client.headers.pop("Authorization", None)
-                auth_disabled = True
-                log.warning("github token unauthorized (401) — falling back to unauthenticated requests")
-                releases, err1, code1 = _safe_get(client, f"{API}/repos/{repo}/releases?per_page=3")
             if code1 == 403 and "rate limit" in (err1 or "").lower():
                 rate_limited = True
             if err1:
@@ -82,11 +69,6 @@ def fetch_github_repos(
                 )
 
             commits, err2, code2 = _safe_get(client, f"{API}/repos/{repo}/commits?per_page=5")
-            if token and code2 == 401 and not auth_disabled:
-                client.headers.pop("Authorization", None)
-                auth_disabled = True
-                log.warning("github token unauthorized (401) — falling back to unauthenticated requests")
-                commits, err2, code2 = _safe_get(client, f"{API}/repos/{repo}/commits?per_page=5")
             if code2 == 403 and "rate limit" in (err2 or "").lower():
                 rate_limited = True
             if err2:
@@ -120,7 +102,7 @@ def fetch_github_repos(
                 )
 
     items.sort(key=lambda x: x.score, reverse=True)
-    if failed_repos:
+    if failed_repos and not rate_limited:
         # Keep logs readable: one summary line instead of dozens of per-repo warnings.
         log.warning(
             "github source partial failures: %s requests failed across %s repos (checked=%s, last=%s)",
@@ -129,7 +111,9 @@ def fetch_github_repos(
             len(active_repos),
             last_error or "unknown",
         )
-    if repos and not items and failed >= max(1, len(repos)):
+    if rate_limited:
+        log.info("github source rate-limited; continuing without github signals in this pass")
+    elif repos and not items and failed >= max(1, len(active_repos)):
         log.warning("GitHub source produced no items: %s", last_error or "unknown")
     return items[:max_items]
 

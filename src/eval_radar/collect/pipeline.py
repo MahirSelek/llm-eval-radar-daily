@@ -10,6 +10,7 @@ from eval_radar.collect.forums_src import fetch_discourse_forums
 from eval_radar.collect.freshness import apply_freshness, local_day
 from eval_radar.collect.github_src import fetch_github_repos
 from eval_radar.collect.hn_src import fetch_hackernews
+from eval_radar.collect.openalex_src import fetch_openalex
 from eval_radar.collect.reddit_src import fetch_reddit
 from eval_radar.collect.rss_feeds import fetch_rss_feeds
 from eval_radar.config import get_settings, load_seeds
@@ -41,7 +42,6 @@ def collect_all() -> dict:
         fetch_github_repos,
         list(seeds.get("github_repos") or []),
         keywords,
-        token=settings.github_token,
         max_items=settings.max_github,
     )
     buckets["reddit"] = _collect_source(
@@ -88,6 +88,15 @@ def collect_all() -> dict:
         keywords,
         max_items=settings.max_x,
     )
+    buckets["openalex"] = _collect_source(
+        "openalex",
+        errors,
+        fetch_openalex,
+        list(seeds.get("openalex_queries") or []),
+        keywords,
+        max_items=settings.max_openalex,
+        max_age_hours=max_age,
+    )
 
     raw_all = [it for group in buckets.values() for it in group]
     fresh = apply_freshness(
@@ -115,6 +124,7 @@ def collect_all() -> dict:
             "forums": len(buckets["forums"]),
             "hackernews": len(buckets["hackernews"]),
             "x": len(buckets["x"]),
+            "openalex": len(buckets["openalex"]),
             "raw_total": len(raw_all),
             "fresh_total": len(fresh),
             "total": len(merged),
