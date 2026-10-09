@@ -1,0 +1,96 @@
+{
+  "slug": "2026-10-04-2026-10-04-eval-briefing-harness-driven-arc-agi-3-jumps-and-constrained-puzzle-benchm",
+  "date": "2026-10-04",
+  "created_at": "2026-10-04T11:21:51.676566+00:00",
+  "title": "2026-10-04 Eval Briefing: Harness-Driven ARC-AGI-3 Jumps and Constrained Puzzle Benchmarks Stress Score Validity",
+  "subtitle": "Same-day signals show large score moves and new open benchmarks, but comparability still hinges on harness design, attempt limits, and what counts as evaluated performance versus forecast.",
+  "summary": "Same-day coverage for 2026-10-04 is technically meaningful but uneven: the strongest evaluation signal is community reporting that top ARC-AGI-3 Kaggle scores rose from about 7% to 56% over roughly 30 days under local-model and harness constraints. In parallel, Nonobench introduces a transparent, tool-free nonogram evaluation of 49 LLMs with fixed clue presentation and one attempt per puzzle, clarifying protocol choices that many leaderboards leave implicit. Forum and practitioner threads emphasize bounded internal engineering evaluations, separation of stored forecasts from measured performance, and live agent evaluation tooling. Older items from 2026-10-03 remain useful context on evaluation as an engineering system and on domain-specific failure modes at API-knowledge boundaries. Taken together, today’s pool argues that score jumps are less informative than the harness, attempt budget, and contamination controls that produced them.",
+  "key_takeaways": [
+    "Treat the reported ARC-AGI-3 Kaggle jump (about 7% to 56%) as a harness-and-constraint story first: local-model limits, scaffolding, and competition rules likely dominate raw capability claims until protocols are pinned down.",
+    "Prefer benchmarks like Nonobench that publish attempt limits, tool bans, puzzle provenance, and mode splits (standard vs hard); these constraints are prerequisites for cross-lab comparison.",
+    "Separate stored forecasts or consensus snapshots from evaluated performance when citing historical AI consensus artifacts; mixing the two inflates apparent progress.",
+    "Agent and product regressions (memory retrieval, early context loss) belong in evaluation suites as behavioral SLOs, not only as anecdotal forum complaints.",
+    "From 2026-10-03 sources still in window: domain code-generation evals should probe knowledge boundaries explicitly, and security detectors need calibrated latency–recall–false-positive reporting on small benchmarks before gateway claims generalize."
+  ],
+  "body_en": "For 2026-10-04 (Europe/Istanbul), the publishable fresh pool is modest in volume but concentrated on evaluation mechanics rather than model launches. The day is not thin in the sense of empty coverage; it is thin in peer-reviewed same-day papers and dense in community and practitioner artifacts. That composition should shape how stakeholders read the numbers: today’s most attention-grabbing percentage move is a competition leaderboard shift, not a controlled lab release with a frozen harness and contamination audit.\n\nThe primary same-day signal is the r/MachineLearning report that top ARC-AGI-3 scores on Kaggle moved from roughly 7% to 56% over the past 30 days. The post’s own framing is evaluation-relevant: participants are constrained to smallish local models, work inside a harness, and the benchmark was designed to remain hard for average humans. From an evaluation-quality standpoint, the leap is therefore best interpreted as evidence that scaffolding, search, and harness engineering can rewrite the score surface under fixed model-size constraints. Without a public, versioned description of the harness (tooling, retries, voting, program synthesis loops, test-time compute, puzzle preprocessing), the 7%→56% delta is not yet a clean capability comparison across time. Infra and research teams should ask: Was the task distribution stable? Did organizers change scoring or environment? Are solutions leaking via public notebooks? Did the effective attempt budget explode while the headline metric stayed the same? Until those answers are explicit, the practical implication is to treat ARC-AGI-3 Kaggle ranks as a dynamic systems score, not as a static model quality index.\n\nNonobench, also posted today on r/MachineLearning, is the cleaner methodological counterpart. It evaluates 49 LLMs on nonogram (picross) puzzles with a deliberately austere protocol: models receive row and column clues once, return a full grid, use no tools, and get one attempt per puzzle. Standard mode uses 30 puzzles from 5x5 to 15x15 drawn from the Nonograms dataset by Moyà-Alcover (CC BY 4.0); hard mode adds further randomized difficulty. That design makes several validity choices legible. First, one-shot, no-tool settings reduce hidden agent scaffolding that often confounds leaderboard comparisons. Second, publishing puzzle sizes and dataset provenance improves reproducibility and leakage auditing (teams can check whether puzzles appear in training corpora or prior writeups). Third, separating standard and hard modes prevents a single aggregate accuracy from washing out size-dependent failure modes. The research implication is immediate: puzzle and grid-reasoning benchmarks can be scientifically useful when attempt policy and interaction surface are frozen; they become marketing when those knobs are free variables. Infra teams mirroring Nonobench should log exact prompts, decoding settings, and failure taxonomies (invalid grids vs nearly-correct grids) rather than only pass rates.\n\nTwo Hugging Face forum threads dated today widen the framing from leaderboard scores to evaluation epistemology. “Grand Coder: bounded results from internal AI engineering evaluations” points to a growing practice of reporting bounded internal results rather than open-ended claims. Bounded reporting is an evaluation hygiene move: it forces teams to state scope, stop criteria, and what was not measured. “Historical AI consensus snapshots: separating stored forecasts from evaluated performance” is even more central to research communication risk. Consensus archives and forecast stores are easy to misread as retrospective performance evidence. The correct editorial rule is binary: a stored forecast is a prediction artifact; evaluated performance requires a defined task, judge or grader, and timestamped protocol. Conflating the two creates false progress narratives and contaminates meta-analyses that treat all dated claims as measured outcomes.\n\nSame-day practitioner coverage also includes a Medium piece on realtime agent evaluation using Laggraph and Jev, which argues that evaluation loops can make agents more reliable and cheaper. Even without accepting product claims at face value, the direction matters for ops: agent systems need continuous evaluation harnesses, not batch leaderboard snapshots. Complementary to that, an OpenAI community thread today reports GPT-5.6 regressions around memory retrieval failure, early context loss in long chats, and removal of in-chat model switching. For evaluation design, these are reminders that product quality can regress on memory and long-context axes independently of static benchmark scores. Teams that only track MMLU-style suites will miss deployment-relevant failure modes. A practical response is to maintain regression suites for retrieval hit rate, context retention over conversation length, and consistency under model-routing changes when those features exist.\n\nBecause same-day academic density is limited, two 2026-10-03 items still inside the freshness window supply useful technical context and should be dated explicitly. “Why Evaluation Became an AI Engineering Problem” (2026-10-03) reframes evaluation as systems work: the hard question is not whether a model can answer, but how teams know an answer is good. That thesis aligns with today’s ARC-AGI-3 and Nonobench contrast—score production is an engineering pipeline. Separately, an OpenAlex-indexed paper dated 2026-10-03 on knowledge boundary probing for LLM-based power-system code generation describes first-pass failures at an API-knowledge boundary: hallucinated functions, misused parameters, and mishandled results under on-premise constraints. That is a domain instance of a general evaluation lesson: measure not only final program success but where knowledge ends and invention begins. Finally, TrustGuard work dated 2026-10-03 (appearing as closely related Zenodo records) reports an adaptive multi-tier prompt-injection gateway evaluated on a 220-sample benchmark with latency, recall, and false-positive trade-offs. A 220-sample set can support calibrated routing experiments, but it is too small for strong external validity; the methodological value is the explicit multi-metric reporting, not a universal security claim.\n\nComparing signals across today’s pool yields a coherent stakeholder message. ARC-AGI-3’s reported jump shows how quickly constrained competition harnesses can move scores. Nonobench shows how to publish constraints so others can reproduce and challenge results. Forum threads insist on bounded claims and on not treating forecasts as evaluations. Agent tooling and product regression reports push evaluation toward continuous behavioral monitoring. The 2026-10-03 engineering and domain papers remind readers that evaluation quality is inseparable from systems design, knowledge-boundary tests, and detector calibration. For researchers and infra teams on 2026-10-04, the actionable priority is not chasing the highest new percentage; it is freezing harness versions, publishing attempt and tool policies, dating what was measured versus what was forecast, and attaching leakage and regression checks to every score you promote.",
+  "methodology_risks": "Comparability risk is highest for the ARC-AGI-3 Kaggle signal. A month-scale jump under local-model and harness constraints can reflect scaffolding, compute-at-test-time, notebook leakage, or rule interpretation changes rather than model improvement. Without a frozen harness hash, attempt budget, and held-out verification policy, cross-team comparisons of those percentages are weakly identified.\n\nLeakage and contamination risk differs by artifact. Nonobench’s open puzzle provenance improves auditability but also increases the chance that future models train on the same grids or on public solution discussions; one-attempt, no-tool rules help at evaluation time but do not prevent train-set contamination later. Historical consensus snapshots create a different contamination of the literature: if forecasts are cited as performance, meta-results drift upward without any new measurement.\n\nJudge and metric drift remain under-specified across several same-day items. Agent realtime evaluation tooling can silently change graders, prompts, or sampling policies between runs; product regression threads show that memory and long-context behavior can degrade while unrelated benchmarks stay flat. Security detector results on small 220-sample sets are sensitive to label noise and threshold calibration; latency–recall–false-positive trade-offs should be re-estimated on larger, stratified sets before gateway deployment decisions treat them as stable.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "harness",
+    "contamination",
+    "reproducibility",
+    "arc-agi",
+    "agent-eval"
+  ],
+  "sources": [
+    {
+      "title": "Grand Coder: bounded results from internal AI engineering evaluations",
+      "url": "https://discuss.huggingface.co/t/grand-coder-bounded-results-from-internal-ai-engineering-evaluations/182855",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Top ARC-ΑGI-3 scores on Kaggle just went from 7% to 56% [N]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1wxcd4k/top_arcαgi3_scores_on_kaggle_just_went_from_7_to/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Realtime Agent Evaluation Using Laggraph and Jev",
+      "url": "https://medium.com/@satish-0612/realtime-agent-evaluation-using-laggraph-and-jev-62414d6d45ac?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "GPT-5.6 Regression: Memory Retrieval Fails, Long Chats Lose Context Early, and In-Chat Model Switching Is Gone",
+      "url": "https://community.openai.com/t/gpt-5-6-regression-memory-retrieval-fails-long-chats-lose-context-early-and-in-chat-model-switching-is-gone/1403213",
+      "source": "forum/openai-community"
+    },
+    {
+      "title": "Historical AI consensus snapshots: separating stored forecasts from evaluated performance",
+      "url": "https://discuss.huggingface.co/t/historical-ai-consensus-snapshots-separating-stored-forecasts-from-evaluated-performance/182868",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Nonobench: an open benchmark of 49 LLMs on nonogram puzzles, public and open source [P]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1wxa2bs/nonobench_an_open_benchmark_of_49_llms_on/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Why Evaluation Became an AI Engineering Problem",
+      "url": "https://medium.com/@guptanikhil8424/why-evaluation-became-an-ai-engineering-problem-973b381d6e05?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "Knowledge boundary probing and demand-guided intervention for LLM-based power system code generation",
+      "url": "https://doi.org/10.1016/j.aei.2026.105328",
+      "source": "openalex"
+    },
+    {
+      "title": "Adaptive Multi-Tier Inspection for Prompt-Injection Detection in LLM Gateways: Latency, Recall, and False-Positive Trade-Offs",
+      "url": "https://doi.org/10.5281/zenodo.23111682",
+      "source": "openalex"
+    },
+    {
+      "title": "Adaptive Multi-Tier Inspection for Prompt-Injection Detection in LLM Gateways: Latency, Recall, and False-Positive Trade-Offs",
+      "url": "https://doi.org/10.5281/zenodo.23111683",
+      "source": "openalex"
+    },
+    {
+      "title": "Evaluating Empathy in Large Language Model Responses Under Different Prompting Conditions: A Brief Literature Review",
+      "url": "https://doi.org/10.5281/zenodo.23123175",
+      "source": "openalex"
+    },
+    {
+      "title": "PTXBench: Benchmarking and Adapting LLMs for GPU Kernel Optimization",
+      "url": "https://arxiv.org/abs/2608.17379",
+      "source": "hackernews"
+    },
+    {
+      "title": "A Survey of Robotic Navigation and Manipulation with Physics Simulators in the Era of Embodied AI",
+      "url": "https://doi.org/10.1145/3856802",
+      "source": "openalex"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

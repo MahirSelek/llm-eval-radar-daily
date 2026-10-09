@@ -1,5 +1,40 @@
 [
   {
+    "slug": "2026-10-09-daily-eval-briefing-2026-10-09-judge-drift-citation-faithfulness-and-domain-benchmark",
+    "title": "Daily Eval Briefing 2026-10-09: Judge Drift, Citation Faithfulness, and Domain Benchmarks Tighten Validity Standards",
+    "subtitle": "Fresh work today reframes evaluation quality around unreliable judges, unsupported legal claims, and harness controls that decide whether simulators and assistants measure what they claim.",
+    "date": "2026-10-09",
+    "summary": "Same-day coverage for 2026-10-09 is strong on evaluation methodology rather than thin: new arXiv releases stress-test LLM judges, legal claim support, MT annotation, peer-review assistance, grounded wildfire tasks, game commentary protocols, and user-simulator fidelity. The clearest cross-cutting signal is that verdict-like outputs remain fragile under replication, ordering, prompting, and authority substitution, so treating model scores as deterministic ground truth is no longer defensible. Domain benchmarks released today (PARCEL, AI4Fire, GameCommBench, peer-review verification) push evaluation away from holistic preference scores toward claim support, grounding conditions, and type-aware criteria. Parallel work on persona and voice simulators shows that evaluation instruments themselves must be audited before they are used to score agents. Together with October 8 reliability and legal chain-of-thought audits still inside the freshness window, the day argues for stricter reproducibility contracts: fixed harnesses, explicit bare-versus-grounded splits, deterministic fidelity checks where possible, and judge reliability reporting as a first-class result.",
+    "key_takeaways": [
+      "Treat LLM-as-a-judge scores as stochastic measurements: report replication variance, order sensitivity, temperature effects, and agreement with ground truth, not a single scalar.",
+      "Separate citation naming from causal use of authority; legal and review pipelines should score claim support (Supported/Refuted/Not Found) rather than fluent justification alone.",
+      "Publish bare-versus-grounded and type-aware protocol splits so comparability survives modality, domain, and harness changes.",
+      "Audit user simulators before agent eval: measure whether intended speech or persona behaviors actually appear, preferably with deterministic sociolinguistic checks instead of only LLM judges.",
+      "For high-stakes domains (legal, wildfire, peer review), overstated holistic eval can create false deployment confidence; prioritize verification-centric and contamination-aware designs."
+    ],
+    "source_count": 14,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-10-09-daily-eval-briefing-2026-10-09-judge-drift-citation-faithfulness-and-domain-benchmark.json"
+  },
+  {
+    "slug": "2026-10-04-2026-10-04-eval-briefing-harness-driven-arc-agi-3-jumps-and-constrained-puzzle-benchm",
+    "title": "2026-10-04 Eval Briefing: Harness-Driven ARC-AGI-3 Jumps and Constrained Puzzle Benchmarks Stress Score Validity",
+    "subtitle": "Same-day signals show large score moves and new open benchmarks, but comparability still hinges on harness design, attempt limits, and what counts as evaluated performance versus forecast.",
+    "date": "2026-10-04",
+    "summary": "Same-day coverage for 2026-10-04 is technically meaningful but uneven: the strongest evaluation signal is community reporting that top ARC-AGI-3 Kaggle scores rose from about 7% to 56% over roughly 30 days under local-model and harness constraints. In parallel, Nonobench introduces a transparent, tool-free nonogram evaluation of 49 LLMs with fixed clue presentation and one attempt per puzzle, clarifying protocol choices that many leaderboards leave implicit. Forum and practitioner threads emphasize bounded internal engineering evaluations, separation of stored forecasts from measured performance, and live agent evaluation tooling. Older items from 2026-10-03 remain useful context on evaluation as an engineering system and on domain-specific failure modes at API-knowledge boundaries. Taken together, today’s pool argues that score jumps are less informative than the harness, attempt budget, and contamination controls that produced them.",
+    "key_takeaways": [
+      "Treat the reported ARC-AGI-3 Kaggle jump (about 7% to 56%) as a harness-and-constraint story first: local-model limits, scaffolding, and competition rules likely dominate raw capability claims until protocols are pinned down.",
+      "Prefer benchmarks like Nonobench that publish attempt limits, tool bans, puzzle provenance, and mode splits (standard vs hard); these constraints are prerequisites for cross-lab comparison.",
+      "Separate stored forecasts or consensus snapshots from evaluated performance when citing historical AI consensus artifacts; mixing the two inflates apparent progress.",
+      "Agent and product regressions (memory retrieval, early context loss) belong in evaluation suites as behavioral SLOs, not only as anecdotal forum complaints.",
+      "From 2026-10-03 sources still in window: domain code-generation evals should probe knowledge boundaries explicitly, and security detectors need calibrated latency–recall–false-positive reporting on small benchmarks before gateway claims generalize."
+    ],
+    "source_count": 13,
+    "model": "grok-4.5",
+    "created_at": "2026-10-04T11:21:51.676566+00:00",
+    "post_path": "content/posts/2026-10-04-2026-10-04-eval-briefing-harness-driven-arc-agi-3-jumps-and-constrained-puzzle-benchm.json"
+  },
+  {
     "slug": "2026-10-02-daily-eval-briefing-2026-10-02-agent-harness-validity-cheap-apo-benchmarks-and-causal",
     "title": "Daily Eval Briefing 2026-10-02: Agent Harness Validity, Cheap APO Benchmarks, and Causal Recovery Metrics",
     "subtitle": "Today’s papers push evaluation past average success toward disentangled retention, causal recovery, and contamination-resistant prompt-optimization loops.",
@@ -14,6 +49,7 @@
     ],
     "source_count": 16,
     "model": "grok-4.5",
+    "created_at": "2026-10-02T14:23:55.059194+00:00",
     "post_path": "content/posts/2026-10-02-daily-eval-briefing-2026-10-02-agent-harness-validity-cheap-apo-benchmarks-and-causal.json"
   },
   {
@@ -32,6 +68,7 @@
     ],
     "source_count": 14,
     "model": "grok-4.5",
+    "created_at": "2026-10-02T08:39:55.327437+00:00",
     "post_path": "content/posts/2026-10-02-eval-radar-daily-2026-10-02-harness-causality-cheap-verifiable-benchmarks-and-what-ag.json"
   },
   {
@@ -49,6 +86,7 @@
     ],
     "source_count": 14,
     "model": "grok-4.5",
+    "created_at": "2026-10-01T12:16:27.476047+00:00",
     "post_path": "content/posts/2026-10-01-eval-radar-daily-2026-10-01-verifiable-worlds-contaminated-harnesses-and-what-clean-b.json"
   },
   {
@@ -66,6 +104,7 @@
     ],
     "source_count": 14,
     "model": "grok-4.5",
+    "created_at": "2026-09-26T12:35:27.314727+00:00",
     "post_path": "content/posts/2026-09-26-eval-radar-daily-2026-09-26-thin-formal-benchmark-day-harness-latency-tool-use-pause-.json"
   },
   {
@@ -83,6 +122,7 @@
     ],
     "source_count": 16,
     "model": "grok-4.5",
+    "created_at": "2026-09-25T13:18:06.400448+00:00",
     "post_path": "content/posts/2026-09-25-2026-09-25-eval-radar-thin-formal-benchmark-day-harness-satire-rag-adversarial-ambiti.json"
   },
   {
@@ -100,6 +140,7 @@
     ],
     "source_count": 16,
     "model": "grok-4.5",
+    "created_at": "2026-09-24T15:51:56.907473+00:00",
     "post_path": "content/posts/2026-09-24-2026-09-24-eval-radar-thin-formal-benchmark-day-loud-harness-satire-and-provider-foru.json"
   },
   {
@@ -117,6 +158,7 @@
     ],
     "source_count": 16,
     "model": "grok-4.5",
+    "created_at": "2026-09-22T20:45:38.193850+00:00",
     "post_path": "content/posts/2026-09-22-2026-09-22-eval-briefing-niche-benchmarks-expand-while-forum-claims-outpace-verified-.json"
   },
   {
@@ -134,11 +176,13 @@
     ],
     "source_count": 16,
     "model": "grok-4.5",
+    "created_at": "2026-09-22T20:03:18.512407+00:00",
     "post_path": "content/posts/2026-09-22-same-day-eval-pulse-new-solver-and-retrieval-benchmarks-meet-gemini-forum-stress-test.json"
   },
   {
     "slug": "2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l",
     "title": "Eval Harness Fixes Reshape Scores as HELM Swaps Judges and New Cognitive Benchmarks Land",
+    "subtitle": "How lm-eval v0.4.13 few-shot prompt leakage patches and Stanford HELM judge model migrations invalidate historical leaderboard comparisons.",
     "date": "2026-09-22",
     "summary": "On September 22, 2026, LLM evaluation signals centered on fundamental methodology risks over routine leaderboard churn. EleutherAI's lm-evaluation-harness v0.4.13 patched critical few-shot prompt leakages and multiple-choice filtering bugs that alter historical scores. Simultaneously, Stanford HELM retired Together AI's Llama-3.1-405B-Instruct-Turbo judge across five core scenarios, mandating strict version-pinning for all benchmark pipelines.",
     "key_takeaways": [
@@ -149,6 +193,8 @@
     ],
     "source_count": 7,
     "model": "grok-4.5",
+    "created_at": "2026-09-22T05:00:00+00:00",
+    "post_path": "content/posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.json",
     "reading_time": "4 min read",
     "tags": [
       "Benchmark Leakage",
@@ -156,12 +202,12 @@
       "lm-eval-harness",
       "Stanford HELM",
       "Methodology Risk"
-    ],
-    "post_path": "content/posts/2026-09-22-eval-harness-fixes-reshape-scores-as-helm-swaps-judges-and-new-cognitive-benchmarks-l.json"
+    ]
   },
   {
     "slug": "2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m",
     "title": "Evaluation Infrastructure Shifts, LLM-as-a-Judge Drift, and Latent Knowledge Probing",
+    "subtitle": "Analysis of harness backends, judge deprecation cascades, and internal representation probes for LLM auditability.",
     "date": "2026-09-21",
     "summary": "On September 21, 2026, evaluation breakthroughs centered on infrastructure reliability, benchmark construction integrity, and latent representation diagnostics. Harness frameworks introduced multi-engine acceleration while researcher probes targeted deceptive alignment and sandbagging behaviors that traditional multiple-choice evals fail to expose.",
     "key_takeaways": [
@@ -171,13 +217,14 @@
     ],
     "source_count": 4,
     "model": "composer-2.5",
+    "created_at": "2026-09-21T20:29:50+00:00",
+    "post_path": "content/posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.json",
     "reading_time": "3 min read",
     "tags": [
       "Evaluation Harness",
       "LLM-as-a-Judge",
       "Agent Memory",
       "Methodology"
-    ],
-    "post_path": "content/posts/2026-09-21-de-erlendirme-altyap-s-d-zeltmeleri-llm-hakem-kaymalar-ve-gizli-bilgi-l-m.json"
+    ]
   }
 ]
