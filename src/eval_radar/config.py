@@ -15,9 +15,9 @@ load_dotenv(ROOT / ".env")
 class Settings:
     telegram_bot_token: str
     telegram_chat_id: str
-    github_token: str
     cursor_api_key: str
     cursor_model: str
+    chat_model: str
     publisher_model: str
     gemini_api_key: str
     openai_api_key: str
@@ -29,6 +29,7 @@ class Settings:
     max_forums: int
     max_hn: int
     max_x: int
+    max_openalex: int
     max_total_items: int
     max_age_hours: float
     report_tz: str
@@ -37,9 +38,13 @@ class Settings:
     daily_dispatch_minute: int
     auto_git_push: bool
     enable_local_scheduler: bool
+    min_same_day_items: int
     flask_secret_key: str
     dashboard_password: str
     dashboard_local_only: bool
+    chat_log_rotate_mb: float
+    chat_log_retention_days: int
+    chat_history_hard_cap: int
     seeds_path: Path
     memory_dir: Path
     digests_dir: Path
@@ -49,9 +54,13 @@ def get_settings() -> Settings:
     return Settings(
         telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", "").strip(),
         telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", "").strip(),
-        github_token=os.getenv("GITHUB_TOKEN", "").strip(),
         cursor_api_key=os.getenv("CURSOR_API_KEY", "").strip(),
-        cursor_model=os.getenv("CURSOR_MODEL", "composer-2.5").strip() or "composer-2.5",
+        cursor_model=os.getenv("CURSOR_MODEL", "grok-4.7").strip() or "grok-4.7",
+        chat_model=(
+            os.getenv("CHAT_MODEL", "").strip()
+            or os.getenv("PUBLISHER_MODEL", "").strip()
+            or "grok-4.5"
+        ),
         publisher_model=os.getenv("PUBLISHER_MODEL", "").strip(),
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
         openai_api_key=os.getenv("OPENAI_API_KEY", "").strip(),
@@ -63,6 +72,7 @@ def get_settings() -> Settings:
         max_forums=int(os.getenv("MAX_FORUMS", "12")),
         max_hn=int(os.getenv("MAX_HN", "10")),
         max_x=int(os.getenv("MAX_X", "8")),
+        max_openalex=int(os.getenv("MAX_OPENALEX", "14")),
         max_total_items=int(os.getenv("MAX_TOTAL_ITEMS", "18")),
         max_age_hours=float(os.getenv("MAX_AGE_HOURS", "36")),
         report_tz=os.getenv("REPORT_TZ", "Europe/Istanbul"),
@@ -71,9 +81,13 @@ def get_settings() -> Settings:
         daily_dispatch_minute=int(os.getenv("DAILY_DISPATCH_MINUTE", "0")),
         auto_git_push=_parse_bool(os.getenv("AUTO_GIT_PUSH", "1")),
         enable_local_scheduler=_parse_bool(os.getenv("ENABLE_LOCAL_SCHEDULER", "1")),
+        min_same_day_items=int(os.getenv("MIN_SAME_DAY_ITEMS", "3")),
         flask_secret_key=os.getenv("FLASK_SECRET_KEY", "").strip(),
         dashboard_password=os.getenv("DASHBOARD_PASSWORD", "").strip(),
         dashboard_local_only=_parse_bool(os.getenv("DASHBOARD_LOCAL_ONLY", "1")),
+        chat_log_rotate_mb=float(os.getenv("CHAT_LOG_ROTATE_MB", "8")),
+        chat_log_retention_days=int(os.getenv("CHAT_LOG_RETENTION_DAYS", "180")),
+        chat_history_hard_cap=int(os.getenv("CHAT_HISTORY_HARD_CAP", "20000")),
         seeds_path=ROOT / "config" / "seeds.yaml",
         memory_dir=ROOT / "data" / "memory",
         digests_dir=ROOT / "data" / "digests",
