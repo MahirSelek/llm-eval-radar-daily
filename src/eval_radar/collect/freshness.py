@@ -145,3 +145,132 @@ def apply_freshness(
 
 def cutoff_iso(*, max_age_hours: float) -> str:
     return (now_utc() - timedelta(hours=max_age_hours)).isoformat()
+
+
+def item_published(it: dict | Item) -> datetime | None:
+    if isinstance(it, Item):
+        meta = it.meta or {}
+    else:
+        meta = it.get("meta") or {}
+    return parse_datetime(meta.get("published_at") or meta.get("published"))
+
+
+def is_report_day_signal(
+    it: dict | Item,
+    *,
+    report_day: str,
+    tz_name: str,
+    max_age_hours: float,
+    now: datetime | None = None,
+) -> bool:
+    """True only if the signal belongs to this report day / hard freshness window."""
+    n = now or now_utc()
+    published = item_published(it)
+    if published is None:
+        return False
+    try:
+        tz = ZoneInfo(tz_name)
+    except Exception:
+        tz = timezone.utc
+    local_pub_day = published.astimezone(tz).strftime("%Y-%m-%d")
+    if local_pub_day == report_day:
+        return True
+    return is_fresh(published, max_age_hours=max_age_hours, now=n)
+
+
+def select_publishable_items(
+    payload: dict,
+    *,
+    report_day: str | None = None,
+    max_age_hours: float | None = None,
+) -> list[dict]:
+    """Hard filter for Telegram/GitHub: no soft-fallback stale recycling."""
+    from eval_radar.config import get_settings
+
+    settings = get_settings()
+    day = report_day or payload.get("report_day") or local_day(settings.report_tz)
+    max_age = float(max_age_hours if max_age_hours is not None else settings.max_age_hours)
+    now = now_utc()
+    out: list[dict] = []
+    for it in payload.get("items") or []:
+        if not isinstance(it, dict):
+            continue
+        if is_report_day_signal(
+            it,
+            report_day=day,
+            tz_name=settings.report_tz,
+            max_age_hours=max_age,
+            now=now,
+        ):
+            out.append(it)
+    out.sort(key=lambda x: float(x.get("score") or 0), reverse=True)
+    return out
+
+
+def assess_publish_gate(
+    payload: dict,
+    *,
+    force: bool = False,
+    force_stale: bool = False,
+    today_post_exists: bool = False,
+) -> dict:
+    """
+    Decide whether Telegram + GitHub should burn tokens today.
+
+    Skip when:
+    - digest is not for local today
+    - not enough hard-fresh / same-day signals (avoids replaying Sep 22 on Sep 24)
+    - today's site post already exists (unless force)
+    """
+    from eval_radar.config import get_settings
+
+    settings = get_settings()
+    today = local_day(settings.report_tz)
+    day = payload.get("report_day") or today
+    fresh = select_publishable_items(payload, report_day=today)
+    min_n = max(1, settings.min_same_day_items)
+
+    if day != today:
+        return {
+            "ok": False,
+            "reason": f"digest day {day} != today {today} — will not republish old day",
+            "report_day": day,
+            "today": today,
+            "fresh_count": len(fresh),
+            "min_required": min_n,
+        }
+
+    if today_post_exists and not force:
+        return {
+            "ok": False,
+            "reason": f"site post for {today} already exists — skip token burn",
+            "report_day": day,
+            "today": today,
+            "fresh_count": len(fresh),
+            "min_required": min_n,
+            "already_published": True,
+        }
+
+    if len(fresh) < min_n and not force_stale:
+        return {
+            "ok": False,
+            "reason": (
+                f"only {len(fresh)} fresh same-day signals (need ≥{min_n}). "
+                "Collect more today before publishing; will not recycle older digests."
+            ),
+            "report_day": day,
+            "today": today,
+            "fresh_count": len(fresh),
+            "min_required": min_n,
+            "stale_blocked": True,
+        }
+
+    return {
+        "ok": True,
+        "reason": "ready",
+        "report_day": day,
+        "today": today,
+        "fresh_count": len(fresh),
+        "min_required": min_n,
+        "fresh_items": fresh,
+    }
