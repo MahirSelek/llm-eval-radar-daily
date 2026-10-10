@@ -1,5 +1,22 @@
 [
   {
+    "slug": "2026-10-10-daily-eval-briefing-2026-10-10-thin-same-day-signal-stronger-lessons-from-harness-fix",
+    "title": "Daily Eval Briefing 2026-10-10: Thin Same-Day Signal, Stronger Lessons from Harness Fixes and Scale Surprises",
+    "subtitle": "Today’s feed is light on peer-reviewed eval science; the actionable signal is inspect_ai harness correctness, long-context scale inversions, and unverified leaderboard chatter.",
+    "date": "2026-10-10",
+    "summary": "Same-day coverage for 2026-10-10 is thin on primary evaluation research: the freshest items are practitioner commentary, forum analysis, and low-evidence Reddit leaderboard posts rather than new peer-reviewed benchmarks or contamination studies. The strongest technical signal within the freshness window is the 2026-10-09 inspect_ai 0.3.278 release, which fixes compaction triggers, double-counted reasoning tokens, and retry loops that can silently distort agent eval logs. A Hugging Face forum report dated 2026-10-10 argues that Qwen2.5-1.5B can beat a 3B sibling on a long-context benchmark, underscoring that parameter count is a weak proxy for context-sensitive capability. Adjacent items from 2026-10-09—Open Codenames as an interactive LLM benchmark and a Terminal-Bench task frontier agents failed—reinforce interest in harder, harness-tied tasks over static scoreboards. Researchers and infra teams should treat today’s Gemini leaderboard claims as unverified social signal and prioritize reproducibility controls in agent harnesses.",
+    "key_takeaways": [
+      "Treat 2026-10-10 Reddit Gemini benchmark posts as non-comparable social claims until task sets, prompts, judges, and contamination controls are published.",
+      "Upgrade or audit agent harnesses after inspect_ai 0.3.278 (2026-10-09): early compaction, inflated reasoning-token counts, and overflow retry loops can invalidate longitudinal comparisons.",
+      "Do not assume larger models dominate long-context suites; the Hugging Face forum case where Qwen2.5-1.5B beat 3B is a reminder to report context regime, truncation policy, and scoring separately from size.",
+      "Interactive and terminal-agent benchmarks (Open Codenames; Terminal-Bench hard tasks from 2026-10-09) raise leakage and harness-drift risk—freeze environments and log tool/handoff behavior.",
+      "Eval-driven development commentary from today is useful as process guidance, not as a substitute for leakage audits, judge reliability studies, or release-matched baselines."
+    ],
+    "source_count": 9,
+    "model": "grok-4.5",
+    "post_path": "content/posts/2026-10-10-daily-eval-briefing-2026-10-10-thin-same-day-signal-stronger-lessons-from-harness-fix.json"
+  },
+  {
     "slug": "2026-10-09-daily-eval-briefing-2026-10-09-judge-drift-citation-faithfulness-and-domain-benchmark",
     "title": "Daily Eval Briefing 2026-10-09: Judge Drift, Citation Faithfulness, and Domain Benchmarks Tighten Validity Standards",
     "subtitle": "Fresh work today reframes evaluation quality around unreliable judges, unsupported legal claims, and harness controls that decide whether simulators and assistants measure what they claim.",
@@ -14,6 +31,7 @@
     ],
     "source_count": 14,
     "model": "grok-4.5",
+    "created_at": "2026-10-09T13:03:31.762826+00:00",
     "post_path": "content/posts/2026-10-09-daily-eval-briefing-2026-10-09-judge-drift-citation-faithfulness-and-domain-benchmark.json"
   },
   {

@@ -43,20 +43,8 @@ jobs:
           ENABLE_LOCAL_SCHEDULER: "0"
         run: python -m eval_radar.cli publish
 
-      - name: Commit generated content
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add content docs data/digests || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "chore: daily eval post"
-          # Keep history persistent across runs; fail loudly instead of silently dropping state.
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin HEAD:"${GITHUB_REF_NAME}"
-
+      # Pages deploy must not depend on pushing to protected main.
+      # Even if git push is blocked, upload the generated docs artifact.
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -67,3 +55,18 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+      - name: Commit generated content
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content docs data/digests || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: daily eval post"
+          # Protected main may reject direct pushes; Pages already deployed above.
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin HEAD:"${GITHUB_REF_NAME}" || echo "WARN: git push blocked (branch protection). Pages deploy still ran."
