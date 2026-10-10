@@ -10,15 +10,21 @@ from eval_radar.llm import LLMError, build_agent_system_prompt, complete, llm_co
 from eval_radar.memory.store import load_preferences, memory_paths
 
 
-def filter_items(payload: dict) -> list[dict]:
+def filter_items(payload: dict, *, publishable_only: bool = False) -> list[dict]:
     settings = get_settings()
     prefs = load_preferences()
     max_items = int(prefs.get("max_items_per_report") or settings.max_total_items)
     mute = [m.lower() for m in (prefs.get("mute_topics") or [])]
     boost = [b.lower() for b in (prefs.get("boost_topics") or [])]
 
+    source_items = payload.get("items") or []
+    if publishable_only:
+        from eval_radar.collect.freshness import select_publishable_items
+
+        source_items = select_publishable_items(payload)
+
     filtered: list[dict] = []
-    for it in payload.get("items") or []:
+    for it in source_items:
         blob = f"{it.get('title', '')} {it.get('summary', '')}".lower()
         if any(m in blob for m in mute if m):
             continue
@@ -32,7 +38,26 @@ def filter_items(payload: dict) -> list[dict]:
 
 
 def render_report(payload: dict) -> str:
-    """Long bilingual brief via LLM; falls back to expanded template."""
+    """Long bilingual brief via LLM; falls back to expanded template.
+
+    Refuses to burn tokens recycling a previous day's thin/stale pool.
+    """
+    from eval_radar.collect.freshness import assess_publish_gate
+
+    gate = assess_publish_gate(payload, force=True, force_stale=False)
+    if not gate.get("ok") and gate.get("stale_blocked"):
+        day = gate.get("today") or payload.get("report_day")
+        return (
+            f"<b>Bugün ({day}) için yeterli taze sinyal yok</b>\n\n"
+            f"{gate.get('reason')}\n\n"
+            "Eski günün raporunu yeniden basmıyorum — önce collect biriksin, "
+            "sonra /dispatch veya Rapor Üret."
+        )
+
+    # Prefer hard-fresh items when available
+    if gate.get("fresh_items"):
+        payload = {**payload, "items": gate["fresh_items"]}
+
     if llm_configured():
         try:
             return _render_llm(payload)
@@ -55,7 +80,7 @@ def _render_llm(payload: dict) -> str:
     now = datetime.now(tz).strftime("%Y-%m-%d %H:%M %Z")
 
     system = build_agent_system_prompt(profile, prefs)
-    user = f"""Bugünün LLM evaluation ve benchmark sinyallerini Mahir için profesyonel, ferah ve derin bir araştırma brifingine dönüştür.
+    user = f"""Mahir için large language model evaluation odaklı profesyonel, ferah ve derin bir araştırma brifingi üret.
 
 Zaman: {now}
 Ham Sinyal Dağılımı: {json.dumps(payload.get('counts') or {}, ensure_ascii=False)}
@@ -66,23 +91,29 @@ FORMAT VE YAZIM DÜZENİ KURALLARI:
 1. Kesinlikle çorba veya sıkışık metin olmasın. Her ana bölüm ve paragraf arasında 2 satır boşluk bırak.
 2. Aşağıdaki temiz yapılandırılmış şablonu takip et:
 
-🎯 EXECUTIVE BRIEF / GÜNÜN TEMASI
+EXECUTIVE BRIEF / GÜNÜN TEMASI
 (Kısa, çarpıcı Türkçe paragraf + ardından kısa İngilizce özet paragraf)
 
-🔬 KRİTİK METODOLOJİ & BENCHMARK GELİŞMELERİ
+KRİTİK METODOLOJİ & BENCHMARK GELİŞMELERİ
 (En önemli 3–5 madde için:
 • [KAYNAK / BAŞLIK]
   - TR Derinlikli Açıklama (3-5 cümle: ne değişti, neden önemli?)
   - EN Key Takeaway (2-3 sentences)
   - URL)
 
-🚨 HAKEM & SIZINTI ALARMLARI (LLM-as-a-Judge / Leakage / Leaderboard)
+HAKEM & SIZINTI ALARMLARI (LLM-as-a-Judge / Leakage / Leaderboard)
 (Hakem modellerindeki kaymalar, contamination veya harness düzeltmeleri hakkında 2-3 madde)
 
-💡 EYLEM PLANI & GÖZLEM LİSTESİ
+EYLEM PLANI & GÖZLEM LİSTESİ
 (Mahir'in bu hafta takip etmesi veya dikkat etmesi gereken 3-4 net madde)
 
+ODAK KURALI:
+- Öncelik: papers, benchmark methodology, judge reliability, contamination/leakage, harness değişiklikleri.
+- Sinyal zayıfsa “bugün ince” deyip boşluk doldurma; son freshness penceresindeki güçlü teknik öğeleri kıyaslayarak içgörü çıkar.
+- Genel model lansmanı/hype yerine ölçüm kalitesi ve değerlendirme güvenilirliğine odaklan.
+
 YASAK: Markdown bold (**), başlık etiketi (##) gibi ham işaretler KULLANMA. Düz, temiz, okunabilir metin formatında yaz.
+YASAK: Emoji/icon kullanma.
 """
     raw = complete(system, user, max_tokens=3500, purpose="daily_report")
     return polish_llm_text(raw)
@@ -96,9 +127,9 @@ def _render_template(payload: dict) -> str:
     errors = payload.get("errors") or {}
 
     lines = [
-        f"🎯 LLM EVALUATION RADAR — {now}",
-        f"📅 Report day: {payload.get('report_day', 'today')} · freshness ≤{payload.get('freshness', {}).get('max_age_hours', '?')}h",
-        f"📊 Sinyaller: arXiv {payload.get('counts', {}).get('arxiv', 0)} · "
+        f"LLM EVALUATION RADAR — {now}",
+        f"Report day: {payload.get('report_day', 'today')} · freshness ≤{payload.get('freshness', {}).get('max_age_hours', '?')}h",
+        f"Sinyaller: arXiv {payload.get('counts', {}).get('arxiv', 0)} · "
         f"GitHub {payload.get('counts', {}).get('github', 0)} · "
         f"Reddit {payload.get('counts', {}).get('reddit', 0)} · "
         f"RSS {payload.get('counts', {}).get('rss', 0)} · "
@@ -112,7 +143,7 @@ def _render_template(payload: dict) -> str:
     ]
 
     if errors:
-        lines.append("⚠️ Kaynak Uyarıları:")
+        lines.append("Kaynak Uyarıları:")
         for src, err in errors.items():
             lines.append(f"• {src}: {err}")
         lines.append("")
@@ -128,7 +159,7 @@ def _render_template(payload: dict) -> str:
             lines.append(f"{i}. [{src}] {title}")
             lines.append(f"   {summary}")
             if url:
-                lines.append(f"   🔗 {url}")
+                lines.append(f"   Link: {url}")
             lines.append("")
 
     return "\n".join(lines)
