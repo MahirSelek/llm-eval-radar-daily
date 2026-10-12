@@ -3,7 +3,6 @@ name: Daily Publish
 on:
   workflow_dispatch:
   schedule:
-    # Keep collecting/publishing even when local terminal is closed.
     - cron: "0 */2 * * *"
 
 permissions:
@@ -19,8 +18,22 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore posts from site-content archive
+        run: |
+          set -euo pipefail
+          git fetch origin site-content:site-content || true
+          if git show-ref --verify --quiet refs/heads/site-content || git show-ref --verify --quiet refs/remotes/origin/site-content; then
+            git archive origin/site-content content 2>/dev/null | tar -x || true
+            echo "Post files after restore:"
+            ls content/posts 2>/dev/null | wc -l || echo 0
+          else
+            echo "site-content branch missing; starting from main only"
+          fi
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -38,13 +51,32 @@ jobs:
           CURSOR_MODEL: ${{ secrets.CURSOR_MODEL }}
           PUBLISHER_MODEL: ${{ secrets.PUBLISHER_MODEL }}
           REPORT_TZ: Europe/Istanbul
-          # Cloud backup when Mac/agent is off — local AUTO_GIT_PUSH handles Mac-on path
           AUTO_GIT_PUSH: "0"
           ENABLE_LOCAL_SCHEDULER: "0"
         run: python -m eval_radar.cli publish
 
-      # Pages deploy must not depend on pushing to protected main.
-      # Even if git push is blocked, upload the generated docs artifact.
+      - name: Rebuild docs from full post archive
+        run: |
+          python - <<'PY'
+          from eval_radar.publish.site import load_posts_index, write_posts_index, build_docs_site
+          posts = load_posts_index()
+          write_posts_index(posts)
+          build_docs_site(posts)
+          print(f"docs rebuilt with {len(posts)} posts")
+          print("top dates", [p.get("date") for p in posts[:12]])
+          PY
+
+      - name: Snapshot generated content
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/generated-content"
+          cp -R content "$RUNNER_TEMP/generated-content/"
+          cp -R docs "$RUNNER_TEMP/generated-content/"
+          mkdir -p "$RUNNER_TEMP/generated-content/data"
+          if [ -d data/digests ]; then
+            cp -R data/digests "$RUNNER_TEMP/generated-content/data/"
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -56,17 +88,55 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-      - name: Commit generated content
-        continue-on-error: true
+      - name: Persist archive to site-content (unprotected)
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin site-content:site-content || true
+          if git show-ref --verify --quiet refs/heads/site-content; then
+            git checkout site-content
+          elif git show-ref --verify --quiet refs/remotes/origin/site-content; then
+            git checkout -B site-content origin/site-content
+          else
+            git checkout --orphan site-content
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+
+          rm -rf content docs data
+          cp -R "$RUNNER_TEMP/generated-content/content" .
+          cp -R "$RUNNER_TEMP/generated-content/docs" .
+          mkdir -p data
+          if [ -d "$RUNNER_TEMP/generated-content/data/digests" ]; then
+            cp -R "$RUNNER_TEMP/generated-content/data/digests" data/
+          fi
+
+          git add -A content docs data/digests || true
+          if git diff --cached --quiet; then
+            echo "No archive changes to commit"
+          else
+            git commit -m "chore: archive daily eval posts"
+          fi
+          git push -u origin HEAD:site-content
+
+      - name: Best-effort sync to main
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          git checkout main
+          git pull --rebase origin main || true
+          rm -rf content docs
+          cp -R "$RUNNER_TEMP/generated-content/content" .
+          cp -R "$RUNNER_TEMP/generated-content/docs" .
+          mkdir -p data
+          if [ -d "$RUNNER_TEMP/generated-content/data/digests" ]; then
+            cp -R "$RUNNER_TEMP/generated-content/data/digests" data/
+          fi
           git add content docs data/digests || true
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "main already up to date"
             exit 0
           fi
           git commit -m "chore: daily eval post"
-          # Protected main may reject direct pushes; Pages already deployed above.
-          git pull --rebase origin "${GITHUB_REF_NAME}" || true
-          git push origin HEAD:"${GITHUB_REF_NAME}" || echo "WARN: git push blocked (branch protection). Pages deploy still ran."
+          git push origin HEAD:main || echo "WARN: main push blocked by branch protection"

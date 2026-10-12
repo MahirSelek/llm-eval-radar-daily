@@ -1,0 +1,27 @@
+{
+  "slug": "2026-10-12-daily-llm-eval-briefing-2026-10-12-self-scaling-arenas-perturbation-harnesses-and-dom",
+  "date": "2026-10-12",
+  "created_at": "2026-10-12T12:00:00+00:00",
+  "title": "Daily LLM Eval Briefing — 2026-10-12: Self-Scaling Arenas, Perturbation Harnesses, and Domain Benchmark Rigor",
+  "subtitle": "Same-day arXiv traffic centers on benchmarks that fight leakage, separate transforms from stacks, and replace refusal-only safety scoring with behaviorally grounded protocols.",
+  "summary": "Coverage for 2026-10-12 is strong: twelve publishable fresh items, dominated by same-day arXiv releases rather than secondary chatter. The clearest evaluation-quality signal is SWE-Duel’s argument that coding arenas should create tasks and oracles at evaluation time so nothing exists in advance to leak, with difficulty set by competing agents instead of a fixed release set. In parallel, perturber packages semantics-preserving text perturbations as a reusable, stateless transform layer so robustness claims can be reproduced outside any one benchmarking stack. DistressBench, GeoFitBench-LLM, a constrained spatial-editing benchmark, GeopoliticalQA, MADS, and a turn-taking speech protocol collectively push evaluation from saturated static scores toward elicitation fidelity, grounded retrieval, adversarial dialogue trajectories, and decision-level conversational behavior. Unsupervised multimodal reward modeling further pressures preference-data assumptions by training a scoring head without human preference labels, using labeled data only for layer selection.",
+  "key_takeaways": [
+    "Treat fixed coding suites as provisional: SWE-Duel’s self-scaling duel design is a concrete anti-contamination pattern—generate tasks and oracles at eval time and let participant strength set difficulty.",
+    "Decouple perturbation tooling from leaderboard stacks: perturber’s stateless, identical-across-runs transforms make robustness deltas comparable across labs and CI harnesses.",
+    "Safety eval for crisis support must score substantive multi-dimensional help, not refusal accuracy; DistressBench’s 718-conversation design is the day’s clearest construct-validity correction.",
+    "New domain benches (GeoFitBench-LLM, constrained spatial editing, GeopoliticalQA) raise the bar on requirements elicitation, geometric constraint satisfaction, and document-grounded RAG—not just answer fluency.",
+    "Synthetic adversarial dialogue (MADS) and pause-level speech scoring shift agent eval from function-call accuracy and aggregate latency toward trajectory robustness and human-matched turn decisions."
+  ],
+  "body_en": "Coverage for 2026-10-12 is strong: twelve publishable fresh items, dominated by same-day arXiv releases rather than secondary chatter. The clearest evaluation-quality signal is SWE-Duel’s argument that coding arenas should create tasks and oracles at evaluation time so nothing exists in advance to leak, with difficulty set by competing agents instead of a fixed release set. In parallel, perturber packages semantics-preserving text perturbations as a reusable, stateless transform layer so robustness claims can be reproduced outside any one benchmarking stack. DistressBench, GeoFitBench-LLM, a constrained spatial-editing benchmark, GeopoliticalQA, MADS, and a turn-taking speech protocol collectively push evaluation from saturated static scores toward elicitation fidelity, grounded retrieval, adversarial dialogue trajectories, and decision-level conversational behavior. Unsupervised multimodal reward modeling further pressures preference-data assumptions by training a scoring head without human preference labels, using labeled data only for layer selection.\n\nKey takeaways:\n- Treat fixed coding suites as provisional: SWE-Duel’s self-scaling duel design is a concrete anti-contamination pattern—generate tasks and oracles at eval time and let participant strength set difficulty.\n- Decouple perturbation tooling from leaderboard stacks: perturber’s stateless, identical-across-runs transforms make robustness deltas comparable across labs and CI harnesses.\n- Safety eval for crisis support must score substantive multi-dimensional help, not refusal accuracy; DistressBench’s 718-conversation design is the day’s clearest construct-validity correction.\n- New domain benches (GeoFitBench-LLM, constrained spatial editing, GeopoliticalQA) raise the bar on requirements elicitation, geometric constraint satisfaction, and document-grounded RAG—not just answer fluency.\n- Synthetic adversarial dialogue (MADS) and pause-level speech scoring shift agent eval from function-call accuracy and aggregate latency toward trajectory robustness and human-matched turn decisions.",
+  "methodology_risks": "Recovered after Actions produced the post but protected main blocked git persistence.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "recovered"
+  ],
+  "sources": [],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5",
+  "source_count": 12,
+  "recovered_from_run": 38224800698
+}
