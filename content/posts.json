@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-13-daily-eval-briefing-2026-10-13-self-scaling-arenas-perturbation-harnesses-and-judge-l",
+    "title": "Daily Eval Briefing 2026-10-13: Self-Scaling Arenas, Perturbation Harnesses, and Judge-Light Scoring",
+    "subtitle": "Same-day coverage is thin; the clearest signal from the last 36 hours is a push to stop leaking static tasks and to separate reward, robustness, and crisis scoring from brittle fixed benchmarks.",
+    "date": "2026-10-13",
+    "summary": "For 2026-10-13, publishable same-day material is limited to a small Inspect AI harness fix; the substantive evaluation story sits in 2026-10-12 papers and tooling still inside the freshness window. SWE-Duel argues that coding benchmarks should generate tasks and oracles at evaluation time so nothing exists in advance to contaminate training sets, and difficulty tracks competing agents rather than a fixed release snapshot. Parallel work on unsupervised multimodal reward heads, a reusable semantics-preserving perturbation service, and DistressBench’s multi-dimensional crisis scoring all attack different failure modes of today’s leaderboards: preference-label cost and disagreement, overstated robustness on clean text, and safety metrics that treat refusal as success when support is required. Infrastructure teams should treat these as constraints on comparability, not as interchangeable score bumps. Taken together, the window favors dynamic arenas, layer-selected reward proxies, and harness-level reproducibility over another static SWE-style saturation chart.",
+    "key_takeaways": [
+      "Treat SWE-Duel’s self-scaling claim as a leakage and saturation design pattern: if tasks and oracles are created at eval time, historical contamination arguments weaken, but cross-run comparability and oracle quality become first-class risks.",
+      "Unsupervised multimodal reward modeling shows that layer choice on a frozen vision-language backbone can dominate labeled preference pipelines for proxy rewards; do not assume human preference pairs are the only path to a usable judge-like score.",
+      "Use perturber-style transforms as a shared, stack-independent robustness layer so meaning-preserving variants are applied identically across labs; clean-benchmark scores alone remain an optimistic upper bound.",
+      "DistressBench reframes SSH-adjacent evaluation away from refusal accuracy toward multi-dimensional supportive conversation quality; refusal-first safety harnesses will mis-rank models for affective crisis traffic.",
+      "Inspect AI’s 2026-10-12/13 micro-releases are harness hygiene, not capability news: pin versions and re-run when serializer or type-ignore tooling changes, even when release notes say only internal improvements."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-13T01:50:37.147714+00:00",
+    "post_path": "content/posts/2026-10-13-daily-eval-briefing-2026-10-13-self-scaling-arenas-perturbation-harnesses-and-judge-l.json"
+  },
+  {
     "slug": "2026-10-12-daily-llm-eval-briefing-2026-10-12-self-scaling-arenas-perturbation-harnesses-and-dom",
     "title": "Daily LLM Eval Briefing — 2026-10-12: Self-Scaling Arenas, Perturbation Harnesses, and Domain Benchmark Rigor",
     "subtitle": "Same-day arXiv traffic centers on benchmarks that fight leakage, separate transforms from stacks, and replace refusal-only safety scoring with behaviorally grounded protocols.",
