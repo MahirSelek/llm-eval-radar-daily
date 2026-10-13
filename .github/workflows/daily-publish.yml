@@ -95,10 +95,21 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git fetch origin site-content:site-content || true
-          if git show-ref --verify --quiet refs/heads/site-content; then
-            git checkout site-content
-          elif git show-ref --verify --quiet refs/remotes/origin/site-content; then
+          ARCHIVE_DIR="$RUNNER_TEMP/site-content-worktree"
+          rm -rf "$ARCHIVE_DIR"
+          if git show-ref --verify --quiet refs/remotes/origin/site-content; then
+            git worktree add --force "$ARCHIVE_DIR" origin/site-content
+          elif git show-ref --verify --quiet refs/heads/site-content; then
+            git worktree add --force "$ARCHIVE_DIR" site-content
+          else
+            git worktree add --force "$ARCHIVE_DIR" HEAD
+          fi
+
+          pushd "$ARCHIVE_DIR" >/dev/null
+          if git show-ref --verify --quiet refs/remotes/origin/site-content; then
             git checkout -B site-content origin/site-content
+          elif git show-ref --verify --quiet refs/heads/site-content; then
+            git checkout -B site-content site-content
           else
             git checkout --orphan site-content
             git rm -rf . >/dev/null 2>&1 || true
@@ -119,6 +130,8 @@ jobs:
             git commit -m "chore: archive daily eval posts"
           fi
           git push -u origin HEAD:site-content
+          popd >/dev/null
+          git worktree remove --force "$ARCHIVE_DIR"
 
       - name: Best-effort sync to main
         continue-on-error: true
