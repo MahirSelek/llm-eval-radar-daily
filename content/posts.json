@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-16-daily-eval-briefing-2026-10-16-whose-benchmark-broken-arena-odds-and-corrected-long-h",
+    "title": "Daily Eval Briefing 2026-10-16: Whose Benchmark, Broken Arena Odds, and Corrected Long-Horizon Harnesses",
+    "subtitle": "Same-day 2026-10-16 publishable traffic is thin; the freshest 2026-10-15 window centers on auditability of eval resources, ranking axiom failures, and harness repair for sustained-agent measurement.",
+    "date": "2026-10-16",
+    "summary": "Official coverage for 2026-10-16 is sparse in the provided set: nearly all publishable items land on 2026-10-15 within the freshness window, so this briefing treats that cohort as the operative signal rather than inventing same-calendar-day news. The strongest methodological through-line is legitimacy of scores: a user-centric audit framework asks whose data and whose judgments actually define benchmark success, while Arena analyses show Bradley-Terry/Luce assumptions break when near-copy models compete. In parallel, Long-Horizon-Terminal-Bench 2.0 and Inspect AI v0.3.281 underline that harness defect repair and infra breaking changes can move measured agent progress as much as model updates. Multilingual summarization and base-model setup sensitivity studies reinforce that metric choice, judge panels, and prompt/ICL design remain first-order comparability risks. Practical takeaway for research and infra teams: freeze and document harness identity, separate contributor conventions from claimed user populations, and treat pairwise arena rankings among related models as biased unless corrected.",
+    "key_takeaways": [
+      "Treat 2026-10-16 as a thin same-day day and prioritize the 2026-10-15 arXiv/HN/GitHub cluster: audit frameworks and ranking axiom failures matter more than new leaderboard headlines.",
+      "Before citing a benchmark score, map who authored items, metadata, docs, and scoring rules versus whose needs the result is claimed to represent (Whose Data, Whose Benchmark?).",
+      "Do not read Chatbot Arena gaps between version/size/lab siblings as clean capability deltas; near-copy votes are more decisive than Bradley-Terry predicts (1.37x / 1.26x / 1.12x in the reported study).",
+      "Re-run long-horizon agent claims on LHTB 2.0-class corrected harnesses: task and infrastructure defects can inflate or deflate sustained-progress metrics even when the original task set is preserved.",
+      "Pin Inspect AI release identity (v0.3.281 requires Python 3.11+) and treat swarm/agent-bridge changes as potential non-model variance in multi-agent evals."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-15T22:54:49.655087+00:00",
+    "post_path": "content/posts/2026-10-16-daily-eval-briefing-2026-10-16-whose-benchmark-broken-arena-odds-and-corrected-long-h.json"
+  },
+  {
     "slug": "2026-10-15-daily-eval-briefing-2026-10-15-protocol-surfaces-fraudulent-paper-stress-tests-and-ha",
     "title": "Daily Eval Briefing 2026-10-15: Protocol Surfaces, Fraudulent-Paper Stress Tests, and Harness Drift in Inspect",
     "subtitle": "Same-day primary coverage is thin; the strongest signal in the last ~36h is that evaluation quality is shifting from single scores toward protocols, verifiers, and harness stability.",
