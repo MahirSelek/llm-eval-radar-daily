@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-17-daily-eval-briefing-2026-10-17-benchmaxxing-signals-broken-arena-claims-and-domain-ha",
+    "title": "Daily Eval Briefing 2026-10-17: Benchmaxxing Signals, Broken Arena Claims, and Domain Harnesses Outside Chat",
+    "subtitle": "Fresh coverage is thin for 2026-10-17 itself; the last 36 hours instead stress-test how leaderboard narratives, custom oneshot grids, and agent/domain harnesses shape what “better” means.",
+    "date": "2026-10-17",
+    "summary": "Publishable same-day items for 2026-10-17 are sparse, so this briefing draws on the freshest technical signals from 2026-10-16 (and one late 2026-10-15 comparator tool) without treating older material as newly released news. The through-line is evaluation quality under pressure: a statistical look at LLM benchmaxxing, a high-visibility trading-arena failure against a “world’s best decision model” claim, and new or proposed harnesses that move scoring off static chat into StarCraft agents, Verilog RTL generation, oneshot custom grids, and deterministic spatial synthesis. Together they restate a hard constraint for researchers and infra teams—comparability collapses when the task surface, harness, or marketing frame changes faster than the measurement protocol. Judge reliability and leakage risk remain secondary but real whenever oneshot community benchmarks and agent environments lack locked seeds, frozen prompts, and contamination controls.",
+    "key_takeaways": [
+      "Treat “world’s best” and arena-top claims as hypotheses: independent PI Trading Arena-style replays can invert marketing narratives and should be required before infra adoption.",
+      "Benchmaxxing analysis matters more than another leaderboard row—quantify score inflation, selective reporting, and non-comparable harness deltas before updating model gates.",
+      "Agent and domain benchmarks (StarSkirmish StarCraft, 50-task Verilog RTL) only transfer if environment version, seeds, tool APIs, and pass criteria are pinned; otherwise rankings are harness artifacts.",
+      "Oneshot DIY grids (SlopGrid) and forum-proposed pixel/sprite protocols raise leakage and judge-drift risk unless prompts, rubrics, and item banks are versioned and held out.",
+      "Personal-AI axes such as invented memories and revoked consent need explicit negative tests and audit logs; chat accuracy suites do not cover them."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-16T22:33:52.668967+00:00",
+    "post_path": "content/posts/2026-10-17-daily-eval-briefing-2026-10-17-benchmaxxing-signals-broken-arena-claims-and-domain-ha.json"
+  },
+  {
     "slug": "2026-10-16-daily-eval-briefing-2026-10-16-whose-benchmark-broken-arena-odds-and-corrected-long-h",
     "title": "Daily Eval Briefing 2026-10-16: Whose Benchmark, Broken Arena Odds, and Corrected Long-Horizon Harnesses",
     "subtitle": "Same-day 2026-10-16 publishable traffic is thin; the freshest 2026-10-15 window centers on auditability of eval resources, ranking axiom failures, and harness repair for sustained-agent measurement.",
