@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-18-daily-eval-briefing-2026-10-18-thin-same-day-signal-answer-key-trust-failures-and-ben",
+    "title": "Daily Eval Briefing 2026-10-18: Thin Same-Day Signal, Answer-Key Trust Failures, and Benchmaxxing Diagnostics",
+    "subtitle": "With almost no 2026-10-18-dated releases, the freshest window still points to label integrity, selective leaderboard inflation, and domain-harness discipline as the real evaluation bottlenecks.",
+    "date": "2026-10-18",
+    "summary": "Same-day coverage for 2026-10-18 is thin: none of the provided items carry a 2026-10-18 publish stamp, so this briefing synthesizes the freshest technical signals from 2026-10-17 and the prior 36-hour window rather than inventing new events. The strongest evaluation-quality thread is not a new frontier model claim but a trust failure in benchmark ground truth: a reported 6.4 percent answer-key error rate reframes how much of agent and retrieval scoring may be noise rather than capability. Alongside that, a statistical look at LLM benchmaxxing and several harness-facing Show HN and domain benchmarks (StarCraft agents, oneshot grids, Verilog RTL) underscore that leaderboard movement is increasingly inseparable from protocol choice, task construction, and contamination risk. Market notes on eval-stack consolidation and observability buying add an infra backdrop, but they matter here mainly as pressure for standardized, comparable measurement rather than as methodology breakthroughs. Researchers and platform teams should treat today's window as a reminder to audit labels first, publish harness diffs second, and distrust score deltas that lack leakage and reproducibility controls.",
+    "key_takeaways": [
+      "Treat answer-key audits as first-class evaluation work: a mid-single-digit label error rate can dominate small model deltas and invalidate memory, agent, and RAG comparisons.",
+      "Require benchmaxxing diagnostics before accepting leaderboard jumps: correlate score gains with training-data proximity, prompt/harness variance, and holdout difficulty rather than headline accuracy alone.",
+      "Prefer domain harnesses with fixed task cards and executable checks (for example Verilog RTL suites) over oneshot preference grids when claiming scientific progress.",
+      "For agent and self-improving inference claims, demand frozen protocols, seed control, and before/after harness identity so self-modification cannot silently change the test.",
+      "As eval tooling consolidates commercially, preserve internal reproducibility artifacts (dataset hashes, judge versions, decoding settings) even if vendor dashboards change."
+    ],
+    "source_count": 13,
+    "model": "grok-4.5",
+    "created_at": "2026-10-17T23:45:57.027078+00:00",
+    "post_path": "content/posts/2026-10-18-daily-eval-briefing-2026-10-18-thin-same-day-signal-answer-key-trust-failures-and-ben.json"
+  },
+  {
     "slug": "2026-10-17-daily-eval-briefing-2026-10-17-benchmaxxing-signals-broken-arena-claims-and-domain-ha",
     "title": "Daily Eval Briefing 2026-10-17: Benchmaxxing Signals, Broken Arena Claims, and Domain Harnesses Outside Chat",
     "subtitle": "Fresh coverage is thin for 2026-10-17 itself; the last 36 hours instead stress-test how leaderboard narratives, custom oneshot grids, and agent/domain harnesses shape what “better” means.",
