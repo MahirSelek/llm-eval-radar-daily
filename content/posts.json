@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-21-daily-eval-briefing-2026-10-21-controlled-harnesses-raw-code-review-benches-and-judge",
+    "title": "Daily Eval Briefing 2026-10-21: Controlled Harnesses, Raw Code-Review Benches, and Judge–Human Tradeoffs",
+    "subtitle": "Same-day signal is thin; the freshest window centers on fairer agent harnesses, large-scale code-review scoring, and when LLM judges should not replace humans.",
+    "date": "2026-10-21",
+    "summary": "Coverage for 2026-10-21 is thin on truly same-day releases, so this briefing draws on the freshest technical items from 2026-10-20 and one 2026-10-19 agent-eval launch still inside the freshness window. The clearest methodology signal is a LocalLLaMA six-way comparison that deliberately equalizes task, harness, and effort after earlier unfair Flash-versus-Opus setups. Alongside that, a 21-model raw LLM code-review benchmark (7,980 reviews) and Medium pieces on LLM-as-a-judge versus human eval and small-model guardrails keep attention on scoring validity rather than leaderboard theater. Hugging Face threads on deceptive NPC dialogue and controlled histopathology MIL baselines extend the same theme into specialized domains, while an Inspect AI interrupt fix and Launch HN Laminar (2026-10-19) remind infra teams that harness stability and trace-level error detection are part of evaluation quality.",
+    "key_takeaways": [
+      "Equalize harness, effort, and task before publishing cross-model agent results; otherwise ranking claims are not comparable.",
+      "Large raw code-review suites (multi-thousand reviews) still need explicit contamination, judge, and rubric disclosures before they become decision-grade.",
+      "Use LLM judges for scale and triage; reserve humans for high-stakes preference, safety-adjacent, and domain-expert criteria where judge drift is costly.",
+      "Treat agent-trace error finders and eval-harness interrupt behavior as first-class reproducibility controls, not side tooling.",
+      "Specialized domains (deceptive dialogue, medical MIL) need controlled baselines and deception-aware metrics, not generic chat scores."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-20T22:57:00.468288+00:00",
+    "post_path": "content/posts/2026-10-21-daily-eval-briefing-2026-10-21-controlled-harnesses-raw-code-review-benches-and-judge.json"
+  },
+  {
     "slug": "2026-10-20-daily-eval-briefing-2026-10-20-collaboration-benchmarks-unified-judge-spines-and-conc",
     "title": "Daily Eval Briefing 2026-10-20: Collaboration Benchmarks, Unified Judge Spines, and Concurrent Harness State",
     "subtitle": "Same-day signal is thin; the strongest 36-hour shift is toward evaluating agent collaboration and trace reliability, not headline accuracy alone.",
