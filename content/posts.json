@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-22-daily-eval-briefing-2026-10-22-personal-work-benches-trace-task-splits-and-inspect-ch",
+    "title": "Daily Eval Briefing 2026-10-22: Personal Work Benches, TRACE Task Splits, and Inspect Checkpoint Breaks",
+    "subtitle": "Same-day signal is thin; the freshest Oct 21 items push evaluation away from aggregate leaderboards toward task taxonomy, harness contract changes, and production-shaped benches.",
+    "date": "2026-10-22",
+    "summary": "Coverage for 2026-10-22 is thin on true same-day releases; the actionable signal sits in the prior 36 hours. Practitioner pieces argue public leaderboards miss most real work and that production underperformance is partly a benchmark-validity problem, not only a model problem. On the research side, TRACE reorganizes 168 text-vision embedding tasks into General, Adaptability, and Challenge buckets so aggregate scores stop conflating capability types. Harness infra moved in a concrete way: Inspect AI 0.3.283 makes dataset checkpoint fields semantic and breaking, which affects comparability of runs across versions. Secondary signals include agentic coding eval notes, preference-optimized poker agents under hidden information, and early community interest in open RAG prompt-injection evaluation compute.",
+    "key_takeaways": [
+      "Treat Oct 22 as a soft-freshness day: prioritize Oct 21 technical items and date them explicitly rather than framing them as overnight news.",
+      "Personal and production-shaped benches (15-task work-week suites, agentic coding process notes) are useful validity checks against public leaderboard saturation, but they need fixed protocols before they support model comparison.",
+      "TRACE’s three-way task split is the clearest methodological upgrade in the window: report General vs Adaptability vs Challenge separately instead of one embedding score.",
+      "Pin Inspect AI before/after 0.3.283; the checkpoint FieldSpec break can silently change sample semantics and invalidate cross-run comparisons.",
+      "Hidden-information and adversarial RAG evals remain fragile: poker preference results and prompt-injection compute threads both warn that legal/successful actions are not the same as strategic or secure behavior."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-21T23:03:00.852113+00:00",
+    "post_path": "content/posts/2026-10-22-daily-eval-briefing-2026-10-22-personal-work-benches-trace-task-splits-and-inspect-ch.json"
+  },
+  {
     "slug": "2026-10-21-daily-eval-briefing-2026-10-21-controlled-harnesses-raw-code-review-benches-and-judge",
     "title": "Daily Eval Briefing 2026-10-21: Controlled Harnesses, Raw Code-Review Benches, and Judge–Human Tradeoffs",
     "subtitle": "Same-day signal is thin; the freshest window centers on fairer agent harnesses, large-scale code-review scoring, and when LLM judges should not replace humans.",
