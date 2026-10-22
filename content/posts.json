@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-23-daily-eval-briefing-2026-10-23-scorer-specific-judge-tests-skill-level-profiles-and-s",
+    "title": "Daily Eval Briefing 2026-10-23: Scorer-Specific Judge Tests, Skill-Level Profiles, and Sealed-Year Trading Arenas",
+    "subtitle": "Same-day signal is thin; the freshest technical shift is from scalar leaderboard scores toward judge reliability harnesses, skill diagnosis, and temporally sealed agent evaluation.",
+    "date": "2026-10-23",
+    "summary": "For 2026-10-23, same-day publishable coverage is thin, so this briefing draws on the freshest items inside the last-36-hour window rather than inventing news. The clearest evaluation-quality signal is SANE (arXiv 2610.28886, announced 2026-10-22), which treats LLM judges as scorers that must be metamorphic-tested against criterion-specific perturbations instead of generic prompt noise. SkillEval (arXiv 2610.28767, same announce window) pushes in a complementary direction: replacing single scalar benchmark totals with interpretable ability profiles via cognitive diagnosis models. Quant-Arena (arXiv 2610.30113, 2026-10-21) remains relevant because it hard-codes a sealed 2024 assessment year after 2022–2023 research feedback, directly attacking look-ahead leakage in agent trading loops. A same-window Inspect AI commit fixing in-place message edits that mutate logged I/O underscores that harness logging integrity is itself an evaluation validity control. Arena rumor posts about Qwen4 and Kimi3.1 are noise until protocol, sampling, and model identity are documented.",
+    "key_takeaways": [
+      "Treat LLM-as-judge pipelines as scorer systems: adopt scorer-specific metamorphic tests (SANE-style) before using judge scores for model selection, curation, or RL rewards.",
+      "Prefer skill-level and ability-profile reporting over single-number benchmark averages when comparing models across heterogeneous item banks (SkillEval).",
+      "For agent research loops, require temporally sealed holdouts and costed execution constraints; Quant-Arena’s 2022–2023 feedback / 2024 freeze pattern is a useful template against leakage.",
+      "Pin harness versions and reject mutable logs: Inspect AI’s 2026-10-22 logging fix shows that agent in-place edits can silently rewrite evaluation traces and break auditability.",
+      "Discount anonymous arena appearances and domain leaderboard claims until identity, decoding settings (for example thinking on/off), and harness diffs are published."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-22T22:58:52.355319+00:00",
+    "post_path": "content/posts/2026-10-23-daily-eval-briefing-2026-10-23-scorer-specific-judge-tests-skill-level-profiles-and-s.json"
+  },
+  {
     "slug": "2026-10-22-daily-eval-briefing-2026-10-22-personal-work-benches-trace-task-splits-and-inspect-ch",
     "title": "Daily Eval Briefing 2026-10-22: Personal Work Benches, TRACE Task Splits, and Inspect Checkpoint Breaks",
     "subtitle": "Same-day signal is thin; the freshest Oct 21 items push evaluation away from aggregate leaderboards toward task taxonomy, harness contract changes, and production-shaped benches.",
