@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-26-daily-eval-briefing-2026-10-26-thin-same-day-signal-simulated-control-red-teams-and-h",
+    "title": "Daily Eval Briefing 2026-10-26: Thin Same-Day Signal, Simulated Control Red-Teams, and Harness Viewer Hardening",
+    "subtitle": "Freshness is concentrated on 2026-10-25: agent-monitor stress tests and Inspect audit surfaces matter more than model-card score claims.",
+    "date": "2026-10-26",
+    "summary": "Same-day publishable coverage for 2026-10-26 is thin; the actionable evaluation signal sits in the prior 36 hours. The clearest methodology item is Redwood Research’s write-up on red-teaming AI agent monitors by having an LLM fabricate tool outputs, which stresses whether control evaluations measure monitor reliability or just cooperative tool traces. Inspect AI shipped two same-day releases (v0.3.284 and v0.3.285 on 2026-10-25) that improve terminal-session visibility, sentinel message fidelity, and large-eval read robustness—practical reproducibility infrastructure rather than new benchmarks. Community model posts for Nanbeige4.3-33B highlight Terminal-Bench 2.1 gains under a claimed shared harness, which is useful only if harness identity is independently verified. Adjacent signals—a Hugging Face forum thread on a dynamic parametric reasoning suite and a Medium piece on CI/CD semantic-drift gates—point to the same demand: evaluation protocols that remain comparable when prompts, tools, or scoring surfaces drift.",
+    "key_takeaways": [
+      "Treat simulated tool-output attacks as a first-class control-eval dimension: monitor scores that assume honest tool traces are not comparable to scores under adversarial or forged tool channels.",
+      "Pin and audit Inspect AI minor versions when comparing agent runs; 2026-10-25 viewer and sentinel changes alter what operators can reconstruct from logs even when task definitions are unchanged.",
+      "Discount Nanbeige Terminal-Bench deltas unless the harness revision, inference settings, and terminal environment are frozen and published alongside the numbers.",
+      "Parametric or dynamically generated reasoning suites can reduce static leakage risk, but only if generation seeds, difficulty schedules, and answer-key derivation are versioned for reruns.",
+      "CI semantic-drift gates are useful regression detectors; they are not substitutes for calibrated judges or contamination audits unless schemas and embedding references are locked."
+    ],
+    "source_count": 13,
+    "model": "grok-4.5",
+    "created_at": "2026-10-25T23:50:29.148360+00:00",
+    "post_path": "content/posts/2026-10-26-daily-eval-briefing-2026-10-26-thin-same-day-signal-simulated-control-red-teams-and-h.json"
+  },
+  {
     "slug": "2026-10-25-daily-eval-briefing-2026-10-25-thin-same-day-signal-judge-calibration-and-harness-com",
     "title": "Daily Eval Briefing 2026-10-25: Thin Same-Day Signal, Judge Calibration, and Harness Comparability Debt",
     "subtitle": "With no fresh 2026-10-25 primary releases, the last 36 hours center on judge self-tests, metric-dependent RAG winners, and harness drift from retired model IDs.",

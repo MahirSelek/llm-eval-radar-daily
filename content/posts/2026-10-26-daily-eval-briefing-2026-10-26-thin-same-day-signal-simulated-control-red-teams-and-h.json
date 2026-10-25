@@ -1,0 +1,96 @@
+{
+  "slug": "2026-10-26-daily-eval-briefing-2026-10-26-thin-same-day-signal-simulated-control-red-teams-and-h",
+  "date": "2026-10-26",
+  "created_at": "2026-10-25T23:50:29.148360+00:00",
+  "title": "Daily Eval Briefing 2026-10-26: Thin Same-Day Signal, Simulated Control Red-Teams, and Harness Viewer Hardening",
+  "subtitle": "Freshness is concentrated on 2026-10-25: agent-monitor stress tests and Inspect audit surfaces matter more than model-card score claims.",
+  "summary": "Same-day publishable coverage for 2026-10-26 is thin; the actionable evaluation signal sits in the prior 36 hours. The clearest methodology item is Redwood Research’s write-up on red-teaming AI agent monitors by having an LLM fabricate tool outputs, which stresses whether control evaluations measure monitor reliability or just cooperative tool traces. Inspect AI shipped two same-day releases (v0.3.284 and v0.3.285 on 2026-10-25) that improve terminal-session visibility, sentinel message fidelity, and large-eval read robustness—practical reproducibility infrastructure rather than new benchmarks. Community model posts for Nanbeige4.3-33B highlight Terminal-Bench 2.1 gains under a claimed shared harness, which is useful only if harness identity is independently verified. Adjacent signals—a Hugging Face forum thread on a dynamic parametric reasoning suite and a Medium piece on CI/CD semantic-drift gates—point to the same demand: evaluation protocols that remain comparable when prompts, tools, or scoring surfaces drift.",
+  "key_takeaways": [
+    "Treat simulated tool-output attacks as a first-class control-eval dimension: monitor scores that assume honest tool traces are not comparable to scores under adversarial or forged tool channels.",
+    "Pin and audit Inspect AI minor versions when comparing agent runs; 2026-10-25 viewer and sentinel changes alter what operators can reconstruct from logs even when task definitions are unchanged.",
+    "Discount Nanbeige Terminal-Bench deltas unless the harness revision, inference settings, and terminal environment are frozen and published alongside the numbers.",
+    "Parametric or dynamically generated reasoning suites can reduce static leakage risk, but only if generation seeds, difficulty schedules, and answer-key derivation are versioned for reruns.",
+    "CI semantic-drift gates are useful regression detectors; they are not substitutes for calibrated judges or contamination audits unless schemas and embedding references are locked."
+  ],
+  "body_en": "For 2026-10-26 in Europe/Istanbul, same-day fresh items are sparse. The briefing therefore draws on the freshest technical material inside the prefer-today-then-last-36h window, almost all dated 2026-10-25, and states that limitation up front. Two OpenAlex records in the feed (a mining multi-agent operations paper dated 2026-11-17 and a Scotland just-transition monitoring piece dated 2026-11-01) are out of scope for LLM evaluation quality and are not treated as today’s news.\n\nThe strongest evaluation-methodology signal is the Hacker News pointer to Redwood Research’s note on red-teaming AI agent monitors with an LLM that fakes tool outputs (published_at 2026-10-25). Control and monitoring evaluations often assume that tool returns are ground truth from a trusted environment. If a monitored agent—or an attacker shaping the observation channel—can inject plausible fabricated tool results, the monitor is no longer scoring the same object. Ranking monitors on honest traces can overstate safety margins and produce non-transferable comparisons across labs. For researchers, the practical implication is to split control evals into at least two protocol surfaces: (1) trusted-tool baselines and (2) adversarial or simulated-tool conditions where observation integrity is intentionally broken. Without that split, harness A and harness B can report similar aggregate monitor accuracy while measuring different failure modes. Infra teams should log tool provenance (source, authenticity flag, mutation hooks) so post-hoc audits can tell whether a monitor failure was judgment error or poisoned context.\n\nHarness infrastructure moved in parallel through UKGovernmentBEIS/inspect_ai. Release v0.3.284 (2026-10-25) added Moonshot Kimi K3.1 Pro / Highspeed support, made sentinel step.agent_messages reflect the running agent’s own message list at every stage, updated Fireworks and Together model info, and improved viewer playback of asciicasts. Release v0.3.285 the same day added a viewer Terminals tab for recorded terminal sessions and a merged Info tab, plus fixes for .eval reads failing on large float literals under exclude_fields and an Anthropic agent-bridge usage mismatch with anthropic 2.3. These are not glamorous benchmark launches, but they change evaluation quality in concrete ways. Terminal and asciicast visibility reduce opaque agent scoring: reviewers can inspect what the agent actually typed and saw rather than trusting a final score alone. Sentinel fidelity to the agent’s own messages reduces a subtle comparability bug where monitor or scorer context silently diverges from the trajectory under test. The large-float .eval read fix matters for reproducibility pipelines that strip fields from large result files; silent parse failures look like missing runs or incomplete suites. Provider bridge and model-info updates remind teams that provider SDK bumps are harness changes: usage accounting and beta endpoint routing can alter retries, cost gates, and stop conditions even when the task YAML is identical.\n\nModel-card and community score noise arrived via Reddit threads on Nanbeige4.3-33B (r/LocalLLaMA and r/MachineLearning, both 2026-10-25). The Machine Learning post reports 80.9 on Terminal-Bench 2.1 versus 73.0 for Qwen3.8-27B under a claimed same harness and inference setup, Apache-2.0 weights, and a 512K context window, framing the model as a teacher for upcoming smaller agents. From an evaluation-quality standpoint, the interesting claim is not the absolute score but the “same harness” assertion. Terminal agent benches are highly sensitive to shell environment, timeout policy, tool wrappers, and retry logic. A seven-point gap is only decision-relevant if both systems were run through a pinned harness revision with published configs. Absent that, the post is a marketing-adjacent signal that should not be folded into trend charts without independent reruns. Distillation pipelines also raise leakage and train-test hygiene questions: if the teacher is selected or iterated against public terminal tasks that later appear in student evals, reported student gains can partly reflect teacher contamination rather than genuine transfer.\n\nA Hugging Face forums thread titled “Dynamic Parametric Evaluation Suite for LLM Reasoning Benchmarks” (2026-10-25) fits the anti-leakage agenda even though the provided summary is empty. Parametric suites that regenerate instances from templates or distributions aim to keep static memorization from dominating leaderboards. The evaluation risk is protocol under-specification: without frozen generators, seeds, difficulty schedules, and exact answer derivation rules, two labs can claim the same suite name while sampling non-overlapping item families. Dynamic does not automatically mean fair; it means the reproducibility artifact must include the generator, not only a static JSONL snapshot.\n\nFinally, the Medium RSS item on automating LLM evaluation in CI/CD via semantic drift detection and deterministic regression gates (2026-10-25) addresses a different failure mode: silent prompt or output regressions at the git gate using schema contracts, local embeddings, and low-cost Actions. For infra teams this is operationally attractive. Methodologically it is a detector, not a validity proof. Embedding similarity and schema checks catch format breaks and some semantic drift, but they do not certify judge calibration, contamination status, or cross-model fairness. Best practice is to treat CI gates as tripwires that force a fuller eval suite—pinned harness, documented judge prompts, and leakage checks—rather than as the suite itself. Deterministic gates also need locked reference embeddings and schema versions; otherwise “green CI” becomes a moving target as the reference corpus updates.\n\nTaken together, the 36-hour window is thin on brand-new public benchmarks and dense on protocol hygiene: adversarial observation channels for monitors, richer Inspect audit surfaces, skepticism toward same-harness score claims, and CI tripwires that must not be mistaken for scientific evaluation. Stakeholders should update runbooks now: version harnesses and viewer-visible artifacts, separate trusted versus forged tool-trace monitor evals, and refuse to promote Terminal-Bench or similar deltas without pinned configs.",
+  "methodology_risks": "Comparability risk is highest where harness identity is asserted but not pinned. Nanbeige-style Terminal-Bench comparisons and Inspect minor releases on the same calendar day illustrate the same failure pattern: scores and logs can shift because of environment, provider SDK, sentinel message surfaces, or viewer-visible session capture without any change to the nominal task set. Cross-run tables should record inspect_ai version, provider SDK versions, terminal environment hashes, and whether tool outputs were trusted or simulated.\n\nLeakage and contamination risk concentrates in teacher–student pipelines and in static reasoning sets that parametric suites try to escape. If a 33B teacher is tuned against public agent or reasoning tasks that later score distilled students, reported gains may partly reflect shared exposure. Dynamic parametric suites reduce verbatim memorization only when generators and seeds are published; unpublished randomization can hide cherry-picked draws while looking like continuous evaluation.\n\nJudge and monitor drift remain central. Red-teaming monitors with fabricated tool outputs shows that LLM-as-monitor reliability is conditional on observation integrity. CI semantic-drift detectors using embeddings add another soft judge surface: threshold and reference-corpus updates can flip pass/fail without human-visible task changes. Treat monitor prompts, embedding references, and schema contracts as versioned scoring code, and report trusted-tool versus adversarial-tool conditions separately so leaderboard merges do not launder protocol differences into capability claims.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "harness",
+    "reproducibility",
+    "agent-monitors",
+    "terminal-bench",
+    "contamination"
+  ],
+  "sources": [
+    {
+      "title": "[release] UKGovernmentBEIS/inspect_ai: v0.3.285",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/releases/tag/0.3.285",
+      "source": "github"
+    },
+    {
+      "title": "Autonomous intelligence for mining productivity: a multi-agent AI approach to operational value creation",
+      "url": "https://openalex.org/W7223078329",
+      "source": "openalex"
+    },
+    {
+      "title": "Monitoring and evaluating the just transition : reflections on a theory of change for Scotland, with lessons for beyond",
+      "url": "https://openalex.org/W7222773276",
+      "source": "openalex"
+    },
+    {
+      "title": "Red-teaming AI agent monitors with an LLM that fakes tool outputs",
+      "url": "https://www.redwoodresearch.org/blog/simulated-control-evaluations",
+      "source": "hackernews"
+    },
+    {
+      "title": "Nanbeige/Nanbeige4.3-33B · Hugging Face",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xf0kz4/nanbeigenanbeige4333b_hugging_face/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "Nanbeige releases Nanbeige4.3-33B, an Apache 2.0 teacher model for smaller agents [N]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xf6x35/nanbeige_releases_nanbeige4333b_an_apache_20/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: chore(main): release 0.3.285 (#6074)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/d1536eae98d7b8b9364c052f0e6d3de988e1aac9",
+      "source": "github"
+    },
+    {
+      "title": "Dynamic Parametric Evaluation Suite for LLM Reasoning Benchmarks",
+      "url": "https://discuss.huggingface.co/t/dynamic-parametric-evaluation-suite-for-llm-reasoning-benchmarks/190982",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "[release] UKGovernmentBEIS/inspect_ai: v0.3.284",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/releases/tag/0.3.284",
+      "source": "github"
+    },
+    {
+      "title": "RAG Evaluation Explained: How to Know Whether Your AI Is Actually Retrieving and Answering…",
+      "url": "https://medium.com/ai-engineering-compass/rag-evaluation-explained-how-to-know-whether-your-ai-is-actually-retrieving-and-answering-8f85bdd9a488?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "“It Worked in the Demo”: Why Evaluation Is What Makes Enterprise AI Scale",
+      "url": "https://medium.com/@akarteanurag7/it-worked-in-the-demo-why-evaluation-is-what-makes-enterprise-ai-scale-6df2d424b47f?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "Automating LLM Evaluation in CI/CD: Semantic Drift Detection and Deterministic Regression Gates",
+      "url": "https://proviveknayan.medium.com/automating-llm-evaluation-in-ci-cd-semantic-drift-detection-and-deterministic-regression-gates-6280e1a9bf38?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "The Problem With LLM Benchmarks",
+      "url": "https://medium.com/@nikitacbudholiya/the-problem-with-llm-benchmarks-24ccdd1f8ee6?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
