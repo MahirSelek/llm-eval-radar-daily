@@ -1,0 +1,71 @@
+{
+  "slug": "2026-10-25-daily-eval-briefing-2026-10-25-thin-same-day-signal-judge-calibration-and-harness-com",
+  "date": "2026-10-25",
+  "created_at": "2026-10-25T00:02:43.313571+00:00",
+  "title": "Daily Eval Briefing 2026-10-25: Thin Same-Day Signal, Judge Calibration, and Harness Comparability Debt",
+  "subtitle": "With no fresh 2026-10-25 primary releases, the last 36 hours center on judge self-tests, metric-dependent RAG winners, and harness drift from retired model IDs.",
+  "summary": "Same-day coverage for 2026-10-25 is thin: none of the publishable items carry a 2026-10-25 timestamp. The freshest technical signal clusters on 2026-10-24 around judge reliability and benchmark epistemology—especially a ground-up series on judging the judge, plus practitioner pieces arguing that high leaderboard scores are not capability proofs. Infrastructure noise is quieter but consequential: Inspect AI moved tests and docs off retired OpenAI models, a reminder that harness defaults can silently break longitudinal comparability. Slightly older items from 2026-10-23 still matter for methodology: Induction’s deliberate cache isolation for benchmarks, and a four-architecture RAG bake-off where the “winner” flipped with the chosen metric. Across the window, the shared theme is evaluation quality under constraint—judge drift, leakage via reuse, and metric selection as the hidden experimental knob.",
+  "key_takeaways": [
+    "Treat thin same-day calendars as a methods day: prioritize judge calibration protocols and harness integrity over new leaderboard claims.",
+    "When an LLM judge scored your last suite, schedule a separate judge-evaluation pass before interpreting refusal, safety, or preference deltas.",
+    "Pin and document model IDs in harnesses; retiring defaults (as in Inspect AI’s 2026-10-24 test migration) can invalidate historical comparisons without any code-logic change.",
+    "RAG and retrieval bake-offs are not architecture rankings unless metrics, corpora, and failure modes are fixed in advance—otherwise complexity can look like quality.",
+    "For reproducible benches, isolate caches and shared prompt state on purpose; accidental cache hits are a silent contamination path."
+  ],
+  "body_en": "Same-day primary coverage for 2026-10-25 is thin. No arXiv, OpenAlex, Reddit, or X items landed in the provided set for the report day, and none of the eight publishable sources are timestamped 2026-10-25. This briefing therefore reads the last ~36 hours as a methods window rather than a release window, and it dates every claim to the item’s published_at so multi-day material is never smuggled in as today’s news.\n\nThe clearest evaluation-quality thread on 2026-10-24 is judge reliability. In Evals, from the ground up (Part 3): Judging the Judge (published 2026-10-24), the author continues a refusal-calibration setup that previously used Claude Sonnet as the scorer for four language models. Part 3’s framing matters more than any single score: once a production or research pipeline depends on an LLM judge, the next experiment is not another model leaderboard—it is a protocol that asks whether the judge itself is stable, biased toward verbosity or house style, and sensitive to prompt wording. For infra and research teams, the practical implication is scheduling. A refusal or safety delta reported under a fixed judge should be accompanied by judge self-tests (agreement with humans or secondary judges, sensitivity sweeps, and documented prompt versioning). Without that, “Model A refused more” is not yet an evaluation result; it is an uncalibrated observation.\n\nTwo Medium pieces from the same day reinforce the epistemology side of the same problem. The Problem With LLM Benchmarks (2026-10-24) restates a now-familiar but still operationally ignored claim: high scores do not always mean smarter models. Read against the day’s judge piece, the useful synthesis is not cynicism about benchmarks—it is a demand for construct validity. Scores can rise from contamination, narrow task formats, judge favoritism, or harness defaults that no longer match claimed deployment conditions. Your AI Sounds Smart. But Is It Correct? (also 2026-10-24) approaches the same gap from a QA-engineering angle: chatbots and RAG systems can sound fluent while failing accuracy, hallucination detection, and automated regression checks. For evaluation teams, the combined signal is to separate fluency proxies from correctness protocols, and to treat automated LLM judges as instruments that themselves need metrology—repeatability, bias checks, and failure-mode catalogs—not as oracles.\n\nHarness and platform hygiene showed up more quietly but with higher longitudinal stakes. On 2026-10-24, UKGovernmentBEIS/inspect_ai landed a commit moving tests and docs off retired OpenAI models. That is not a new benchmark, yet it is exactly the class of change that breaks silent reproducibility. Historical CI greenness, tutorial snippets, and baseline scripts often embed model IDs that vendors later retire. When those IDs disappear, teams either fail closed (good: breakage is visible) or remap to a “nearest” successor (bad: scores look continuous while the underlying system changed). For anyone running multi-month eval programs, the actionable rule is: pin model identifiers, record remaps as explicit protocol amendments, and never treat a default swap as a no-op for trend charts.\n\nCommunity surface area on 2026-10-24 also included a Hugging Face forum request to add sriram1983007/sra-stablecoin-risk-bench to a benchmark allow-list. With no technical summary in the feed item, this should not be over-read as a validated domain bench. What it does illustrate is governance pressure: specialized risk benchmarks seek platform legitimacy through allow-lists. Allow-listing without published contamination checks, labeling methodology, and scorer specs can create a false sense of readiness. The evaluation-quality stance is to welcome domain benches only when protocol artifacts travel with the name—task construction, leakage controls, and scoring definitions—not when the request alone is treated as news of a new standard.\n\nA Show HN post from 2026-10-24 advertised benchmarks of a continual learning model trained for a month on a laptop. Engagement in the provided summary was minimal (2 points, 0 comments), and the item offers little methodological detail in-feed. It still belongs in a thin-day briefing as a reminder of a recurring validity risk: long-running local training stories often blur training narrative with evaluation design. Continual learning claims need clear task splits over time, controls for replay versus genuine retention, and explicit statements about whether test material could have been seen during the month-long loop. Without those, “trained for a month” is a compute anecdote, not an eval result.\n\nTwo items from 2026-10-23 remain inside the soft freshness window and still carry methodology weight. Induction’s post, The one time we break the LLM cache on purpose (HN-linked, published 2026-10-23), is about deliberate cache isolation in benchmarking. That is a contamination and comparability issue in infrastructure clothing. Shared caches can make successive runs look faster, cheaper, or more consistent while hiding that later trials are not independent. Breaking the cache on purpose is the correct posture when the scientific object is model behavior under a defined protocol, not system throughput under warm state. Teams comparing vendors or prompt versions should treat cache policy as part of the eval harness contract—logged, versioned, and usually cold for capability claims.\n\nAlso from 2026-10-23, I Tested Four Enterprise RAG Architectures. Was the Most Complex One Worth It? reports BM25, vector search, hybrid retrieval, and reranking under one benchmark, with a punchline that the winner depended on what was measured. That single sentence is the day’s most portable lesson for metric design. If faithfulness, latency, citation precision, and end-user preference can crown different architectures, then “complexity won” or “simplicity won” is an artifact of the scorecard. Pre-register primary metrics, report secondary metrics as secondary, and resist architecture narratives that collapse a multi-objective surface into one ranking. This is especially relevant when judge models score RAG answers: metric choice and judge choice can interact, amplifying whichever system produces judge-favored prose.\n\nSynthesizing the window: 2026-10-25 is not a day of new flagship benches in this corpus. It is a day to audit the instruments—judges, caches, retired model defaults, allow-list governance, and metric menus—because those are what make yesterday’s scores comparable to next week’s. Researchers should privilege protocols that can survive vendor retirement and judge swap. Infra teams should treat harness defaults and cache isolation as first-class reproducibility controls. Practitioners reading the Medium wave should translate skepticism about “high scores” into concrete checklists: contamination review, judge calibration, and metric precommitment, rather than into blanket dismissal of benchmarking.\n\nNothing here invents a same-day breakthrough. The evidence discipline for a thin calendar is to name the thinness, date the sources, and extract the durable evaluation constraints they actually support.",
+  "methodology_risks": "Comparability risk is elevated when harness defaults rotate under the same suite name. The Inspect AI migration off retired OpenAI models (2026-10-24) is a concrete instance: longitudinal charts that ignore remaps will mix incompatible systems. Pair every public score with pinned model IDs, judge IDs, prompt hashes, and cache policy.\n\nJudge drift and circular scoring remain the central validity threat in this window. A refusal-calibration pipeline that uses a single frontier judge, as framed in the 2026-10-24 Judging the Judge piece, can encode that judge’s refusal aesthetics into the leaderboard. Mitigations are explicit: human-labeled anchors, multi-judge panels, adversarial judge prompts, and holding out judge-evaluation sets that never train the prompt.\n\nLeakage and soft contamination appear in two forms here. First, warm caches and shared prompt state (Induction, 2026-10-23) can falsely stabilize results. Second, metric shopping in RAG bake-offs (2026-10-23) can select the architecture that flatters a preferred narrative after seeing outcomes. Pre-register metrics and isolate caches when the claim is about model or system capability rather than production latency under steady state.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "harness",
+    "reproducibility",
+    "contamination",
+    "rag-evaluation",
+    "cache-isolation"
+  ],
+  "sources": [
+    {
+      "title": "The Problem With LLM Benchmarks",
+      "url": "https://medium.com/@nikitacbudholiya/the-problem-with-llm-benchmarks-24ccdd1f8ee6?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "Your AI Sounds Smart. But Is It Correct? A QA Engineer’s Guide to LLM Evaluation : —",
+      "url": "https://medium.com/@ArpitChoubey9/your-ai-sounds-smart-but-is-it-correct-a-qa-engineers-guide-to-llm-evaluation-635df5cf0dbe?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "Show HN: Benchmarks of continual learning model trained for a month on a laptop",
+      "url": "https://news.ycombinator.com/item?id=50219762",
+      "source": "hackernews"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: test: move tests and docs off retired OpenAI models (#6070)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/5bfa62473909ff3a79a4964c7dbeb0bd8685e756",
+      "source": "github"
+    },
+    {
+      "title": "Evals, from the ground up (Part 3): Judging the Judge",
+      "url": "https://medium.com/@nityaakalra5/evals-from-the-ground-up-part-3-judging-the-judge-78a735f7694d?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Request to add sriram1983007/sra-stablecoin-risk-bench to the benchmark allow-list",
+      "url": "https://discuss.huggingface.co/t/request-to-add-sriram1983007-sra-stablecoin-risk-bench-to-the-benchmark-allow-list/190963",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "I Tested Four Enterprise RAG Architectures. Was the Most Complex One Worth It?",
+      "url": "https://medium.com/@Chioma_Kamalu/i-tested-four-enterprise-rag-architectures-was-the-most-complex-one-worth-it-c33fe82a54ca?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "The one time we break the LLM cache on purpose",
+      "url": "https://www.induction.ai/blog/benchmark-cache-isolation",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

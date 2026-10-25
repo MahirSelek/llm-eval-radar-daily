@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-25-daily-eval-briefing-2026-10-25-thin-same-day-signal-judge-calibration-and-harness-com",
+    "title": "Daily Eval Briefing 2026-10-25: Thin Same-Day Signal, Judge Calibration, and Harness Comparability Debt",
+    "subtitle": "With no fresh 2026-10-25 primary releases, the last 36 hours center on judge self-tests, metric-dependent RAG winners, and harness drift from retired model IDs.",
+    "date": "2026-10-25",
+    "summary": "Same-day coverage for 2026-10-25 is thin: none of the publishable items carry a 2026-10-25 timestamp. The freshest technical signal clusters on 2026-10-24 around judge reliability and benchmark epistemology—especially a ground-up series on judging the judge, plus practitioner pieces arguing that high leaderboard scores are not capability proofs. Infrastructure noise is quieter but consequential: Inspect AI moved tests and docs off retired OpenAI models, a reminder that harness defaults can silently break longitudinal comparability. Slightly older items from 2026-10-23 still matter for methodology: Induction’s deliberate cache isolation for benchmarks, and a four-architecture RAG bake-off where the “winner” flipped with the chosen metric. Across the window, the shared theme is evaluation quality under constraint—judge drift, leakage via reuse, and metric selection as the hidden experimental knob.",
+    "key_takeaways": [
+      "Treat thin same-day calendars as a methods day: prioritize judge calibration protocols and harness integrity over new leaderboard claims.",
+      "When an LLM judge scored your last suite, schedule a separate judge-evaluation pass before interpreting refusal, safety, or preference deltas.",
+      "Pin and document model IDs in harnesses; retiring defaults (as in Inspect AI’s 2026-10-24 test migration) can invalidate historical comparisons without any code-logic change.",
+      "RAG and retrieval bake-offs are not architecture rankings unless metrics, corpora, and failure modes are fixed in advance—otherwise complexity can look like quality.",
+      "For reproducible benches, isolate caches and shared prompt state on purpose; accidental cache hits are a silent contamination path."
+    ],
+    "source_count": 8,
+    "model": "grok-4.5",
+    "created_at": "2026-10-25T00:02:43.313571+00:00",
+    "post_path": "content/posts/2026-10-25-daily-eval-briefing-2026-10-25-thin-same-day-signal-judge-calibration-and-harness-com.json"
+  },
+  {
     "slug": "2026-10-24-daily-eval-briefing-2026-10-24-judge-prompt-non-transfer-protocol-specified-fact-chec",
     "title": "Daily Eval Briefing 2026-10-24: Judge-Prompt Non-Transfer, Protocol-Specified Fact Checks, and Cache-Isolated Harnesses",
     "subtitle": "Same-day signal is thin; the freshest window shows evaluation quality shifting from average scores toward protocol completeness, modality transfer, and harness isolation.",
