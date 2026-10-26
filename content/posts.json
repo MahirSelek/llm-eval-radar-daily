@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-27-daily-eval-briefing-2026-10-27-reproducible-live-data-harnesses-persona-conditioned-s",
+    "title": "Daily Eval Briefing 2026-10-27: Reproducible Live-Data Harnesses, Persona-Conditioned Science Agents, and Living Benchmark Maps",
+    "subtitle": "Same-day signal is thin; the strongest Oct 26 eval work stresses harness reproducibility under mutable backends and fixed grading under shifting collaborator personas.",
+    "date": "2026-10-27",
+    "summary": "Coverage for 2026-10-27 is thin in the Europe/Istanbul window: no high-signal same-day arXiv or protocol releases appear in the provided set, so this briefing centers on the freshest technical items from 2026-10-26. Two arXiv papers dominate the evaluation agenda. One proposes an offline harness that keeps production conversational-agent evaluation reproducible even when enterprise backends keep changing, then uses that substrate to study safe prompt compression. The other, PersonaScienceBench, holds task objectives and grading fixed while simulated researchers vary by persona, exposing how collaborator style can reshape agent behavior without changing the score rubric. A Google AI Developers forum post on Benchmark Radar adds an infrastructure signal: living databases for choosing Gemini-facing evals, which raises discovery and comparability questions rather than new score claims. Together these items push teams to treat harness freshness, persona leakage into grades, and benchmark selection metadata as first-class evaluation risks.",
+    "key_takeaways": [
+      "Prefer regenerable offline harnesses over live-session replay when agents touch mutable enterprise state; otherwise benchmarks silently stale and cross-run comparisons become invalid.",
+      "When testing scientific or collaborative agents, fix objectives and graders while varying personas only through dialogue, then report persona-conditioned score deltas so preference-fitting is not mistaken for capability gains.",
+      "Treat living benchmark catalogs (for example Gemini-oriented maps) as selection tools with version and contamination metadata, not as interchangeable leaderboards.",
+      "Local throughput and anecdotal 'harness proof' posts from Oct 26 are weak evidence for model quality; keep them out of formal comparisons unless protocol, seeds, and judge settings are fully specified.",
+      "Infra teams should version prompt-compression policies against frozen eval snapshots before shipping, because compression that looks safe on yesterday's backend traces may fail after data drift."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-26T22:20:07.979350+00:00",
+    "post_path": "content/posts/2026-10-27-daily-eval-briefing-2026-10-27-reproducible-live-data-harnesses-persona-conditioned-s.json"
+  },
+  {
     "slug": "2026-10-26-daily-eval-briefing-2026-10-26-thin-same-day-signal-simulated-control-red-teams-and-h",
     "title": "Daily Eval Briefing 2026-10-26: Thin Same-Day Signal, Simulated Control Red-Teams, and Harness Viewer Hardening",
     "subtitle": "Freshness is concentrated on 2026-10-25: agent-monitor stress tests and Inspect audit surfaces matter more than model-card score claims.",

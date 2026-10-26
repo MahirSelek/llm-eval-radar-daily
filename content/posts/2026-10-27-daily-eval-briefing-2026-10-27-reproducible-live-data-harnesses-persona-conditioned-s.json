@@ -1,0 +1,111 @@
+{
+  "slug": "2026-10-27-daily-eval-briefing-2026-10-27-reproducible-live-data-harnesses-persona-conditioned-s",
+  "date": "2026-10-27",
+  "created_at": "2026-10-26T22:20:07.979350+00:00",
+  "title": "Daily Eval Briefing 2026-10-27: Reproducible Live-Data Harnesses, Persona-Conditioned Science Agents, and Living Benchmark Maps",
+  "subtitle": "Same-day signal is thin; the strongest Oct 26 eval work stresses harness reproducibility under mutable backends and fixed grading under shifting collaborator personas.",
+  "summary": "Coverage for 2026-10-27 is thin in the Europe/Istanbul window: no high-signal same-day arXiv or protocol releases appear in the provided set, so this briefing centers on the freshest technical items from 2026-10-26. Two arXiv papers dominate the evaluation agenda. One proposes an offline harness that keeps production conversational-agent evaluation reproducible even when enterprise backends keep changing, then uses that substrate to study safe prompt compression. The other, PersonaScienceBench, holds task objectives and grading fixed while simulated researchers vary by persona, exposing how collaborator style can reshape agent behavior without changing the score rubric. A Google AI Developers forum post on Benchmark Radar adds an infrastructure signal: living databases for choosing Gemini-facing evals, which raises discovery and comparability questions rather than new score claims. Together these items push teams to treat harness freshness, persona leakage into grades, and benchmark selection metadata as first-class evaluation risks.",
+  "key_takeaways": [
+    "Prefer regenerable offline harnesses over live-session replay when agents touch mutable enterprise state; otherwise benchmarks silently stale and cross-run comparisons become invalid.",
+    "When testing scientific or collaborative agents, fix objectives and graders while varying personas only through dialogue, then report persona-conditioned score deltas so preference-fitting is not mistaken for capability gains.",
+    "Treat living benchmark catalogs (for example Gemini-oriented maps) as selection tools with version and contamination metadata, not as interchangeable leaderboards.",
+    "Local throughput and anecdotal 'harness proof' posts from Oct 26 are weak evidence for model quality; keep them out of formal comparisons unless protocol, seeds, and judge settings are fully specified.",
+    "Infra teams should version prompt-compression policies against frozen eval snapshots before shipping, because compression that looks safe on yesterday's backend traces may fail after data drift."
+  ],
+  "body_en": "Same-day publishable coverage for 2026-10-27 is thin. Within the provided item list, the evaluation-relevant signal clusters on 2026-10-26 releases and forum notes inside the freshness window. That is enough to brief stakeholders, but it is not a dense news day: the correct editorial move is to extract methodology implications from the strongest technical pieces without dressing peripheral product or hardware threads as evaluation breakthroughs.\n\nThe clearest methodology contribution is the arXiv paper announced 2026-10-26, Reproducible Evaluation as the Substrate for Safe Prompt Compression in Production Agents (arXiv:2610.31972). The abstract frames a problem every production eval team eventually hits. Conversational agents that act on live, mutable enterprise data are hard to score fairly: replayed sessions drift as backend state changes, and a benchmark assembled today can go stale as the data it describes moves on. The authors respond with an offline evaluation harness designed to stay reproducible despite that live-data dependency, and to be regenerable on demand once the snapshot ages out. They then use that harness to study prompt compression safety in production agents.\n\nWhy this matters now is less the compression trick itself and more the evaluation substrate claim. Many teams still treat session logs as durable ground truth. Under mutable backends, that practice creates silent non-comparability: a compressed prompt policy measured against last week's CRM or ticket graph is not the same experiment as the same policy measured against today's graph, even if the user utterances are identical. A regenerable offline harness forces an explicit contract between (1) frozen task state used for scoring, (2) regeneration triggers when that state is no longer representative, and (3) compression or other serving optimizations that must be re-validated after regeneration. For researchers, that is a stronger design pattern than ad hoc golden transcripts. For infra teams, it implies CI should gate prompt-compression or context-trimming changes on a named eval snapshot ID, not on floating live traffic KPIs alone.\n\nThe second high-value item from the same 2026-10-26 arXiv wave is PersonaScienceBench (arXiv:2610.32106). Scientific agents are usually scored as if the human collaborator is a constant. In practice, expertise, verbosity preferences, and feedback style vary, and those differences can change trajectories without changing the underlying scientific objective. PersonaScienceBench builds 200 tasks from five benchmarks across four scientific domains. Simulated researchers supply context and feedback according to persona profiles, while task objectives and grading remain fixed. Agents see researcher preferences only through conversation. The design separates preference adaptation from task competence: if scores move when personas change but the grader stays fixed, the movement is about interaction under diverse collaborators, not about a quietly rewritten rubric.\n\nThat separation is the evaluation lesson. Too many agent benches either (a) bake a single helpful expert into the prompt, overstating robustness, or (b) let persona text leak into the scoring criteria, understating or overstating success depending on stylistic match. Fixed grading with conversational-only persona exposure is a cleaner protocol for measuring whether agents can pursue stable scientific goals under noisy human conditions. Practical implication: when reporting scientific-agent results, include persona-conditioned tables or confidence bands, and disclose whether the judge/grader ever saw persona instructions. If eighteen models were run under this setup as the abstract indicates, comparative claims should be read as conditioned on the persona distribution, not as unconditional science-agent rankings.\n\nA third, softer signal arrived the same afternoon via the Google AI Developers forum: Benchmark Radar, described as a living database to find the right eval for a Gemini model (published 2026-10-26). Discovery infrastructure is not a new benchmark, but it changes how teams sample the eval surface. Living catalogs can improve coverage if they expose domain fit, update cadence, known saturation, and contamination status. They can also worsen comparability if users treat catalog adjacency as methodological equivalence—for example swapping two coding benches because both appear under the same Gemini tag without checking harness versions, tool access, or judge prompts. The editorial stance for 2026-10-27 is therefore cautious endorsement: selection maps are useful when they encode validity metadata; dangerous when they become convenience leaderboards.\n\nSeveral other items fall inside the freshness window but should not drive the briefing narrative. Show HN Mainplane (2026-10-26) is an agent deployment curiosity, not an evaluation protocol. LocalLLaMA throughput claims for Qwen 3.8 Flash Next on 8 GB VRAM setups speak to serving economics, not benchmark validity; speed and informal win rates without locked harnesses do not authorize model-quality conclusions. The companion LocalLLaMA post alleging remote telemetry via a theatrical system prompt is not usable evidence for security or eval leakage analysis as presented—it is anecdotal and prompt-framed. Deepity's predictive-coding library benchmarks on MNIST are outside LLM agent evaluation. Cursor idle CPU rescan reports and OpenAlex records on mining multi-agent operations or just-transition monitoring are out of scope for LLM eval quality, and the OpenAlex timestamps sit outside the report day's news framing anyway.\n\nSynthesizing the usable Oct 26 cluster for a 2026-10-27 stakeholder brief: evaluation quality is moving from static question banks toward harness contracts that survive data drift and collaborator diversity. Reproducible offline substrates for live-data agents and persona-conditioned science benches with fixed graders are complementary. The first protects temporal comparability when the world behind the agent changes. The second protects construct validity when the human in the loop changes. Living benchmark maps sit one layer up, shaping which contracts teams even choose to run. Thin same-day coverage does not weaken that thesis; it simply means today's action items are protocol adoption and metadata discipline rather than reacting to a flood of new scoreboards.\n\nFor researchers, the near-term checklist is concrete. Freeze and name eval state for any agent that writes or reads mutable systems; schedule regeneration; publish compression or tool-policy results against those names. For collaborative agents, hold graders invariant across personas and report deltas. For catalog-driven Gemini or other vendor eval selection, record why a bench was chosen and which version was pinned. For infra, refuse to promote prompt-compression or retrieval changes on live A/B vibes alone when an offline regenerable harness exists or can be built. Those practices improve reproducibility and reduce false confidence more than chasing sparse same-day headlines.",
+  "methodology_risks": "Comparability risk is highest for live-data agent evals. If sessions are replayed against backends that have moved, measured gains from prompt compression, retrieval, or tool policies may be artifacts of state drift rather than model or harness improvement. Teams should require snapshot IDs, regeneration policies, and explicit statements when a bench was rebuilt; otherwise cross-day and cross-team tables are not commensurate.\n\nPersona and judge-related risk concentrates in collaborative science settings. Even with fixed task objectives, personas can induce length, tone, or tool-use patterns that some automated graders reward indirectly. If persona text or judge prompts are not isolated, preference matching can masquerade as scientific competence. Report persona distributions, whether graders saw persona channels, and any judge model or prompt version used.\n\nLeakage and selection risk rise with living benchmark databases and informal community claims. Catalog-driven bench shopping can concentrate training and eval on the same popular suites without disclosing overlap. Anecdotal local-model speed or 'proof' harness posts lack seeds, contamination checks, and scorer locks. Treat them as operational color, not as evidence for capability rankings, until protocols are fully specified and auditable.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "reproducibility",
+    "harness-design",
+    "contamination-risk",
+    "persona-conditioning",
+    "prompt-compression"
+  ],
+  "sources": [
+    {
+      "title": "Show HN: Mainplane – Agent in Go that lives on your old PC, drives your laptop",
+      "url": "https://github.com/mainplane-ai/mainplane",
+      "source": "hackernews"
+    },
+    {
+      "title": "Benchmark Radar: a living database to find the right eval for your Gemini model",
+      "url": "https://discuss.ai.google.dev/t/benchmark-radar-a-living-database-to-find-the-right-eval-for-your-gemini-model/196103",
+      "source": "forum/google-ai-developers"
+    },
+    {
+      "title": "Autonomous intelligence for mining productivity: a multi-agent AI approach to operational value creation",
+      "url": "https://openalex.org/W7223078329",
+      "source": "openalex"
+    },
+    {
+      "title": "Monitoring and evaluating the just transition : reflections on a theory of change for Scotland, with lessons for beyond",
+      "url": "https://openalex.org/W7222773276",
+      "source": "openalex"
+    },
+    {
+      "title": "Idle Windows CPU spikes every ~5 min: retrieval ext host rescans every ~/.cursor/projects/*/mcps folder (~1M file ops per window)",
+      "url": "https://forum.cursor.com/t/idle-windows-cpu-spikes-every-5-min-retrieval-ext-host-rescans-every-cursor-projects-mcps-folder-1m-file-ops-per-window/176275",
+      "source": "forum/cursor-forum"
+    },
+    {
+      "title": "I now have definitive proofs that my Qwen Flash Next is trying to send something to a remote Chinese server",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xg78oq/i_now_have_definitive_proofs_that_my_qwen_flash/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "Have 8 GB of VRAM and 32 GB of RAM? You can run Qwen 3.8 Flash Next at up to 900 t/s PP and 30 t/s TG!",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xft2ae/have_8_gb_of_vram_and_32_gb_of_ram_you_can_run/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "Deepity: a hand-tuned C++/CUDA predictive coding library, beats jpc (JAX) and ngc-learn on MNIST (CPU benchmarks + source inside) [P]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xg6sqa/deepity_a_handtuned_ccuda_predictive_coding/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Reproducible Evaluation as the Substrate for Safe Prompt Compression in Production Agents",
+      "url": "https://arxiv.org/abs/2610.31972",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: fix: Responses streaming through the sandbox model proxy fails with openai-python 3.31+ (#6058)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/b0b294b62c258ef561b8a64f7b4e57329a4b5dc3",
+      "source": "github"
+    },
+    {
+      "title": "What the Query Remembers: Query Abstraction Governs Lexical and Dense Retrieval of Classical Arabic Poetry",
+      "url": "https://arxiv.org/abs/2610.31821",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "SAGE: Sense-Aligned Multimodal Grounding Evaluation with Gloss-Augmented Reasoning",
+      "url": "https://arxiv.org/abs/2610.31838",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "PersonaScienceBench: Evaluating Scientific Agents with Diverse Simulated Researchers",
+      "url": "https://arxiv.org/abs/2610.32106",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Validating the Comparison, Not Just the Scorer: Why Overall Accuracy Can Mislead in Interactive LLM Evaluation",
+      "url": "https://arxiv.org/abs/2610.31678",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "MisconceptDialogue: Evaluation Criteria Shape Measured Success in LLM Math Tutoring",
+      "url": "https://arxiv.org/abs/2610.31679",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "[release] UKGovernmentBEIS/inspect_ai: v0.3.285",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/releases/tag/0.3.285",
+      "source": "github"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
