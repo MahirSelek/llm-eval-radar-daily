@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-28-daily-eval-briefing-2026-10-28-thin-same-day-signal-adaptive-process-rubrics-and-stat",
+    "title": "Daily Eval Briefing 2026-10-28: Thin Same-Day Signal, Adaptive Process Rubrics, and Statistical Audit Scaling",
+    "subtitle": "Fresh items cluster on Oct 26–27 around process-aware agent harnesses, entity-level metric validity, and calibrated human–judge auditing rather than a single Oct 28 headline.",
+    "date": "2026-10-28",
+    "summary": "Same-day coverage for 2026-10-28 is thin: the publishable set is dominated by Oct 26–27 arXiv and community items inside the freshness window, not by new Oct 28 drops. The strongest methodology signal is AdaPRA’s persistent coding harness with adaptive process rubrics for data-science agents, which reframes failure as budget waste, validation soundness, and exploration quality rather than final-score only. Complementary work on BenchBench-Cloning and entity-aware OCR evaluation pushes benchmarks toward end-to-end protocol fidelity and information-preserving metrics instead of recall or character error alone. A Oct 26 statistical framework for confidence-stratified human auditing and LLM-assisted judging clarifies when self-confidence and judges actually buy efficiency. Community posts favoring custom benchmarks and an upcoming-benchmarks leaderboard reinforce skepticism toward undifferentiated public boards, while a minor Inspect AI CI change is infra noise, not an eval protocol shift.",
+    "key_takeaways": [
+      "Treat Oct 28 as a thin same-day day: prioritize Oct 26–27 items (AdaPRA, BenchBench-Cloning, entity-aware OCR, conformance-as-distribution, audit statistics) and date them explicitly rather than framing them as overnight news.",
+      "Agent evals that only score final leaderboard placement will miss process failures AdaPRA targets—insufficient exploration, unsound validation, coding bugs, and fixed-budget rework—so harnesses need persistent memory and adaptive rubrics across attempts.",
+      "Domain benches should demand protocol completeness (BenchBench-Cloning’s 65 cloning tasks) and entity-level correctness (OCR names/dates/IDs), not knowledge recall or CER alone, if results are meant to map to operational risk.",
+      "Human-in-the-loop and LLM-as-judge pipelines need confidence-stratified sampling and calibration-aware cost models; miscalibrated self-confidence can still help allocation if strata are designed carefully.",
+      "Regulatory and infra teams should separate model benchmark scores from deployment conformance under a declared context distribution with scope and expiry; public leaderboard browsing is not a substitute for scoped, written evaluation contracts."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-28T00:59:33.289663+00:00",
+    "post_path": "content/posts/2026-10-28-daily-eval-briefing-2026-10-28-thin-same-day-signal-adaptive-process-rubrics-and-stat.json"
+  },
+  {
     "slug": "2026-10-27-daily-eval-briefing-2026-10-27-reproducible-live-data-harnesses-persona-conditioned-s",
     "title": "Daily Eval Briefing 2026-10-27: Reproducible Live-Data Harnesses, Persona-Conditioned Science Agents, and Living Benchmark Maps",
     "subtitle": "Same-day signal is thin; the strongest Oct 26 eval work stresses harness reproducibility under mutable backends and fixed grading under shifting collaborator personas.",
