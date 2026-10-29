@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-10-29-daily-eval-briefing-2026-10-29-thin-same-day-signal-frontier-harness-stress-tests-and",
+    "title": "Daily Eval Briefing 2026-10-29: Thin Same-Day Signal, Frontier Harness Stress Tests, and Inspect Sandbox Breaks",
+    "subtitle": "Oct 29 itself is quiet; Oct 28 items show harness validity, tiny fraud smoke tests, and leaderboard gaming as the live eval risks.",
+    "date": "2026-10-29",
+    "summary": "Same-day publishable coverage for 2026-10-29 is thin. The freshest technical signal sits in the prior ~36 hours: kw-bench frames coding-agent harnesses as the real evaluation surface for knowledge work, Inspect AI 0.3.286 ships a breaking Docker read_file identity change that can silently alter sandbox-dependent scores, and a Hugging Face fraud-eval smoke set of 20 cases shows how early domain benches still lack scale and leakage controls. A MAEB audio leaderboard climb via unused embedding null space, with zero training, is a concrete reminder that rank movement can be an artifact of unused capacity rather than genuine capability. Unverified model-launch chatter and off-window OpenAlex records do not strengthen today’s evidence base. For researchers and infra teams, the practical priority is to treat harness identity, scorer assumptions, and leaderboard mechanics as first-class validity variables—not afterthoughts.",
+    "key_takeaways": [
+      "Treat coding-agent harness loops (shell, filesystem, self-authored code) as part of the benchmark contract; kw-bench-style tasks fail when the harness is under-specified or non-comparable across labs.",
+      "Pin Inspect AI carefully after 0.3.286: Docker read_file now runs as the container default user, so privileged-copy assumptions can change file access and break reproducibility across sandbox providers.",
+      "Fraud-eval’s 20-case smoke test is useful for detector wiring checks, not for claims about fraud robustness; expand only with leakage audits and held-out case families.",
+      "Leaderboard jumps from null-space packing (MAEB/EmbeddingGemma-2) show unused representation capacity can dominate rank without training—report mechanism, not just delta.",
+      "Ignore unverified Gemini 4 Carbon benchmark dumps and future-dated OpenAlex hits when briefing stakeholders for 2026-10-29."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-29T01:34:30.962077+00:00",
+    "post_path": "content/posts/2026-10-29-daily-eval-briefing-2026-10-29-thin-same-day-signal-frontier-harness-stress-tests-and.json"
+  },
+  {
     "slug": "2026-10-28-daily-eval-briefing-2026-10-28-thin-same-day-signal-adaptive-process-rubrics-and-stat",
     "title": "Daily Eval Briefing 2026-10-28: Thin Same-Day Signal, Adaptive Process Rubrics, and Statistical Audit Scaling",
     "subtitle": "Fresh items cluster on Oct 26–27 around process-aware agent harnesses, entity-level metric validity, and calibrated human–judge auditing rather than a single Oct 28 headline.",
