@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-01-daily-eval-briefing-2026-11-01-thin-same-day-signal-domain-hard-science-benches-and-h",
+    "title": "Daily Eval Briefing (2026-11-01): Thin Same-Day Signal, Domain-Hard Science Benches, and Harness Conversation Control",
+    "subtitle": "With little fresh same-day LLM-eval news, the strongest signals are expert-curated scientific scoring, Inspect harness rewrite surfaces, and unverified SWE-bench claims.",
+    "date": "2026-11-01",
+    "summary": "Same-day coverage for 2026-11-01 is thin on dedicated LLM evaluation releases; the actionable technical signal sits in the prior 36-hour window. The clearest methodology advance is an inertial confinement fusion benchmark that pairs expert-curated scientific items with deterministic numerical and symbolic checkers, reducing reliance on free-form judges. UKGovernmentBEIS Inspect AI 0.3.287 (2026-10-31) adds runtime rewrite of ReAct conversations at turn boundaries plus monitor budget visibility, which changes what “same harness” means for agent runs. A Hugging Face forum claim of 82% on SWE-bench Verified for OxCode underscores how leaderboard numbers travel faster than protocol disclosure. Commentary on leaderboard misfit and a broader benchmarking critique reinforce the same operational lesson: rank order is not task fit, and harness deltas are first-class evaluation variables.",
+    "key_takeaways": [
+      "Treat 2026-11-01 as a thin same-day LLM-eval day; prioritize 2026-10-31 items inside the freshness window rather than stretching off-domain OpenAlex hits into eval news.",
+      "Domain-hard scientific benches that score with deterministic numerical and symbolic checkers are a practical alternative to LLM-as-judge drift for quantitative claims.",
+      "Inspect 0.3.287 conversation rewrite and compaction reset() mean agent traces are no longer immutable mid-run; version pin harnesses and log rewrite events for comparability.",
+      "SWE-bench Verified percentage claims without harness, scaffolding, and patch-verification detail remain non-comparable marketing signals until protocol is published.",
+      "Use leaderboards as capability priors, then re-evaluate on task-conditioned suites that match your deployment distribution, latency, and failure modes."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-10-31T21:01:39.683950+00:00",
+    "post_path": "content/posts/2026-11-01-daily-eval-briefing-2026-11-01-thin-same-day-signal-domain-hard-science-benches-and-h.json"
+  },
+  {
     "slug": "2026-10-31-daily-eval-briefing-2026-10-31-thin-same-day-signal-broken-benchmark-framing-and-repr",
     "title": "Daily Eval Briefing 2026-10-31: Thin Same-Day Signal, Broken-Benchmark Framing, and Reproducibility Gaps",
     "subtitle": "With little true 2026-10-31 inventory, the freshest window stresses measurement infrastructure, retrieval-first RAG scoring, and unreproducible quantized-bench claims.",
