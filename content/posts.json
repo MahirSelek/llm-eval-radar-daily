@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-02-daily-eval-briefing-2026-11-02-thin-same-day-signal-custom-code-benches-and-harness-t",
+    "title": "Daily Eval Briefing 2026-11-02: Thin Same-Day Signal, Custom Code Benches, and Harness Token Accounting",
+    "subtitle": "Fresh coverage is mostly 2026-11-01 through 2026-10-31: private-repo code benches, typed-decision protocols, and inspect_ai harness controls dominate over new public leaderboard shocks.",
+    "date": "2026-11-02",
+    "summary": "Same-day publishable coverage for 2026-11-02 is thin; the strongest evaluation signals sit in the prior 36 hours and soft 72-hour window. The clearest methodological shift is toward organization-owned code benchmarks that score agents on private repositories rather than static public suites, raising contamination control while tightening harness and token-accounting requirements. Parallel forum and guide material emphasize typed decision protocols, open submission rules, and careful interpretation of LLM, agent, and RAG scorecards. Inspect AI’s late-October release and follow-on test hygiene changes further underline that conversation rewriting, compaction resets, and monitor token budgets are now first-class reproducibility surfaces. Researchers and infra teams should treat harness configuration and hidden prompt cost as part of the reported result, not as invisible scaffolding.",
+    "key_takeaways": [
+      "Treat private-repo code benches (repo2bench/Harbor-style) as anti-leakage infrastructure: gains are only comparable when harness, tools, and optimization loops are versioned and disclosed.",
+      "Typed-decision and multilingual submission protocols matter because they constrain judge ambiguity; open evaluation guides beat opaque leaderboard deltas when same-day news is sparse.",
+      "Agent harnesses hide tokens—system prompts, tool schemas, compaction, and monitor models—so cost and context budgets must be reported alongside accuracy.",
+      "Inspect AI 0.3.287 (2026-10-31) makes runtime conversation rewrite and compaction reset() explicit; any before/after comparison without pinning that release is weakly reproducible.",
+      "Practical benchmark guides are useful for taxonomy, not for claiming new capability frontiers; separate what a suite measures from what a marketing score implies."
+    ],
+    "source_count": 12,
+    "model": "grok-4.5",
+    "created_at": "2026-11-01T21:44:07.900027+00:00",
+    "post_path": "content/posts/2026-11-02-daily-eval-briefing-2026-11-02-thin-same-day-signal-custom-code-benches-and-harness-t.json"
+  },
+  {
     "slug": "2026-11-01-daily-eval-briefing-2026-11-01-thin-same-day-signal-domain-hard-science-benches-and-h",
     "title": "Daily Eval Briefing (2026-11-01): Thin Same-Day Signal, Domain-Hard Science Benches, and Harness Conversation Control",
     "subtitle": "With little fresh same-day LLM-eval news, the strongest signals are expert-curated scientific scoring, Inspect harness rewrite surfaces, and unverified SWE-bench claims.",
