@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-03-daily-eval-briefing-2026-11-03-thin-same-day-signal-incomplete-relevance-labels-and-p",
+    "title": "Daily Eval Briefing 2026-11-03: Thin Same-Day Signal, Incomplete Relevance Labels, and Pre-Registered Fairness Protocols",
+    "subtitle": "Fresh 36h coverage is light on 2026-11-03 itself, but 2026-11-02 releases show that shortcut gold labels and unreproducible baselines still break ranking claims.",
+    "date": "2026-11-03",
+    "summary": "Same-day publishable signal for 2026-11-03 is thin; the actionable evaluation material concentrates in items dated 2026-11-02 within the freshness window. The strongest technical shift is methodological: conversational RAG abstention scoring that treats missing gold documents as unanswerable can invert conclusions when retrievers improve and label pools stay incomplete. A second high-value strand is Qistas, a pre-registered, portable fairness protocol that rejects English-born social categories as default ground truth for non-US settings. Community evidence reinforces the same theme from another angle: exact-code reproductions can still miss published numbers on selected benchmarks, which is a comparability failure, not a minor noise issue. Domain benches such as Bulwark show that inbox-derived spam/scam labels can cut false alarms sharply when the evaluation set matches the operating language and threat distribution. For researchers and infra teams, the practical message is to treat label sufficiency, protocol registration, and reproduction deltas as first-class release gates before trusting leaderboard moves.",
+    "key_takeaways": [
+      "Do not score RAG abstention from incomplete relevance judgments alone; when gold docs are missing, sufficiency is unknown, not proven negative.",
+      "Prefer pre-registered, locally grounded fairness protocols (as in Qistas) over translated US-centric category suites when comparing models across societies.",
+      "Treat exact-code reproduction gaps as material: report deltas, seeds, harness versions, and split identities before claiming baseline parity.",
+      "Build domain benchmarks from real operating distributions (language, scam patterns, inbox mix) instead of generic spam corpora if false-alarm rates matter in production.",
+      "Separate training eval-loss rises caused by copied-token masking or early overfitting from true task-metric regressions before changing stop rules."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-03T02:12:04.046574+00:00",
+    "post_path": "content/posts/2026-11-03-daily-eval-briefing-2026-11-03-thin-same-day-signal-incomplete-relevance-labels-and-p.json"
+  },
+  {
     "slug": "2026-11-02-daily-eval-briefing-2026-11-02-thin-same-day-signal-custom-code-benches-and-harness-t",
     "title": "Daily Eval Briefing 2026-11-02: Thin Same-Day Signal, Custom Code Benches, and Harness Token Accounting",
     "subtitle": "Fresh coverage is mostly 2026-11-01 through 2026-10-31: private-repo code benches, typed-decision protocols, and inspect_ai harness controls dominate over new public leaderboard shocks.",

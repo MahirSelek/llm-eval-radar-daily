@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-03-daily-eval-briefing-2026-11-03-thin-same-day-signal-incomplete-relevance-labels-and-p",
+  "date": "2026-11-03",
+  "created_at": "2026-11-03T02:12:04.046574+00:00",
+  "title": "Daily Eval Briefing 2026-11-03: Thin Same-Day Signal, Incomplete Relevance Labels, and Pre-Registered Fairness Protocols",
+  "subtitle": "Fresh 36h coverage is light on 2026-11-03 itself, but 2026-11-02 releases show that shortcut gold labels and unreproducible baselines still break ranking claims.",
+  "summary": "Same-day publishable signal for 2026-11-03 is thin; the actionable evaluation material concentrates in items dated 2026-11-02 within the freshness window. The strongest technical shift is methodological: conversational RAG abstention scoring that treats missing gold documents as unanswerable can invert conclusions when retrievers improve and label pools stay incomplete. A second high-value strand is Qistas, a pre-registered, portable fairness protocol that rejects English-born social categories as default ground truth for non-US settings. Community evidence reinforces the same theme from another angle: exact-code reproductions can still miss published numbers on selected benchmarks, which is a comparability failure, not a minor noise issue. Domain benches such as Bulwark show that inbox-derived spam/scam labels can cut false alarms sharply when the evaluation set matches the operating language and threat distribution. For researchers and infra teams, the practical message is to treat label sufficiency, protocol registration, and reproduction deltas as first-class release gates before trusting leaderboard moves.",
+  "key_takeaways": [
+    "Do not score RAG abstention from incomplete relevance judgments alone; when gold docs are missing, sufficiency is unknown, not proven negative.",
+    "Prefer pre-registered, locally grounded fairness protocols (as in Qistas) over translated US-centric category suites when comparing models across societies.",
+    "Treat exact-code reproduction gaps as material: report deltas, seeds, harness versions, and split identities before claiming baseline parity.",
+    "Build domain benchmarks from real operating distributions (language, scam patterns, inbox mix) instead of generic spam corpora if false-alarm rates matter in production.",
+    "Separate training eval-loss rises caused by copied-token masking or early overfitting from true task-metric regressions before changing stop rules."
+  ],
+  "body_en": "Coverage for the official 2026-11-03 briefing is thin on items published on the report day itself. The freshest evaluation-relevant material arrives from 2026-11-02 sources inside the 36-hour window, and those items are enough to brief stakeholders without inventing news: incomplete relevance labels can distort abstention rankings, fairness evaluation needs portable pre-registered protocols, and reproduction failures remain a live reporting problem.\n\nThe clearest methodology hit is the arXiv note Better Retrievers, Worse Labels: How Incomplete Relevance Judgments Distort Abstention Evaluation in Conversational RAG (announced 2026-11-02). Conversational RAG benchmarks such as MTRAG and RETECO score retrieval and generation end to end. Because each system answers from its own retrieved context, abstention should be judged against whether that context is actually sufficient. A common shortcut skips that work: it reads sufficiency from the existing relevance judgments and treats any context without gold documents as unanswerable. The paper re-runs official baselines exactly and stress-tests that shortcut on RECOR (RETECO track 2). The core claim is uncomfortable for current ranking practice: as retrievers improve, they surface useful non-gold documents that incomplete label pools never marked. Systems that correctly answer from those documents can be punished under the shortcut, while weaker retrievers that miss both gold and useful non-gold contexts look appropriately abstaining. In other words, better retrieval plus incomplete labels can produce worse-looking abstention scores. That is not a minor annotation nit. It is a validity failure: the metric no longer tracks the intended property (know when the retrieved evidence is enough).\n\nFor infra and eval teams, the operational implication is immediate. End-to-end RAG leaderboards that auto-map missing gold to unanswerable should be treated as provisional until sufficiency is adjudicated on the retrieved set, not only on the static qrels. Practical controls include: (1) separate retrieval recall from answerability adjudication; (2) sample non-gold retrieved passages for human or multi-judge sufficiency review; (3) report abstention metrics under both shortcut and adjudicated labels so readers can see rank sensitivity; and (4) freeze the judgment pool version in the harness manifest. Without those steps, harness upgrades that improve retrieval can silently invert model orderings.\n\nA second 2026-11-02 arXiv item, Qistas: A Pre-Registered, Portable Protocol for Fairness Evaluation of Large Language Models, attacks a different but related validity problem. Fairness suites for LLMs are still overwhelmingly English-born and American in their social categories. Translated variants often carry those categories into societies where they do not apply, and almost none lock hypotheses before models are run. Qistas (from Arabic qistas, the just balance) proposes a portable protocol for evaluating how models treat the social, confessional, and regional constituencies of a given society, with pre-registration as a first-class requirement. That matters for evaluation quality because post-hoc category choice and prompt tuning are a quiet form of researcher degrees of freedom. If the hypothesis and scoring template are not fixed before model outputs are seen, fairness deltas become hard to distinguish from cherry-picked contrasts. Portability also forces a design question that translated US benches evade: which local constituencies are the relevant units of analysis, and how are harms or disparities operationalized without importing foreign taxonomy noise.\n\nResearchers comparing multilingual or regional fairness claims should therefore ask three gate questions before accepting a score: Was the protocol pre-registered? Were social categories defined for the target society rather than translated from another polity? Are prompts, sampling temperature, and aggregation rules versioned so later models cannot be scored under a silently shifted template? Qistas does not solve judge bias by itself, but it raises the bar on construct validity and reduces post-hoc fishing.\n\nReproducibility pressure shows up clearly in the 2026-11-02 r/MachineLearning thread where an author could not reproduce a published paper's numbers using the authors' released code and listed hyperparameters. Most benchmarks matched within noise; two did not, with clear underperformance. That pattern is exactly what evaluation consumers should fear: selective non-reproducibility that survives casual spot checks. Presenting such gaps honestly is part of evaluation hygiene. The useful framing is not accusation by default; it is controlled discrepancy reporting: same code hash, same hyperparameter table, same split files, seed list, hardware notes, and absolute metric deltas. If the original paper omitted seeds, data filters, or early-stopping rules, those omissions become part of the finding. For briefing purposes, the thread is not a new benchmark release; it is a same-window reminder that published leaderboard cells are not always recoverable artifacts.\n\nDomain-specific benchmark construction appears in the 2026-11-02 Hugging Face forum post on Bulwark, a Turkish-first scam/spam classifier paired with a benchmark built from a real inbox, reporting false alarms cut from 53% to 14%. Even with a sparse forum summary, the evaluation lesson is concrete: generic spam corpora misestimate operating risk when language, scam rhetoric, and inbox mix differ from the deployment setting. Building the bench from a real inbox distribution aligns the label prior with production traffic and makes false-alarm claims more decision-relevant. The risk to watch is leakage and privacy: inbox-derived sets can overfit to one organization's threat pattern or contain sensitive content if redaction is weak. Still, as a design pattern, real-distribution domain benches beat translated general spam tests for operational claims.\n\nTwo adjacent 2026-11-02 items are secondary but informative for harness discipline. The Hugging Face thread on QLoRA fine-tuning for code repair notes eval loss rising after epoch 1 even with doubled data, raising the early-stop versus copied-token masking question. That is a training-eval instrumentation issue: if copied tokens remain in the loss, rising eval loss may reflect objective mismatch rather than genuine repair regression. Teams should report which tokens are masked before interpreting early-stop curves as quality signals. Separately, Launch HN coverage of Momentic (agents that catch bugs by using the app) and the Claude Code game-cloning limit discussion point at product harnesses rather than academic benches. They still matter lightly for evaluation practice: agent bug-finding depends on environment fidelity and action coverage, and provider-side task blocks show that the same model under different harnesses is not a comparable unit of measure. Policy filters that apply only to one tool-model pair break cross-harness score transfer.\n\nItems with later OpenAlex timestamps (mid-to-late November drafts on knowledge graphs and mining multi-agent systems) and low-signal psychology/AI-use links are not treated as same-day evaluation news here. They lack immediate benchmark-validity content for this briefing.\n\nNet: 2026-11-03 is a thin same-day day, but the 2026-11-02 cluster is coherent. Incomplete gold judgments can punish stronger retrievers on abstention tasks; fairness work needs pre-registered portable protocols rather than imported category translations; and reproduction gaps plus domain-label mismatch remain first-order threats to comparability. The teams that will make cleaner calls this week are those who version judgment pools, register fairness hypotheses, and publish reproduction deltas beside every baseline claim.",
+  "methodology_risks": "Incomplete relevance judgments are the primary comparability hazard in this window. Mapping missing gold documents to unanswerable converts an unknown into a hard negative. As retrieval improves, useful non-labeled passages appear more often, so abstention and answerability rankings can reverse without any real capability drop. Any RAG harness that auto-derives sufficiency from static qrels should publish a sensitivity analysis against adjudicated retrieved contexts and pin the judgment pool version in the run card.\n\nFairness and domain benches carry leakage and construct-shift risks of a different kind. Translated category suites import foreign social taxonomies and invite post-hoc contrast shopping unless hypotheses and prompts are pre-registered. Inbox-derived spam/scam sets improve ecological validity but can leak organization-specific patterns or PII if redaction and train/test separation are weak. Treat local category definitions, registration timestamps, and decontamination checks as mandatory metadata.\n\nReproducibility and harness drift complete the risk surface. Exact-code under-reproduction on selected benchmarks means published numbers are not always a stable baseline. Provider-side task blocks and agent environments further break model-only comparisons: scores are harness-conditioned. Report code hashes, seeds, split IDs, stop rules, token-masking choices, and tool policy versions whenever claiming parity or gains.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "rag-abstention",
+    "relevance-labels",
+    "fairness-protocol",
+    "reproducibility",
+    "harness-comparability"
+  ],
+  "sources": [
+    {
+      "title": "Launch HN: Momentic (YC W24) – Agents that catch bugs by using your app",
+      "url": "https://momentic.ai/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Bulwark: a Turkish-first scam/spam classifier + a benchmark built from a real inbox (false alarms 53% → 14%)",
+      "url": "https://discuss.huggingface.co/t/bulwark-a-turkish-first-scam-spam-classifier-a-benchmark-built-from-a-real-inbox-false-alarms-53-14/191357",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "Autonomous intelligence for mining productivity: a multi-agent AI approach to operational value creation",
+      "url": "https://openalex.org/W7223078329",
+      "source": "openalex"
+    },
+    {
+      "title": "Evaluating Artificial Intelligence Use and Its Psychological Correlates",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40977447/",
+      "source": "hackernews"
+    },
+    {
+      "title": "QLoRA on a code-repair dataset: eval loss rises after epoch 1 even with 2× more data. Early stopping, or mask the copied tokens?",
+      "url": "https://discuss.huggingface.co/t/qlora-on-a-code-repair-dataset-eval-loss-rises-after-epoch-1-even-with-2x-more-data-early-stopping-or-mask-the-copied-tokens/191346",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Anthropic confirms new Claude Code limits to prevent game cloning",
+      "url": "https://www.reddit.com/r/ClaudeAI/comments/1xm5vdp/anthropic_confirms_new_claude_code_limits_to/",
+      "source": "reddit/r/ClaudeAI"
+    },
+    {
+      "title": "Couldn't reproduce a published paper's numbers with its own code and settings. How do I present this? [R]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xm64of/couldnt_reproduce_a_published_papers_numbers_with/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Qistas: A Pre-Registered, Portable Protocol for Fairness Evaluation of Large Language Models",
+      "url": "https://arxiv.org/abs/2610.40893",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: perf: share logged model-call messages across calls (#6047)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/c3360cea51762b3b2411f0d471da33de418724ba",
+      "source": "github"
+    },
+    {
+      "title": "Better Retrievers, Worse Labels: How Incomplete Relevance Judgments Distort Abstention Evaluation in Conversational RAG",
+      "url": "https://arxiv.org/abs/2610.40966",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses",
+      "url": "https://arxiv.org/abs/2610.40747",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "CoFiBreak: A Coarse-to-Fine Diversity Reward for Effective Multi-Turn Jailbreak",
+      "url": "https://arxiv.org/abs/2610.40926",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Adaptive Personalization Under Preference Epistemic Uncertainty",
+      "url": "https://arxiv.org/abs/2610.40930",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Show HN: EchoChain to see what happens when LLMs play telephone",
+      "url": "https://github.com/smusali/echoChain",
+      "source": "hackernews"
+    },
+    {
+      "title": "Research directions, EMNLP and *CL papers",
+      "url": "https://www.reddit.com/r/LanguageTechnology/comments/1xlv5to/research_directions_emnlp_and_cl_papers/",
+      "source": "reddit/r/LanguageTechnology"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
