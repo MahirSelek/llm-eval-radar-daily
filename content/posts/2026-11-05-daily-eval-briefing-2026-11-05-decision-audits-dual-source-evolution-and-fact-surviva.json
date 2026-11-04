@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-05-daily-eval-briefing-2026-11-05-decision-audits-dual-source-evolution-and-fact-surviva",
+  "date": "2026-11-05",
+  "created_at": "2026-11-04T23:15:29.110105+00:00",
+  "title": "Daily Eval Briefing 2026-11-05: Decision Audits, Dual-Source Evolution, and Fact Survival Beyond Leaderboard Scores",
+  "subtitle": "Same-day signal is thin; the freshest window pushes evaluation from outcome scores toward process audits, premise tracking, and multi-method judgment stacks.",
+  "summary": "Coverage for 2026-11-05 itself is thin; the actionable signal sits in the last roughly 36 hours, mainly 2026-11-04 arXiv releases plus adjacent harness and community items. AStockArena argues that cumulative returns are an incomplete measure for financial agents and proposes real-time decision auditing for trade fidelity, evidence support, and account-state consistency. DuSE-Bench targets assistants that must jointly track evolving dialogue requirements and changing documents, including tasks whose required premises come from both streams. A separate audit of AI-text humanizers shows public evasion and similarity leaderboards omit whether checkable facts survive rewriting, and validates a rule-based fact checker with AI annotators rather than human gold. Surrounding signals reinforce the same shift: a 2026-11-03 multi-method health evaluation framework combining benchmarks, autoraters, and experts; an Inspect AI harness retry fix; a Hugging Face request to register GKB-1000; and practitioner debate on whether single-pass VLM parsing beats staged OCR pipelines for reproducible document benchmarks.",
+  "key_takeaways": [
+    "Treat return-only or accuracy-only scores as insufficient when the claim is trustworthy agency: add decision-level audits for reporting fidelity, evidence grounding, and state consistency, as AStockArena does for continuous A-share trading.",
+    "For persistent assistants, score jointly over dialogue revisions and document updates; DuSE-Bench-style premise provenance is needed before comparing models on multi-session web tasks.",
+    "Do not promote humanizer or detector leaderboards that ignore fact survival; require checkable entity, number, date, and quote preservation metrics with reported checker precision/recall.",
+    "In high-stakes domains, pair static benchmarks with autoraters and expert review anchored to Critical User Journeys across the model-product-monitoring lifecycle (framework dated 2026-11-03).",
+    "Infra teams should treat harness race conditions and benchmark registration hygiene as first-class reproducibility risks, not background ops noise."
+  ],
+  "body_en": "Same-day publishable coverage for 2026-11-05 is thin. Almost all evaluation-relevant items in the provided set landed on 2026-11-04, with one important methodological paper dated 2026-11-03 and a few community or infra signals inside the freshness window. The briefing therefore treats 2026-11-04 technical releases as the primary evidence base, notes older or adjacent items by date, and does not invent a denser same-day news cycle than the feed supports.\n\nThe clearest methodological move is AStockArena (arXiv:2611.00515, announced 2026-11-04). Financial agent benchmarks still lean on cumulative returns and risk-adjusted outcome metrics. Those numbers can look strong while trades are poorly reported, weakly evidenced, or inconsistent with account state. AStockArena reframes the problem as real-time decision auditing for continuous trading in China’s A-share market: whether decisions are faithfully reported, supported by available evidence, and consistent with account states. For evaluation teams, the implication is direct. If the product claim is capital stewardship or agent reliability, outcome PnL is a necessary but incomplete score. Comparability also changes. Two agents with similar return curves are not equivalent if one systematically fabricates rationale or drifts from ledger state. Protocol design must expose the decision surface, not only the equity curve, or rankings will reward optimistic storytelling under noisy markets.\n\nDuSE-Bench (arXiv:2611.00755, 2026-11-04) attacks a different but related validity gap: persistent web assistants that must fuse evolving document facts with user requirements that change across sessions. The authors note that systematic evaluation of how changes in both sources alter response requirements and evidence attribution remains limited. The benchmark comprises 1,000 tasks across five scenarios, including 700 whose required premises originate from dual sources. That design matters because many current RAG or assistant evals freeze either the corpus or the user intent. When both evolve, failures can look like model weakness when they are actually premise-tracking failures, or look like success when the model answers a stale requirement against a fresh document. For researchers, DuSE-Bench-style tasks force separate scoring of premise acquisition, conflict handling, and attribution. For infra teams, they force logging of which document version and which dialogue constraint were active at answer time; without that harness metadata, cross-run comparisons are not reproducible.\n\nA third 2026-11-04 paper, Humanized but Still True? (arXiv:2611.00359), is especially sharp on leaderboard validity. AI humanizers rewrite machine-generated text so detectors classify it as human. Public boards score evasion and embedding similarity, but not whether checkable details survive. The work audits numbers, dates, person and organization names, and quoted spans with a rule-based checker validated by two AI annotators (reported precision 0.84-1.00, recall 0.93-0.95; no human annotation). In an October 2026 leaderboard cycle, this exposes a classic contamination of incentives: optimizing for detector evasion can silently corrupt factual payload. The methodological warning is twofold. First, surrogate metrics (detector label flip, embedding proximity) can diverge from the property stakeholders care about (fact integrity). Second, the checker itself is AI-validated rather than human-gold, so reported precision/recall must travel with every claim. Teams using LLM annotators to certify rule checkers should treat that stack as a judge chain with correlated error modes, not as ground truth.\n\nAdjacent to these benchmark papers, Queering the Audits (arXiv:2611.00345, 2026-11-04) argues that standard technical audits relying on aggregate measures miss harms visible mainly through lived experience, based on a participatory workshop at EurIPS 2025 with queer community auditors. For evaluation methodology, the point is not to replace quantitative benches; it is to recognize that category definitions, majority defaults, and aggregate F1-style summaries can encode erasure. When a benchmark’s taxonomy cannot express the failure mode, model comparisons become falsely reassuring. Practical implication: for identity-sensitive or community-harm claims, pair aggregate scores with participatory or qualitative audit protocols and report who defined the labels.\n\nThe 2026-11-03 paper Towards Multi-Method Evaluation of AI in Health (arXiv:2611.05127v1) still belongs in this briefing because it supplies the cross-domain template for combining the above ideas. It argues that general-purpose GenAI in healthcare is poorly served by traditional single-framework eval, and adapts methods into a structured stack: Critical User Journeys to prioritize the choice space; mapping to base-model, product, and post-deployment phases; and integrating benchmarks, autoraters, and expert evaluation. That is the right response to thin same-day product news: do not wait for one perfect bench. Prefer journey-anchored multi-method evidence with explicit phase ownership. Autoraters accelerate coverage but inherit judge drift; experts are scarce but calibrate claims; static benches enable regression but lag deployment context. Stakeholders should ask which CUJ and which lifecycle phase a score claims to cover before promoting a model.\n\nHarness and community signals from 2026-11-04 reinforce reproducibility and governance. An Inspect AI commit fixes retry behavior when a sibling removes a sample-buffer directory during mkdir, a race that can break parallel sample execution. This is not a new benchmark, but it is a reminder that leaderboard deltas can be harness artifacts. Teams comparing runs across Inspect versions should pin commit hashes and re-validate sample buffering under concurrent load. On Hugging Face forums, a request to register GKB-1000 as an official benchmark raises the complementary governance question: what counts as an official bench, who controls versioning, and how leakage or private test splits are handled once registration attracts training pressure. Separately, a LanguageTechnology thread on single-pass document parsing versus staged OCR/VLM pipelines shows that document-understanding eval remains fragile: two-column PDFs with tables and footnotes still break tools, and handoff errors between stages confound end-to-end scores. Until parsing harnesses standardize page layout strata and failure taxonomies, markdown-quality benches will overstate progress.\n\nTwo weaker signals should be handled carefully. A Hacker News pointer on 2026-11-04 to a 2026-10-30 Retraction Watch note that Scientific Reports is on hold in PubMed while NLM reevaluates the journal is not an LLM benchmark release, but it is a reminder that publication-channel trust affects how evaluation claims propagate. An OpenAlex record titled Natural Language Processing and Graph Methods for Knowledge Graph Applications carries a 2026-11-26 timestamp in the feed and does not add same-window eval methodology insight, so it is not used as news for 2026-11-05.\n\nNet assessment for researchers and infra teams: the freshest cluster is coherent even if same-day density is low. Move from outcome-only and evasion-only boards toward decision audits, dual-source premise tracking, and fact-survival checks. Keep multi-method stacks for high-stakes domains. Pin harnesses, document versioned premises, and treat official benchmark registration as a contamination event unless holdouts and update policies are explicit.",
+  "methodology_risks": "Comparability risk is highest when papers and leaderboards mix incompatible score types: returns versus decision fidelity (AStockArena), single-frozen RAG tasks versus dual-evolving dialogue/document premises (DuSE-Bench), detector evasion versus fact survival (humanizer audit), and aggregate harm metrics versus participatory audits. Publishing a single rank without stating which property was measured invites false cross-paper comparisons. Teams should require protocol cards that name the decision surface, premise provenance rules, and failure taxonomy before merging results into shared dashboards.\n\nLeakage and contamination pressure rise as soon as benches seek official status or public leaderboard cycles, as with humanizer October 2026 boards and the GKB-1000 registration request. Once tasks, documents, or dialogue traces are public, training contamination and prompt overfitting become likely. Dual-source and real-time market settings add a further risk: live data drift can look like model improvement or regression unless document/account snapshots are frozen and hashed per run.\n\nJudge and checker drift remain first-order. The humanizer study validates a rule checker with AI annotators and no human annotation; the health framework explicitly relies on autoraters beside experts. Correlated judge error, prompt non-transfer, and phase mismatch (base model versus post-deployment monitoring) can all shift scores without capability change. Mitigations: report checker precision/recall with every release, pin judge prompts and model versions, recalibrate autoraters against expert samples per CUJ, and treat Inspect-style harness retries as potential score confounds in parallel evaluation jobs.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "decision-audit",
+    "fact-preservation",
+    "harness-reproducibility",
+    "contamination-risk",
+    "multi-method-eval"
+  ],
+  "sources": [
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "Scientific Reports on hold in PubMed while NLM reevaluates journal",
+      "url": "https://retractionwatch.com/2026/10/30/scientific-reports-pubmed-on-hold-national-library-medicine-evaluation/",
+      "source": "hackernews"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: fix: retry sample buffer connect when a sibling removes its directory during mkdir (#6305)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/27f18ff7d5bd4b8d7752912c1e0cd28e2e912e88",
+      "source": "github"
+    },
+    {
+      "title": "AStockArena: Beyond Returns, Can We Entrust Real Capital to the Decisions of Financial Agents?",
+      "url": "https://arxiv.org/abs/2611.00515",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "DuSE-Bench: Benchmarking Joint Reasoning over Evolving Dialogue and Documents",
+      "url": "https://arxiv.org/abs/2611.00755",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Request to register GKB-1000 as an official benchmark",
+      "url": "https://discuss.huggingface.co/t/request-to-register-gkb-1000-as-an-official-benchmark/191424",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Queering the Audits: Community-Based Auditing of AI Harms to Queer Communities",
+      "url": "https://arxiv.org/abs/2611.00345",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Humanized but Still True? Auditing Facts and Detection in AI-Text Humanizers",
+      "url": "https://arxiv.org/abs/2611.00359",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Aligning Language Models with General Preferences: An Empirical Study of Direct Nash Optimization",
+      "url": "https://arxiv.org/abs/2611.05373v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "MedPhysBench: A Benchmark for Evaluating Language Models on Medical Physics Calculations and Error Detection",
+      "url": "https://arxiv.org/abs/2611.05340v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Towards Multi-Method Evaluation of AI in Health: Integrating Benchmarks, Autoraters, and Expert Evaluation",
+      "url": "https://arxiv.org/abs/2611.05127v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Single-pass doc parsing vs staged pipelines, what's actually working for you?",
+      "url": "https://www.reddit.com/r/LanguageTechnology/comments/1xncvt5/singlepass_doc_parsing_vs_staged_pipelines_whats/",
+      "source": "reddit/r/LanguageTechnology"
+    },
+    {
+      "title": "AI Evals Over Chai — Day 4: Building a small evaluation harness with two checks.",
+      "url": "https://medium.com/@dhratiisharma/ai-evals-over-chai-day-4-building-a-small-evaluation-harness-with-two-checks-74b7b7aed935?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "AI Evals Over Chai — Day 4: Building a small evaluation harness with two checks.",
+      "url": "https://medium.com/@dhratiisharma/ai-evals-over-chai-day-4-building-a-small-evaluation-harness-with-two-checks-74b7b7aed935?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Beyond the Chatbot: Building a RAG System That Measures, Improves, and Knows When to Ask a Human",
+      "url": "https://medium.com/@yedukondalurd/beyond-the-chatbot-building-a-rag-system-that-measures-improves-and-knows-when-to-ask-a-human-a5f0e1c792b7?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "BudHist Benchmark: Testing the Knowledge of Buddhist History in Open-Weight LLMs",
+      "url": "https://mbingenheimer.net/budhistbenchmark/",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
