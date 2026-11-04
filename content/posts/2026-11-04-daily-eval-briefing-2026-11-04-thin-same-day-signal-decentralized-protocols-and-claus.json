@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-04-daily-eval-briefing-2026-11-04-thin-same-day-signal-decentralized-protocols-and-claus",
+  "date": "2026-11-04",
+  "created_at": "2026-11-04T00:24:33.599741+00:00",
+  "title": "Daily Eval Briefing 2026-11-04: Thin Same-Day Signal, Decentralized Protocols, and Clause-Level Judges",
+  "subtitle": "Fresh Nov 2–3 items stress reproducibility infrastructure and narrow-question judging over headline model scores.",
+  "summary": "Same-day publishable coverage for 2026-11-04 is thin; the actionable signal sits in the last 36 hours, especially 2026-11-03. DEP frames a decentralized evaluation protocol aimed at reducing ad-hoc scripts and centralized harness lock-in. DMReranker (arXiv, 2026-11-02) shows that multiplying small, answerable clause judges can beat list-wise LLM reranking on instruction sensitivity when configs are frozen before test. Practical posts and an Inspect AI sandbox commit reinforce the same theme: harness identity, dual-check agent truthfulness, and LLM-as-judge loops matter more than new leaderboard noise. Domain benches such as BudHist add coverage but do not by themselves resolve leakage or judge-calibration risk.",
+  "key_takeaways": [
+    "Treat DEP-style unified protocols as infra: without shared standards, cross-lab scores remain non-comparable even when models look similar.",
+    "Prefer frozen, narrow judges (one question per constraint) over single list-wise LLM scores when instruction-following is the claim under test.",
+    "Agent evals need at least two independent checks (tool/world state vs user-facing claim); success in the environment is not honesty to the user.",
+    "Inspect-class harness fixes (sandbox HOME/identity) are reproducibility events: re-run baselines after identity-scope changes before comparing scores.",
+    "Domain knowledge benches (e.g., BudHist) are useful coverage probes; publish contamination checks and item provenance before treating them as frontier claims."
+  ],
+  "body_en": "Same-day coverage for the official 2026-11-04 briefing is thin. No dense cluster of new frontier papers landed with a clean 2026-11-04 stamp in the provided set. The freshest technical signal is concentrated on 2026-11-03, with supporting items from 2026-11-02 that still sit inside the prefer-today-then-last-36h-then-soft-72h window. That is enough to brief stakeholders, but only if we treat the day as a methods day rather than invent a model-release narrative.\n\nThe strongest methodology-facing item is DEP: A Decentralized Evaluation Protocol and Toolkit for Large Language Models (dated 2026-11-03). Its diagnosis matches what evaluation teams already feel in production: benchmarks proliferate faster than shared execution contracts; custom scripts become the real score surface; centralized frameworks concentrate trust in whoever owns the runner. DEP’s pitch is not a new leaderboard. It is a protocol and toolkit claim about consistency and reproducibility when evaluation is no longer assumed to live in one lab’s cluster. For researchers, the implication is procedural: publish the evaluation graph (task definition, prompt packaging, scoring rule, seed, and runner version) as a first-class artifact. For infra teams, the implication is operational: if decentralized nodes can diverge on preprocessing, tool stubs, or timeout policy, decentralization without a protocol just multiplies non-comparable runs. DEP matters now because the industry’s default failure mode is still “same benchmark name, different private harness.”\n\nA complementary signal arrived a day earlier on arXiv (2026-11-02): Every Clause Counts / DMReranker. The paper is about instructed search reranking, but its evaluation design lesson generalizes cleanly. On InfoSearch, even GPT-4o as a list-wise reranker averages only 33.5 WISE (Weighted Instruction Sensitivity Evaluation). That number is less interesting as a dunk on GPT-4o than as evidence that topical relevance judges are the wrong unit of analysis when users attach constraints (language, audience, official sources only). DMReranker splits an instructed query into a topic plus typed clauses, asks a small judge model one narrow, answerable question per clause, and multiplies answer probabilities into a single score. Nothing is trained; the configuration was frozen before test runs. That last sentence is the operational gold. Zero-shot plus freeze-before-test is a contamination and researcher-degree-of-freedom control. Multiplying clause probabilities is also a deliberate reliability bet: a single soft failure on a hard constraint should crush the aggregate score, which better matches product reality than averaging vague holistic preferences.\n\nRead DEP and DMReranker together. DEP attacks inconsistent runners and centralized trust. DMReranker attacks over-aggregated judges and post-hoc configuration drift. Both say the same thing in different dialects: evaluation quality is a contract problem. If your score depends on an unversioned prompt, a mutable judge model, or a list-wise vibe check, you do not yet have a result that travel across teams.\n\nPractical evaluation writing in the same window makes that concrete. The 2026-11-03 Medium piece AI Evals Over Chai — Day 4 builds a small harness with two checks around a refund agent scenario: whether the refund succeeded in the system, and whether the agent told the customer the truth. That dual-check pattern is exactly what agent benchmarks often miss. Tool success and communicative fidelity are separable failure modes. A single end-to-end pass/fail collapses them and teaches the wrong lesson to product teams (“the agent worked”) when the user-facing claim was false. The companion 2026-11-03 RAG article goes further into a closed loop: grounded retrieval, LLM-as-judge evaluation, and self-optimizing prompts (DSPy + GEPA) with escalation to a human. Useful as an architecture sketch, but methodologically fragile wherever the judge that grades the system also participates in prompt search. Without a held-out human panel, a frozen judge prompt family, and a clear stop rule for optimization, such loops can quietly overfit the judge rather than improve groundedness.\n\nHarness hygiene also showed up in code form. On 2026-11-03, UKGovernmentBEIS/inspect_ai landed a fix so tools in a sandbox identity scope get the scope user’s HOME rather than the image-default HOME. This is not a glamorous paper, and it is exactly the kind of change that invalidates casual before/after comparisons if ignored. Sandbox identity, filesystem layout, and environment variable surfaces are part of the evaluation protocol whether or not papers mention them. Infra teams should treat this as a reproducibility checkpoint: annotate runs with Inspect version and identity-scope behavior; re-baseline agent tasks that depend on HOME, credentials paths, or user-local caches after the fix.\n\nDomain coverage continued with BudHist Benchmark (HN, 2026-11-03): testing Buddhist history knowledge in open-weight LLMs. Narrow cultural/historical benches are valuable because general chat suites under-sample them, and open-weight comparisons need harder, less meme-contaminated topics. Still, a domain bench is only as strong as item provenance, translation/version control of sources, and leakage analysis against pretraining corpora. With minimal HN discussion at capture time, treat BudHist as a useful probe to examine, not a settled ranking authority.\n\nSlightly older in the soft window, Launch HN: Momentic (2026-11-02) pushes agents that catch bugs by using the app. For eval stakeholders, the interesting frame is interactive behavioral testing versus static unit oracles. App-using agents can expand coverage of UI flows, but they also introduce flaky harnesses, environment drift, and success criteria that are easy to game with brittle selectors. Momentic is product news more than benchmark science; keep it in the “practical agent verification” column rather than as evidence that LLM benchmarks have advanced.\n\nTwo OpenAlex records in the feed carry later published_at stamps (2026-11-17 mining multi-agent IROC work; 2026-11-26 NLP/graph knowledge-graph thesis material). They are not treated here as 2026-11-04 news, and they are not central to LLM evaluation methodology in the provided summaries. Mentioning them only to respect the inventory: do not promote them into today’s eval narrative.\n\nNet for 2026-11-04: the day is thin on fresh same-day primary research, rich enough on adjacent 36-hour methods signal. Prioritize protocol unification (DEP), clause-level frozen judges (DMReranker), dual-check agent truth harnesses, and sandbox identity fixes in Inspect. Those are the levers that change score meaning this week. New domain benches and agent QA products are secondary until leakage, judge independence, and harness versioning are explicit.",
+  "methodology_risks": "Comparability risk is the dominant failure mode in this window. DEP exists because custom scripts and centralized runners already make “same benchmark” claims unreliable. If labs adopt decentralized evaluation without pinning task packaging, scoring code, seeds, and node environment contracts, they will trade one opacity for many divergent truths. Inspect’s sandbox HOME/identity fix is a concrete instance: identical task names can hide non-identical execution contexts before and after the change.\n\nJudge reliability and leakage risk concentrate in DMReranker-style clause judges and RAG LLM-as-judge loops. Narrow questions reduce vague holistic drift, but small judge models can still be brittle to paraphrase, and multiplying probabilities amplifies calibration error if any clause judge is mis-specified. Self-optimizing prompts graded by an LLM judge risk circular improvement unless the judge family, rubrics, and held-out items are frozen and human-audited. Domain benches such as BudHist face classic contamination risk for open-weight models trained on web religious and historical text; without canary items, paraphrase sets, and train-cutoff analysis, accuracy gaps may reflect memorization unevenness rather than reasoning quality.\n\nAgent dual-check harnesses reduce one class of false positives but create another: over-fitting to the specific world-state oracle and the specific customer-message rubric. Teams should version both checks, keep them independent, and report disagreement rates. Otherwise “truthfulness” becomes another uncalibrated soft metric that drifts with prompt edits.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "reproducibility",
+    "harness",
+    "contamination",
+    "agent-evals",
+    "instruction-following"
+  ],
+  "sources": [
+    {
+      "title": "Launch HN: Momentic (YC W24) – Agents that catch bugs by using your app",
+      "url": "https://momentic.ai/",
+      "source": "hackernews"
+    },
+    {
+      "title": "AI Evals Over Chai — Day 4: Building a small evaluation harness with two checks.",
+      "url": "https://medium.com/@dhratiisharma/ai-evals-over-chai-day-4-building-a-small-evaluation-harness-with-two-checks-74b7b7aed935?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "AI Evals Over Chai — Day 4: Building a small evaluation harness with two checks.",
+      "url": "https://medium.com/@dhratiisharma/ai-evals-over-chai-day-4-building-a-small-evaluation-harness-with-two-checks-74b7b7aed935?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Beyond the Chatbot: Building a RAG System That Measures, Improves, and Knows When to Ask a Human",
+      "url": "https://medium.com/@yedukondalurd/beyond-the-chatbot-building-a-rag-system-that-measures-improves-and-knows-when-to-ask-a-human-a5f0e1c792b7?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "Autonomous intelligence for mining productivity: a multi-agent AI approach to operational value creation",
+      "url": "https://openalex.org/W7223078329",
+      "source": "openalex"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: fix: tools in a sandbox identity scope get the scope user's HOME, not one the image sets (#6276)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/325942c556beeb7d57ece4f89632727a6a5d348f",
+      "source": "github"
+    },
+    {
+      "title": "BudHist Benchmark: Testing the Knowledge of Buddhist History in Open-Weight LLMs",
+      "url": "https://mbingenheimer.net/budhistbenchmark/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Every Clause Counts: Instruction-Following Reranking by Multiplying Small, Answerable Questions",
+      "url": "https://arxiv.org/abs/2611.03179v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "DEP: A Decentralized Evaluation Protocol and Toolkit for Large Language Models",
+      "url": "https://doi.org/10.1145/3799682.3840262",
+      "source": "openalex"
+    },
+    {
+      "title": "D&A: Decoupling Description and Assessment Enables VLMs as Zero-Shot Robotic Reward Models",
+      "url": "https://arxiv.org/abs/2611.03622v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "DiabAgent: Toward Agentic Physiological Control",
+      "url": "https://arxiv.org/abs/2611.03601v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "DeliverBench: Benchmarking AI Agents on Delivering Realistic Multi-Stage Professional Projects",
+      "url": "https://arxiv.org/abs/2611.03412v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "RAG-X: Systematic Diagnosis of Retrieval-Augmented Generation for Medical Question Answering",
+      "url": "https://doi.org/10.1145/3799682.3839903",
+      "source": "openalex"
+    },
+    {
+      "title": "PolyUQuest: Verifiable Structure-Aware Web RAG over Heterogeneous Graphs",
+      "url": "https://doi.org/10.1145/3799682.3840266",
+      "source": "openalex"
+    },
+    {
+      "title": "Assessing Attack Surfaces in Generative Search Engines through Publisher Attributes: A Case Study in Political Domains",
+      "url": "https://doi.org/10.1145/3799682.3840597",
+      "source": "openalex"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

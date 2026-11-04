@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-04-daily-eval-briefing-2026-11-04-thin-same-day-signal-decentralized-protocols-and-claus",
+    "title": "Daily Eval Briefing 2026-11-04: Thin Same-Day Signal, Decentralized Protocols, and Clause-Level Judges",
+    "subtitle": "Fresh Nov 2–3 items stress reproducibility infrastructure and narrow-question judging over headline model scores.",
+    "date": "2026-11-04",
+    "summary": "Same-day publishable coverage for 2026-11-04 is thin; the actionable signal sits in the last 36 hours, especially 2026-11-03. DEP frames a decentralized evaluation protocol aimed at reducing ad-hoc scripts and centralized harness lock-in. DMReranker (arXiv, 2026-11-02) shows that multiplying small, answerable clause judges can beat list-wise LLM reranking on instruction sensitivity when configs are frozen before test. Practical posts and an Inspect AI sandbox commit reinforce the same theme: harness identity, dual-check agent truthfulness, and LLM-as-judge loops matter more than new leaderboard noise. Domain benches such as BudHist add coverage but do not by themselves resolve leakage or judge-calibration risk.",
+    "key_takeaways": [
+      "Treat DEP-style unified protocols as infra: without shared standards, cross-lab scores remain non-comparable even when models look similar.",
+      "Prefer frozen, narrow judges (one question per constraint) over single list-wise LLM scores when instruction-following is the claim under test.",
+      "Agent evals need at least two independent checks (tool/world state vs user-facing claim); success in the environment is not honesty to the user.",
+      "Inspect-class harness fixes (sandbox HOME/identity) are reproducibility events: re-run baselines after identity-scope changes before comparing scores.",
+      "Domain knowledge benches (e.g., BudHist) are useful coverage probes; publish contamination checks and item provenance before treating them as frontier claims."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-04T00:24:33.599741+00:00",
+    "post_path": "content/posts/2026-11-04-daily-eval-briefing-2026-11-04-thin-same-day-signal-decentralized-protocols-and-claus.json"
+  },
+  {
     "slug": "2026-11-03-daily-eval-briefing-2026-11-03-thin-same-day-signal-incomplete-relevance-labels-and-p",
     "title": "Daily Eval Briefing 2026-11-03: Thin Same-Day Signal, Incomplete Relevance Labels, and Pre-Registered Fairness Protocols",
     "subtitle": "Fresh 36h coverage is light on 2026-11-03 itself, but 2026-11-02 releases show that shortcut gold labels and unreproducible baselines still break ranking claims.",
