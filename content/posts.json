@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-06-daily-eval-briefing-2026-11-06-judge-aggregation-under-scarce-labels-process-level-re",
+    "title": "Daily Eval Briefing 2026-11-06: Judge Aggregation Under Scarce Labels, Process-Level Review Benches, and Memory vs Retrieval Splits",
+    "subtitle": "Same-day signal is thin; the freshest eval shift is reliability-aware LLM-judge pooling plus benchmarks that refuse to treat retrieval success as memory or task slices as full scientific review.",
+    "date": "2026-11-06",
+    "summary": "Coverage for 2026-11-06 itself is thin within the Europe/Istanbul freshness window, so this briefing centers on the strongest 2026-11-05 technical items and one 2026-11-04 expert-verified multimodal benchmark that still sits inside the soft window. AGORA attacks a core judge-infrastructure failure mode: pooling heterogeneous LLM judges with tiny human validation sets, where naive means overweight weak judges and confusion-table models overfit. Parallel work pressures end-to-end validity—scientific literature review against a fixed 102-article corpus, long-context memory via retrieval-plus-reconstruction rather than retrieval alone, and controlled phonological probing in PinyinBench. LongBanana (2026-11-04) adds an expert-checklist spine for multi-reference image synthesis, while an Inspect AI checkpoint fix reminds infra teams that harness state hygiene is part of reproducibility. Taken together, the day is less about new leaderboard noise and more about how aggregation, task decomposition, and scorer design decide whether scores travel.",
+    "key_takeaways": [
+      "Treat LLM-judge ensembles as measurement models: if human labels are a few hundred items or fewer, prefer reliability-aware aggregation (e.g., IRT-style) over unweighted means or heavily parameterized confusion tables.",
+      "Do not equate retrieval hits with long-context memory preservation; reconstruction-after-retrieval benchmarks expose whether stored content is actually usable beyond pointer lookup.",
+      "Process-level literature-review evals (search → interpret → synthesize → propose) can reverse rankings implied by isolated subtasks; score the full pipeline against a fixed corpus when claiming review assistance.",
+      "Controlled linguistic benches with probing and steering (PinyinBench) separate surface behavior from internal representation—useful when contamination or orthographic shortcuts could inflate scores.",
+      "Harness commits that keep transient stores out of checkpoints are comparability events: reproduce runs only after confirming checkpoint semantics match the claimed protocol."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-05T21:47:26.457432+00:00",
+    "post_path": "content/posts/2026-11-06-daily-eval-briefing-2026-11-06-judge-aggregation-under-scarce-labels-process-level-re.json"
+  },
+  {
     "slug": "2026-11-05-daily-eval-briefing-2026-11-05-decision-audits-dual-source-evolution-and-fact-surviva",
     "title": "Daily Eval Briefing 2026-11-05: Decision Audits, Dual-Source Evolution, and Fact Survival Beyond Leaderboard Scores",
     "subtitle": "Same-day signal is thin; the freshest window pushes evaluation from outcome scores toward process audits, premise tracking, and multi-method judgment stacks.",
