@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-07-daily-eval-briefing-2026-11-07-closed-loop-agent-scoring-open-world-finance-harnesses",
+  "date": "2026-11-07",
+  "created_at": "2026-11-06T22:44:49.329502+00:00",
+  "title": "Daily Eval Briefing 2026-11-07: Closed-Loop Agent Scoring, Open-World Finance Harnesses, and Metric–Policy Gaps",
+  "subtitle": "Same-day signal for 2026-11-07 is thin; the freshest Nov 6 work pushes evaluation from one-shot leaderboards toward self-calibrating, harness-aware, production-aligned measurement.",
+  "summary": "Publishable coverage for 2026-11-07 is dominated by items dated 2026-11-06 within the freshness window rather than same-calendar-day releases, so this briefing treats Nov 6 technical items as the operative signal and states that limitation explicitly. Three arXiv pieces define the center of gravity: closed-loop evaluation that models biased raters and censored outcomes for live agents, FINCOSMOS as an open-world finance paradigm where silent failures look like valid reports, and last-mile agent primitives framed against Terminal-Bench 4.0 harness gaps. Parallel practitioner signals reinforce the same theme: Airbnb’s production classifier benchmark argues frontier quality at sharply lower cost under real task distributions, while a LanguageTechnology thread shows WER gains from text normalization that still leave policy outcomes wrong. Arena chatter and Show HN agent games add weak, non-auditable noise and should not drive methodology decisions. The practical implication is to treat harness specification, outcome censoring, and metric-to-decision alignment as first-class eval design requirements, not post-hoc footnotes.",
+  "key_takeaways": [
+    "Prefer closed-loop evaluation designs that estimate performance under biased raters and censored outcomes, and that feed conclusions back into the agent stack instead of one-off benchmark snapshots (arXiv:2611.07051, 2026-11-06).",
+    "For finance and other open-web agents, require time-aware data provenance and strategy fidelity checks; closed-world benches still miss silent failures that produce convincing but invalid reports (FINCOSMOS, arXiv:2611.07464, 2026-11-06).",
+    "When comparing agent systems, report harness identity and last-mile competence separately; Terminal-Bench 4.0 figures cited for GPT-5.6 Sol/Codex vs Claude Opus 5/Claude Code show large gaps that are not model-only (arXiv:2611.07461, 2026-11-06).",
+    "Production evals should validate decision or policy metrics, not only leaderboard proxies: WER drops after normalization can leave claims-policy numbers wrong, and LibriSpeech-style boards omit normalization protocol (r/LanguageTechnology, 2026-11-06).",
+    "Cost–quality production benchmarks of classifiers (Airbnb tech post, HN, 2026-11-06) are more actionable for infra teams than LM Arena anecdotes; treat arena speed/score claims as uncalibrated until protocol and contamination controls are public."
+  ],
+  "body_en": "Same-day coverage for the official 2026-11-07 briefing is thin. Counts show eighteen publishable-fresh items, but the strongest evaluation-methodology signals in the provided set cluster on 2026-11-06, inside the prefer-today-then-last-36h window. This article therefore synthesizes those Nov 6 items as the freshest available technical evidence, dates them explicitly, and does not invent Nov 7 events.\n\nThe clearest methodological shift is from one-shot scoring to closed-loop agent evaluation. The arXiv note Closed-Loop Agent Evaluation: Layered Measurement and Self-Calibration (arXiv:2611.07051, published 2026-11-06) argues that once an agent is live, teams need to know whether it is doing its job, not merely whether it throws errors. Most current practice remains episodic: a benchmark run, a glance at traces, a single score. Those conclusions neither check themselves nor reach the agent. The paper models evaluation as performance estimation under biased raters and censored outcomes, and requires every level’s conclusions to support self-calibration. For research and infra leads, the implication is operational: design rating pipelines that admit rater bias, missing outcomes, and feedback into the deployed system, rather than treating offline accuracy as a standing certificate of production fitness.\n\nThat closed-loop framing pairs tightly with open-world finance evaluation. FINCOSMOS: An Open-World Evaluation Paradigm for Agents in Finance (arXiv:2611.07464, 2026-11-06) states the trust problem bluntly. Language agents increasingly work for users on the open Web; finance is where trusting them is hardest. Data must come from the Web, strategy lives in the user’s head, and correctness depends on time, so an agent can fail silently: a strategy the user never asked for, unverified data, or a backtest that uses the future can yield a report as convincing as a correct one. Existing benchmarks close the world somewhere—fixing the task, the data, or the clock—and thereby miss the failure modes that matter most. FINCOSMOS pushes evaluation quality toward protocol surfaces that keep the world open while still making silent failure detectable. Comparability across labs will suffer unless time cuts, data-fetch rules, and strategy-specification interfaces are published with scores.\n\nA third Nov 6 arXiv item sharpens harness and competence separation. The Last Mile to the Real World: Agent-Native Primitives as Reusable Building Blocks for Solving Real-World Tasks (arXiv:2611.07461) asks how an agent handles a real-world task end to end. It notes that frontier models with their own harnesses still fall short on real-world benchmarks: on Terminal-Bench 4.0, GPT-5.6 Sol with Codex resolves 37.3% of tasks and Claude Opus 5 with Claude Code 51.8%. Failures concentrate at the step from reaching a resource to applying it—the last mile. Existing approaches put the resource within reach but leave the competence to apply it under-specified. For evaluation design, this is a comparability warning: leaderboard deltas that mix model capability with harness affordances are not interchangeable. Infra teams should version harness primitives, isolate last-mile skills in task design, and refuse cross-system rankings that omit harness identity.\n\nPractitioner signals from the same window reinforce metric–decision misalignment. A r/LanguageTechnology post dated 2026-11-06 describes a claims-call ASR setup where WER dropped five points after text normalization, yet production policy numbers remained wrong. The author contrasts a held-out claims WER of 14.8% against LibriSpeech-style HyperAI leaderboard rows near 2% WER, noting that the board does not disclose how each paper normalized text. This is a classic evaluation-quality failure: a public proxy metric moves while the business outcome does not, and protocol opacity makes external scores non-comparable. The fix is not another leaderboard chase; it is to bind reported metrics to the decision surface (policy correctness), publish normalization and scoring scripts, and treat domain held-out sets as primary evidence.\n\nAirbnb’s production benchmark of LLM classifiers, surfaced on Hacker News on 2026-11-06 (Frontier quality at 1% of the cost), sits in the same practical register. Even with thin HN engagement in the provided summary, the framing matters for eval teams: production distributions, cost constraints, and classifier decision quality often dominate arena-style generative scoring. When the task is classification under real traffic, a careful internal benchmark with cost accounting can be more reproducible and decision-relevant than public chat arenas—provided labels, slice definitions, and contamination controls are documented.\n\nWeaker items in the set should be down-weighted. A Show HN FinBench video comparing Jev vs OpenAI Decision vs small financial world models (2026-11-06) and FINCOSMOS share a finance-agent theme, but a video link without protocol detail cannot anchor claims about leakage or judge reliability. Show HN: Grid, a Hold’em arena for AI agents playing user strategies (beta, 2026-11-06), is an interesting interaction harness, not a validated benchmark. A r/GeminiAI post claiming Gemini 4 hydrogen (flash) is faster and strong on LM Arena (2026-11-06) is anecdotal: arena ranks without disclosed prompt sets, judge models, and contamination posture are poor inputs for research decisions. Two OpenAlex records in the feed—one on tactile mental cutting psychometrics with a 2026-12-01 stamp, one on NLP/graph knowledge-graph methods stamped 2026-11-26—are outside the LLM agent-eval spine of this briefing and are not treated as same-window news.\n\nSynthesizing across the strong Nov 6 cluster: evaluation quality is moving from static accuracy tables toward (1) statistical honesty about biased and missing human or automated judgments, (2) open-world protocols that can catch silent, report-shaped failures, and (3) explicit separation of model, harness, and last-mile competence. Reproducibility now depends less on a single number and more on whether another team can re-run the same time window, data access rules, normalization, and harness version. For researchers, that means designing benchmarks whose failure taxonomy matches silent production failures. For infra teams, it means instrumenting closed-loop scoring, versioning harnesses, and refusing to promote models on WER, arena Elo, or closed-world finance scores that do not map to the policy or user strategy being served.\n\nIn short, 2026-11-07’s briefing is evidence-disciplined about thin same-day novelty, while the freshest technical items already point to a coherent agenda: calibrate judges and raters under censoring, keep finance and web agents evaluable without closing the world dishonestly, and stop reading harness-coupled Terminal-Bench or ASR leaderboard moves as pure model progress.",
+  "methodology_risks": "Comparability risk is highest where harness, normalization, and time protocol are omitted. Terminal-Bench 4.0 percentages that pair specific models with specific coding harnesses are not model-only effects; publishing scores without harness version invites false transfers. Likewise, ASR boards that hide text-normalization rules make 2% WER rows non-comparable to domain claims audio, and finance benches that fix data or clock hide look-ahead and strategy-mismatch failures that FINCOSMOS flags as silent and report-shaped.\n\nJudge and rater drift remains central. Closed-loop evaluation’s premise—that raters are biased and outcomes are censored—implies that single-pass LLM-as-a-judge or human spot checks will drift as policies, prompts, and traffic shift. Without layered self-calibration and feedback into the agent, teams will overfit to the last offline suite. Arena anecdotes amplify this: opaque judges and unknown contamination make Elo or speed claims non-auditable.\n\nLeakage and protocol leakage cut across open-web and production settings. Future-peeking backtests, web-cached gold answers, and training exposure to popular arena prompts all inflate apparent quality. Mitigation is procedural: freeze time cuts, log data provenance, separate train/eval corpora for classifiers, publish scoring and normalization code, and treat any score lacking those artifacts as provisional rather than promotional.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "agent-harness",
+    "reproducibility",
+    "contamination",
+    "production-metrics",
+    "finance-agents"
+  ],
+  "sources": [
+    {
+      "title": "Show HN: Grid – A Hold'em arena where your AI agent plays your strategy (Beta)",
+      "url": "https://penguinbase.com/game-install?game=192471728&ref=hn",
+      "source": "hackernews"
+    },
+    {
+      "title": "Frontier quality at 1% of the cost: a production benchmark of LLM classifiers",
+      "url": "https://airbnb.tech/ai-ml/frontier-quality-at-1-of-the-cost-a-production-benchmark-of-llm-classifiers/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: Jev vs. OpenAI Decision vs. Small Financial World Models: FinBench [video]",
+      "url": "https://www.youtube.com/watch?v=UN1LIF01uHQ",
+      "source": "hackernews"
+    },
+    {
+      "title": "Psychometric Evaluation and Cognitive Correlates of the Tactile Mental Cutting Test: Investigating Reliability, Validity, Gender Differences in Spatial Ability, Executive Function and Social Emotional Competence Among Native American Elementary Students",
+      "url": "https://openalex.org/W7223163774",
+      "source": "openalex"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "Our WER on claims calls dropped 5 points after text normalization, but production policy numbers were still wrong.",
+      "url": "https://www.reddit.com/r/LanguageTechnology/comments/1xpbcii/our_wer_on_claims_calls_dropped_5_points_after/",
+      "source": "reddit/r/LanguageTechnology"
+    },
+    {
+      "title": "Gemini 4 hydrogen (flash) is cooking 🔥",
+      "url": "https://www.reddit.com/r/GeminiAI/comments/1xpg38d/gemini_4_hydrogen_flash_is_cooking/",
+      "source": "reddit/r/GeminiAI"
+    },
+    {
+      "title": "Closed-Loop Agent Evaluation: Layered Measurement and Self-Calibration",
+      "url": "https://arxiv.org/abs/2611.07051",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: chore(deps): bump the provider-sdks group across 1 directory with 3 updates (#6362)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/3acc0a50e6765f4a857dc72f3c8ab31fba6616ff",
+      "source": "github"
+    },
+    {
+      "title": "{\\tau}-bench-LILT: Evaluating Conversational Agents on Realistic Multilingual Tool-Use Tasks",
+      "url": "https://arxiv.org/abs/2611.07203",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "The Last Mile to the Real World: Agent-Native Primitives as Reusable Building Blocks for Solving Real-World Tasks",
+      "url": "https://arxiv.org/abs/2611.07461",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "PromptOps: Iterative Prompt Optimization for LLM-as-a-Judge Systems",
+      "url": "https://arxiv.org/abs/2611.07123",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "FINCOSMOS: An Open-World Evaluation Paradigm for Agents in Finance",
+      "url": "https://arxiv.org/abs/2611.07464",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Follow the Policy, Fail the Benchmark: Auditing and Revising Policy-Based Decision Benchmarks",
+      "url": "https://arxiv.org/abs/2611.07042",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Show HN: Penthera, offline pentest security scanner (open-source, rule-based)",
+      "url": "https://github.com/danoszz/penthera",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: Teach a speech model (en) a name by saying it once, on your Mac",
+      "url": "https://detailkeeper.com/",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

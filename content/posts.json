@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-07-daily-eval-briefing-2026-11-07-closed-loop-agent-scoring-open-world-finance-harnesses",
+    "title": "Daily Eval Briefing 2026-11-07: Closed-Loop Agent Scoring, Open-World Finance Harnesses, and Metric–Policy Gaps",
+    "subtitle": "Same-day signal for 2026-11-07 is thin; the freshest Nov 6 work pushes evaluation from one-shot leaderboards toward self-calibrating, harness-aware, production-aligned measurement.",
+    "date": "2026-11-07",
+    "summary": "Publishable coverage for 2026-11-07 is dominated by items dated 2026-11-06 within the freshness window rather than same-calendar-day releases, so this briefing treats Nov 6 technical items as the operative signal and states that limitation explicitly. Three arXiv pieces define the center of gravity: closed-loop evaluation that models biased raters and censored outcomes for live agents, FINCOSMOS as an open-world finance paradigm where silent failures look like valid reports, and last-mile agent primitives framed against Terminal-Bench 4.0 harness gaps. Parallel practitioner signals reinforce the same theme: Airbnb’s production classifier benchmark argues frontier quality at sharply lower cost under real task distributions, while a LanguageTechnology thread shows WER gains from text normalization that still leave policy outcomes wrong. Arena chatter and Show HN agent games add weak, non-auditable noise and should not drive methodology decisions. The practical implication is to treat harness specification, outcome censoring, and metric-to-decision alignment as first-class eval design requirements, not post-hoc footnotes.",
+    "key_takeaways": [
+      "Prefer closed-loop evaluation designs that estimate performance under biased raters and censored outcomes, and that feed conclusions back into the agent stack instead of one-off benchmark snapshots (arXiv:2611.07051, 2026-11-06).",
+      "For finance and other open-web agents, require time-aware data provenance and strategy fidelity checks; closed-world benches still miss silent failures that produce convincing but invalid reports (FINCOSMOS, arXiv:2611.07464, 2026-11-06).",
+      "When comparing agent systems, report harness identity and last-mile competence separately; Terminal-Bench 4.0 figures cited for GPT-5.6 Sol/Codex vs Claude Opus 5/Claude Code show large gaps that are not model-only (arXiv:2611.07461, 2026-11-06).",
+      "Production evals should validate decision or policy metrics, not only leaderboard proxies: WER drops after normalization can leave claims-policy numbers wrong, and LibriSpeech-style boards omit normalization protocol (r/LanguageTechnology, 2026-11-06).",
+      "Cost–quality production benchmarks of classifiers (Airbnb tech post, HN, 2026-11-06) are more actionable for infra teams than LM Arena anecdotes; treat arena speed/score claims as uncalibrated until protocol and contamination controls are public."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-06T22:44:49.329502+00:00",
+    "post_path": "content/posts/2026-11-07-daily-eval-briefing-2026-11-07-closed-loop-agent-scoring-open-world-finance-harnesses.json"
+  },
+  {
     "slug": "2026-11-06-daily-eval-briefing-2026-11-06-judge-aggregation-under-scarce-labels-process-level-re",
     "title": "Daily Eval Briefing 2026-11-06: Judge Aggregation Under Scarce Labels, Process-Level Review Benches, and Memory vs Retrieval Splits",
     "subtitle": "Same-day signal is thin; the freshest eval shift is reliability-aware LLM-judge pooling plus benchmarks that refuse to treat retrieval success as memory or task slices as full scientific review.",
