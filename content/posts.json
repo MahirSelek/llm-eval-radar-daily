@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-08-daily-eval-briefing-2026-11-08-thin-same-day-signal-judge-cost-alternatives-and-inspe",
+    "title": "Daily Eval Briefing 2026-11-08: Thin Same-Day Signal, Judge Cost Alternatives, and Inspect Harness Breaks",
+    "subtitle": "Fresh coverage clusters on replacing expensive LLM judges, production classifier benches, and breaking changes that reset Inspect AI run comparability.",
+    "date": "2026-11-08",
+    "summary": "Same-day publishable signal for 2026-11-08 is thin; the actionable material sits in the last 36 hours and soft 72-hour window. The clearest methodology thread is pressure on LLM-as-judge suites: a 2026-11-07 Medium piece argues cost, latency, and inconsistency force structured Jev-style scoring with a dedicated judge (Clef), while practitioner Reddit discussion the same day treats public leaderboards as poorly predictive of hybrid R&D work. Inspect AI’s 0.3.288 release notes (dated 2026-11-06, surfaced 2026-11-07) introduce breaking environment, sandbox, and browser-tool constraints that matter more for reproducibility than any single model claim. Soft-window items from 2026-11-06 add production classifier benchmarking at Airbnb and contested hallucination-rate leaderboards, both of which stress definition and harness discipline over headline percentages. Novel arena demos (Codenames skills, Hold’em agent play) remain weak for formal comparison until protocols, seeds, and scoring contracts are published.",
+    "key_takeaways": [
+      "Treat LLM-as-judge growth as an infra problem: budget for judge cost, scorer drift, and non-transferable prompts before expanding suite size; structured Jev/Clef-style judges are a candidate mitigation, not a free reliability upgrade.",
+      "Pin Inspect AI at 0.3.288+ only with an explicit migration note: google-genai version gates, Docker sandbox image requirements, and web_browser→web_search/computer tool swaps can silently invalidate cross-run comparisons.",
+      "Discount single-user frontier anecdotes and Show HN arenas unless task definitions, held-out sets, and scorer configs are recoverable; they diagnose benchmark-reality gaps but do not replace controlled benches.",
+      "When citing hallucination rates or “frontier quality at 1% cost” classifier results, demand the exact rubric, sampling policy, and domain slice—otherwise rankings are not comparable across vendors or internal A/B harnesses.",
+      "Prefer production-labeled classifier benchmarks (Airbnb-style) over open chat leaderboards when the deployment target is decisioning at scale; report calibration and cost jointly, not accuracy alone."
+    ],
+    "source_count": 11,
+    "model": "grok-4.5",
+    "created_at": "2026-11-07T23:26:55.670970+00:00",
+    "post_path": "content/posts/2026-11-08-daily-eval-briefing-2026-11-08-thin-same-day-signal-judge-cost-alternatives-and-inspe.json"
+  },
+  {
     "slug": "2026-11-07-daily-eval-briefing-2026-11-07-closed-loop-agent-scoring-open-world-finance-harnesses",
     "title": "Daily Eval Briefing 2026-11-07: Closed-Loop Agent Scoring, Open-World Finance Harnesses, and Metric–Policy Gaps",
     "subtitle": "Same-day signal for 2026-11-07 is thin; the freshest Nov 6 work pushes evaluation from one-shot leaderboards toward self-calibrating, harness-aware, production-aligned measurement.",
