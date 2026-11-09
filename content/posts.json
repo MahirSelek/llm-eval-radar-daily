@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-10-daily-eval-briefing-2026-11-10-metric-blind-spots-knowledge-application-splits-and-le",
+    "title": "Daily Eval Briefing 2026-11-10: Metric Blind Spots, Knowledge–Application Splits, and Leaderboard Recalibration Trust",
+    "subtitle": "Same-day signal is thin; Nov 9 work shows automatic metrics and free-form judges failing where controlled references and knowledge-matched designs hold.",
+    "date": "2026-11-10",
+    "summary": "Coverage dated strictly to 2026-11-10 is thin, so this briefing draws on the freshest publishable items from 2026-11-09 within the freshness window. Three arXiv releases sharpen evaluation validity: KLEAR separates Korean LLM failures of knowledge from failures of application under controlled benchmark transformation; AlienBench replaces free-form novelty judgments with a structural-novelty reference; and The Invisible Gap shows BGE-M3 and BERTScore systematically misrepresenting romanized Indic generation quality. Community debate over ArtificialAnalysis recalibration and a multi-provider inference latency/throughput blog post raise comparability and harness-control questions rather than model-capability news. For researchers and infra teams, the through-line is clear: scores without matched knowledge conditions, fixed novelty references, or script-aware metrics remain hard to trust for ranking or shipping decisions.",
+    "key_takeaways": [
+      "Treat recall-heavy national or domain benchmarks as incomplete until knowledge-matched and application-demanding splits are reported separately, as KLEAR argues for Korean LLM eval.",
+      "Do not trust embedding or token-overlap automatic metrics for romanized Indic (and likely other digraphic) generation without human or script-aware validation; The Invisible Gap shows systematic misrepresentation.",
+      "Replace free-form LLM-judge novelty ratings with fixed structural references when measuring creative departure; AlienBench targets that invisible gap in creativity eval.",
+      "Treat public Intelligence Index recalibrations as methodology events: demand changelog, item freeze dates, and open-vs-closed harness parity before updating internal model cards.",
+      "When comparing inference providers, isolate harness variables (batch, decode settings, region, retry policy) the same way you would for benchmark suites; blog-style multi-vendor numbers are directional, not leaderboard-grade."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-09T23:58:48.461077+00:00",
+    "post_path": "content/posts/2026-11-10-daily-eval-briefing-2026-11-10-metric-blind-spots-knowledge-application-splits-and-le.json"
+  },
+  {
     "slug": "2026-11-09-daily-eval-briefing-2026-11-09-thin-same-day-signal-out-of-scope-memory-tests-and-jud",
     "title": "Daily Eval Briefing 2026-11-09: Thin Same-Day Signal, Out-of-Scope Memory Tests, and Judge-Cost Alternatives",
     "subtitle": "Same-day publishable signal is thin; the clearest eval shift is memory scoring that fails when notes leave their formation context, plus pressure to replace expensive LLM judges.",
