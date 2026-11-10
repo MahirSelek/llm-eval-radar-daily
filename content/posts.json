@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-11-daily-eval-briefing-2026-11-11-knowledge-application-splits-private-vision-tests-and-",
+    "title": "Daily Eval Briefing 2026-11-11: Knowledge–Application Splits, Private Vision Tests, and Harness Comparability",
+    "subtitle": "Same-day signal is thin; the freshest window centers on separating recall from application, keeping vision tests private, and treating orchestration as its own scored capability.",
+    "date": "2026-11-11",
+    "summary": "Coverage for 2026-11-11 itself is thin, so this briefing draws on the strongest items from 2026-11-10 and the adjacent freshness window rather than inventing a same-day news cycle. The clearest methodological signal is KLEAR’s controlled transformation of Korean benchmarks to separate knowledge possession from knowledge application, which directly challenges accuracy scores that collapse those failure modes. Adjacent signals reinforce the same quality agenda: WorkflowArena (2026-11-09) isolates executable multi-agent workflow orchestration as a distinct capability, while AI Vision Index and Music For Robots expand multimodal evaluation under private or carefully scoped item regimes. Forum traffic on annotation QA benchmarks and failed semantic conformance after hundreds of calibration matches underscores that match counts alone do not validate judges or labels. On the infra side, Inspect AI v0.3.289 adds model support and proxy-side sentinel enforcement, reminding teams that harness deltas change what scores mean even when tasks look unchanged.",
+    "key_takeaways": [
+      "Treat single accuracy numbers as under-specified when items can be solved by recall alone; require knowledge-matched or application-conditioned reporting before comparing models on domain benchmarks.",
+      "Prefer private or non-public item pools for vision and multimodal leaderboards; public static sets invite leakage and make rank shifts hard to interpret.",
+      "Score workflow authorship and coordination separately from end-to-end task success when models design their own multi-agent graphs at runtime.",
+      "Do not equate calibration match volume with semantic conformance; annotation and judge pipelines need explicit agreement criteria beyond pairwise match tallies.",
+      "Pin Inspect AI (and similar harness) versions in every run card: sentinel/proxy behavior and provider adapters can alter effective policy and model identity without changing the task definition."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-10T22:52:30.832205+00:00",
+    "post_path": "content/posts/2026-11-11-daily-eval-briefing-2026-11-11-knowledge-application-splits-private-vision-tests-and-.json"
+  },
+  {
     "slug": "2026-11-10-daily-eval-briefing-2026-11-10-metric-blind-spots-knowledge-application-splits-and-le",
     "title": "Daily Eval Briefing 2026-11-10: Metric Blind Spots, Knowledge–Application Splits, and Leaderboard Recalibration Trust",
     "subtitle": "Same-day signal is thin; Nov 9 work shows automatic metrics and free-form judges failing where controlled references and knowledge-matched designs hold.",

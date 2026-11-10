@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-11-daily-eval-briefing-2026-11-11-knowledge-application-splits-private-vision-tests-and-",
+  "date": "2026-11-11",
+  "created_at": "2026-11-10T22:52:30.832205+00:00",
+  "title": "Daily Eval Briefing 2026-11-11: Knowledge–Application Splits, Private Vision Tests, and Harness Comparability",
+  "subtitle": "Same-day signal is thin; the freshest window centers on separating recall from application, keeping vision tests private, and treating orchestration as its own scored capability.",
+  "summary": "Coverage for 2026-11-11 itself is thin, so this briefing draws on the strongest items from 2026-11-10 and the adjacent freshness window rather than inventing a same-day news cycle. The clearest methodological signal is KLEAR’s controlled transformation of Korean benchmarks to separate knowledge possession from knowledge application, which directly challenges accuracy scores that collapse those failure modes. Adjacent signals reinforce the same quality agenda: WorkflowArena (2026-11-09) isolates executable multi-agent workflow orchestration as a distinct capability, while AI Vision Index and Music For Robots expand multimodal evaluation under private or carefully scoped item regimes. Forum traffic on annotation QA benchmarks and failed semantic conformance after hundreds of calibration matches underscores that match counts alone do not validate judges or labels. On the infra side, Inspect AI v0.3.289 adds model support and proxy-side sentinel enforcement, reminding teams that harness deltas change what scores mean even when tasks look unchanged.",
+  "key_takeaways": [
+    "Treat single accuracy numbers as under-specified when items can be solved by recall alone; require knowledge-matched or application-conditioned reporting before comparing models on domain benchmarks.",
+    "Prefer private or non-public item pools for vision and multimodal leaderboards; public static sets invite leakage and make rank shifts hard to interpret.",
+    "Score workflow authorship and coordination separately from end-to-end task success when models design their own multi-agent graphs at runtime.",
+    "Do not equate calibration match volume with semantic conformance; annotation and judge pipelines need explicit agreement criteria beyond pairwise match tallies.",
+    "Pin Inspect AI (and similar harness) versions in every run card: sentinel/proxy behavior and provider adapters can alter effective policy and model identity without changing the task definition."
+  ],
+  "body_en": "Same-day publishable coverage for 2026-11-11 is thin. The usable signal sits in items dated 2026-11-10 and one closely adjacent paper from 2026-11-09. That is enough for a coherent evaluation-quality briefing if the focus stays on what those items change about validity, leakage, judges, and harness comparability—not on manufacturing a busy news day.\n\nThe strongest methodological contribution in the window is KLEAR (arXiv:2611.09223, announced 2026-11-10): Knowledge-Matched LLM Evaluation in Korean across Application Requirements via Controlled Benchmark Transformation. The paper’s diagnosis is simple and widely portable. Existing Korean benchmarks report accuracy across knowledge domains, but those scores do not tell you whether an error came from missing the required knowledge or from failing to apply knowledge the model already has. Their analysis finds that most existing questions are answerable by factual recall alone, while harder application items also differ in residual ways that confound clean attribution. KLEAR’s response is controlled benchmark transformation: reshape evaluation so knowledge conditions are matched and application demand is an explicit axis rather than a hidden confound. For researchers and infra teams, the practical implication is immediate. Any leaderboard that mixes recall-heavy and application-heavy items under one headline score will over-credit memorization-friendly models and under-diagnose reasoning or transfer failures. Contaminated or heavily leaked factual items make this worse: a model can look “strong in Korean knowledge” when it is mainly strong at retrieving seen surface forms. Evaluation programs should add a reporting split—knowledge present vs. application required—and treat unexplained accuracy gains on recall-skewed suites as contamination-suspect until proven otherwise.\n\nA second design move, dated 2026-11-09 and still within the soft freshness window, is WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems (arXiv:2611.12856). Agent harnesses increasingly let a model spawn workers and author the executable workflow that coordinates them. That shifts system structure from a fixed developer artifact to a model-generated runtime object. Existing benchmarks mostly measure either end-to-end completion or coordination under structures specified in advance. WorkflowArena formalizes workflow orchestration as its own capability and offers 145 long-horizon tasks across eight professional domains, from software engineering and formal mathematics to legal analysis and 3D production contexts. Why this matters now is comparability. If two runs differ in whether the workflow graph is human-fixed or model-authored, scores are not on the same construct. Teams comparing multi-agent systems should record who authored the topology, whether the workflow is executable and inspectable, and whether success credits planning quality, worker competence, or both. Without that split, “agent win rates” remain entangled and non-reproducible across harnesses.\n\nMultimodal evaluation appears in two 2026-11-10 Hacker News signals that are methodologically uneven but directionally useful. AI Vision Index presents private tests of how well 36 AI models see. The private-test framing is the evaluatively important part. Public vision suites age quickly under scraping, distillation, and inadvertent train-set overlap; rank tables on fully public static images become weakly informative about genuine visual competence. Private or regularly rotated item pools restore discrimination and reduce leakage incentives, at the cost of external auditability. Infra teams should treat that tradeoff explicitly: publish protocol, scoring rules, and aggregate results while keeping item payloads out of easy crawl paths, or rotate enough that memorization does not dominate. Music For Robots contributes 26 unquantized acoustic tracks aimed at multimodal LLM evaluation. The scale is small, so it is a probe set rather than a ranking corpus, but the design choice—unquantized acoustic material rather than heavily preprocessed tokens—stresses whether audio-capable models are evaluated on realistic signal, not on already-discretized proxies. For multimodal programs, small curated stress sets are valuable when used to expose failure modes (tempo, timbre, polyphony, non-speech acoustics) rather than to declare overall winners.\n\nForum traffic on 2026-11-10 sharpens the judge and annotation reliability theme. One Hugging Face thread proposes an open-source LLM evaluation and annotation QA benchmark—exactly the meta-evaluation layer many production pipelines lack. Scoring models with LLM judges or human annotation workflows without a QA benchmark on the judges and annotators themselves leaves a silent error budget in every downstream claim. A second thread title is blunt: 343 calibration matches did not establish semantic conformance. That is a concrete warning against a common fallacy in judge calibration and label reconciliation. High match counts can reflect shared bias, shallow rubric overlap, or agreement on easy cases while semantic disagreements remain on the items that decide rankings. Calibration protocols need criteria for meaning-level equivalence, disagreement adjudication, and stratified sampling of hard cases—not only raw concordance tallies. Teams using LLM-as-a-judge should treat “we matched N times” as insufficient evidence of judge validity, especially when prompts, model versions, or rubrics drift between runs.\n\nHarness change enters through Inspect AI v0.3.289 (released 2026-11-10). The release notes highlight Anthropic support for Claude Fable 5.2 and sentinel behavior that acts on a sidecar’s decisions when model calls go through a proxy, plus a compatibility fix around agent-client-protocol imports. None of these are benchmark papers, but they are evaluation-infra events with direct reproducibility consequences. New model adapters change the identity of what is being scored. Sentinel/proxy enforcement can alter which generations are allowed, rewritten, or blocked, which changes effective capability and safety posture mid-benchmark if not pinned and logged. Reproducible evals need harness version, provider adapter, proxy/sentinel configuration, and model identifier in the run manifest. Otherwise two “same task” runs differ in control plane behavior and cannot be compared.\n\nTwo OpenAlex records appear in the feed but should not drive the briefing narrative. One is a psychometric study of a tactile mental cutting test among Native American elementary students (future-dated in the feed metadata and outside core LLM evaluation practice). The other is a broader NLP/knowledge-graph thesis listing. Neither supplies same-window LLM benchmark methodology evidence comparable to KLEAR, WorkflowArena, or the Inspect AI harness delta, so they are noted only to avoid silently inventing relevance.\n\nSynthesizing across the usable set: the day’s real thesis is construct purity. KLEAR pushes purity between knowledge and application. WorkflowArena pushes purity between orchestration and task completion. Private vision testing pushes purity between measured perception and leaked item familiarity. Forum calibration complaints push purity between numeric agreement and semantic conformance. Inspect AI’s release reminds operators that harness identity is part of the construct. When same-day headlines are sparse, that is still a coherent research and infra agenda: stop letting collapsed scores, public static items, and unpinned harnesses pretend to be comparable science.",
+  "methodology_risks": "Comparability risk is highest where constructs are collapsed. Korean-domain accuracy without a knowledge-versus-application split, multi-agent scores without workflow-authorship controls, and vision ranks on public static sets are not interchangeable metrics even when plotted on one chart. Cross-paper or cross-vendor comparisons that ignore those axes will mis-rank models and misallocate remediation.\n\nLeakage and judge drift compound that problem. Private vision tests reduce item leakage but raise transparency debt; public small audio probes are inspectable but easy to overfit or over-interpret. LLM-as-a-judge and annotation QA pipelines that celebrate large calibration match counts without semantic conformance checks can drift while still looking “calibrated,” especially after prompt, model, or rubric edits.\n\nHarness non-determinism is the third risk surface. Inspect AI’s sentinel-on-proxy path and new provider adapters mean that policy enforcement and model routing can change outcomes without any change to the task file. Treat unpinned harness versions, undocumented proxy sidecars, and unspecified judge models as first-class threats to reproducibility, equal in severity to contaminated benchmarks.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "contamination",
+    "harness",
+    "multimodal",
+    "reproducibility",
+    "multi-agent"
+  ],
+  "sources": [
+    {
+      "title": "Open-Source LLM Evaluation and Annotation QA Benchmark",
+      "url": "https://discuss.huggingface.co/t/open-source-llm-evaluation-and-annotation-qa-benchmark/191699",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Show HN: AI Vision Index, private tests of how well 36 AI models see",
+      "url": "https://aivisionindex.com/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: You can now train your own LLMs with less memory, on your consumer GPUs",
+      "url": "https://news.ycombinator.com/item?id=50438889",
+      "source": "hackernews"
+    },
+    {
+      "title": "Music For Robots – 26 unquantized acoustic tracks for multimodal LLM evaluation",
+      "url": "https://github.com/luchtan-GIT/m4r-data",
+      "source": "hackernews"
+    },
+    {
+      "title": "343 calibration matches did not establish semantic conformance",
+      "url": "https://discuss.huggingface.co/t/343-calibration-matches-did-not-establish-semantic-conformance/191712",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "[release] UKGovernmentBEIS/inspect_ai: v0.3.289",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/releases/tag/0.3.289",
+      "source": "github"
+    },
+    {
+      "title": "Psychometric Evaluation and Cognitive Correlates of the Tactile Mental Cutting Test: Investigating Reliability, Validity, Gender Differences in Spatial Ability, Executive Function and Social Emotional Competence Among Native American Elementary Students",
+      "url": "https://openalex.org/W7223163774",
+      "source": "openalex"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "I benchmarked TimesFM 3.0, Chronos-2 and Toto 2.0 on market time series. None beat simple baseline. [P]",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xsqztt/i_benchmarked_timesfm_30_chronos2_and_toto_20_on/",
+      "source": "reddit/r/MachineLearning"
+    },
+    {
+      "title": "Gemini 4 Carbon released",
+      "url": "https://www.reddit.com/r/GeminiAI/comments/1xsqfni/gemini_4_carbon_released/",
+      "source": "reddit/r/GeminiAI"
+    },
+    {
+      "title": "My AI is lazier than me",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xsytlk/my_ai_is_lazier_than_me/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems",
+      "url": "https://arxiv.org/abs/2611.12856v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "The Invisible Gap: Romanized Indic Generation Fails Where Automatic Metrics Succeed",
+      "url": "https://arxiv.org/abs/2611.09085",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "AlienBench: A Benchmark of Structural Novelty in Language Model Outputs",
+      "url": "https://arxiv.org/abs/2611.09094",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "KLEAR: Knowledge-Matched LLM Evaluation in Korean across Application Requirements via Controlled Benchmark Transformation",
+      "url": "https://arxiv.org/abs/2611.09223",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "MemoryDojo: Benchmarking Poisoning Through LLM Agent Memory",
+      "url": "https://arxiv.org/abs/2611.09721",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
