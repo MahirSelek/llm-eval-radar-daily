@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-12-daily-eval-briefing-2026-11-12-candidate-support-confounds-rising-human-standards-and",
+  "date": "2026-11-12",
+  "created_at": "2026-11-11T21:04:40.839320+00:00",
+  "title": "Daily Eval Briefing 2026-11-12: Candidate-Support Confounds, Rising Human Standards, and Profit-Aware Re-Scoring",
+  "subtitle": "Same-day signal is thin; the freshest window shows offline protocols that leak the answer via support membership, arena judges growing pickier on fixed models, and tabular win claims that collapse under tuned baselines and money metrics.",
+  "summary": "Publishable same-day coverage for 2026-11-12 is thin, so this briefing centers on the strongest evaluation items from 11 November and late 10 November within the freshness window. IntentTwin documents a structural confound in offline web-behavior reranking: when the gold action sits outside training support while distractors do not, support membership can identify the target without modeling behavior. A Chatbot Arena analysis of fixed model pairs shows human \"both are bad\" rates rising month over month, separating judge-standard drift from model change. A telecom churn re-study shows tabular foundation model wins shrink or reverse once Optuna-tuned GBDTs and profit/calibration metrics replace untuned trees and ranking-only scores. EarthRecord pushes agent eval toward raw multi-sensor archives, and an Inspect AI harness fix tightens fail_on_error counting when score_on_error itself fails.",
+  "key_takeaways": [
+    "Treat offline candidate-set reranking as invalid when support membership alone can identify the gold action; report support-identifiability rate (SIR) before claiming behavioral skill.",
+    "Do not read Chatbot Arena vote shifts on fixed snapshots as model regression without a human-standard drift check; rising \"both are bad\" rates change leaderboard meaning over time.",
+    "Reject tabular or domain-bench claims that beat untuned baselines on ranking-only metrics when deployment is judged in money, calibration, or decision utility.",
+    "Prefer Earth-observation and tool-agent benches that start from raw archives over curated images or preprocessed inputs if the claimed skill is end-to-end analysis.",
+    "Pin eval harness error accounting: double-counting or miscounting failed score_on_error paths can quietly change abort thresholds and run comparability."
+  ],
+  "body_en": "Same-day publishable signal for 2026-11-12 is thin. The actionable evaluation story sits in the last 36 hours, especially 11 November arXiv items and a late 10 November Arena study, plus a same-window Inspect AI harness fix. Non-eval noise (self-hosted mail demos, unrelated OpenAlex theses) is ignored.\n\nThe sharpest methodology warning is IntentTwin (arXiv 2611.12918, announced 2026-11-11). Offline web-behavior benchmarks often insert the demonstrated action into a finite candidate set and score reranking. The paper shows this can create a candidate-support confound: if the target action is outside the training support while distractors are drawn from that support, support membership identifies the gold item without any genuine behavior model. They formalize the failure mode with a support-identifiability rate (SIR), then build support-controlled contrasts and IntentTwin to separate candidate support from intent signal and to measure the oracle-to-deployment gap. For eval owners, the implication is immediate. Any offline policy or click/rerank bench that constructs candidates this way can publish inflated accuracy that does not survive deployment, where the true action is not conveniently identifiable by support membership. Comparability across papers also breaks if one suite accidentally makes support diagnostic and another does not. The practical check is simple and should become standard: report SIR (or an equivalent support-leak diagnostic), publish support-matched negatives, and refuse leaderboard claims when SIR is high.\n\nA second, complementary threat to longitudinal validity appears in \"AI Isn't Getting Dumber, We're Getting Pickier\" (arXiv 2611.14333v1, 2026-11-10). Users often claim assistants are getting worse. Model versions do change, but human judges can change too. On Chatbot Arena, the authors study about 1.26 million blind votes from May 2023 to August 2024 on pairs whose versions are fixed—dated vendor snapshots and fixed open weights. For the same unchanged pairs, the share of \"both are bad\" votes rises by about 1.71 percentage points per month on a mean of 17.1%, and by about 1.91 points per month in 2024. In fourteen pairs seen often in both years, the rate rose in every pair. That finding matters now because arena-style human preference is still treated as a near-gold ranking signal. If pickiness rises while models are held fixed, time-sliced win rates, Elo trajectories, and \"model got worse\" narratives become confounded by judge-standard drift. Infra and research teams should version not only model IDs but also judge-era cohorts, track both-bad and tie rates as first-class metrics, and avoid mixing 2023 and 2024 votes without a drift correction when claiming quality change.\n\nBenchmark design quality also fails when the comparison protocol is soft. \"Tabular Foundation Models vs Tuned Gradient Boosting for Telecom Churn\" (arXiv 2611.12942, 2026-11-11) revisits a recent claim that tabular foundation models (TFMs) decisively beat tree ensembles on churn. The prior setup compared TFMs to untuned gradient-boosted trees and scored mainly ranking metrics, while retention campaigns are judged in money and calibration. Re-evaluating TabPFN-2.5, TabPFN-3.5, TabPFN-3.5-Fast, and TabICL v2 against Optuna-tuned GBDTs on public telecom churn sets reframes the result: once baselines are tuned and profit- and calibration-aware metrics are used, the decisive TFM win narrative weakens. This is a recurring eval failure mode outside LLM chat too—weak baselines plus proxy metrics manufacture progress. For LLM and agent benches, the analogy is direct: compare against strong, tuned, task-aligned baselines; score the metric the product actually optimizes; and treat ranking-only leaderboards as insufficient when decisions have asymmetric costs.\n\nEcological validity moves the other way in EarthRecord (arXiv 2611.12934, 2026-11-11). Multimodal agents can run tool-using analysis, but existing Earth-observation benches often ask questions on curated images or hand agents preprocessed inputs, skipping the raw multi-sensor archives where land-change work begins. EarthRecord is built on raw records spanning decades of satellite imagery so agents must go from pixels to land-change claims under more realistic data friction. That design choice raises difficulty and variance, which is the point: capability claims about \"analysis agents\" are not comparable if one system sees cleaned chips and another must discover, align, and reason over messy archives. Teams adopting such benches should expect lower absolute scores, stricter reproducibility needs around data access and tool stubs, and clearer separation between perception, tool orchestration, and scientific inference errors.\n\nHarness hygiene remains a silent comparability risk. The Inspect AI commit on 2026-11-11 (UKGovernmentBEIS/inspect_ai #6507) fixes counting so a sample contributes once toward fail_on_error when its score_on_error scoring also fails. That sounds narrow, but abort thresholds, retry budgets, and published pass rates depend on how double failures are tallied. Two runs with identical models and tasks can disagree if one build double-counts error paths. Pin harness commit hashes in reports, and treat scorer-error accounting as part of the eval protocol, not an implementation detail.\n\nA Hugging Face forum thread from 2026-11-10 noting that large numbers of calibration matches did not establish semantic conformance is a weak, incomplete signal, but it rhymes with the Arena drift paper: surface agreement or calibration volume is not proof that judges, matchers, or metrics share meaning. Prefer explicit conformance tests and disagreement audits over assuming that more matches imply stable semantics.\n\nNet for 2026-11-12: do not invent a busy same-day news cycle. The freshest technical items converge on protocol honesty—candidate construction that leaks answers, human judges whose standards move, baselines and metrics that do not match deployment, and harness counters that can distort failure rates. Those are the levers that change whether a number is publishable.",
+  "methodology_risks": "Candidate-set offline protocols remain high leakage risk when support membership correlates with the gold action. Without SIR-style diagnostics and support-controlled negatives, reranking accuracy is not a clean behavior measure and cross-paper comparisons are invalid. Prefer deployment-style candidate generation or explicit deconfounding before claiming transfer.\n\nHuman preference and LLM-as-a-judge stacks inherit temporal non-stationarity. The Arena fixed-pair result shows rising rejection rates even when models do not change; mixing eras, prompts, or rater pools without reporting both-bad/tie trends and cohort controls will mis-attribute judge drift to model quality. Calibration volume alone does not prove semantic conformance.\n\nComparability also fails under weak baselines, proxy metrics, and harness accounting drift. Untuned GBDT or weak agent baselines plus ranking-only scores overstate tabular or chat gains relative to profit, calibration, or task utility. Unpinned scorer-error and fail_on_error semantics can change which runs abort and which scores enter the average. Pin harness versions, publish metric definitions matched to decisions, and require strong tuned baselines before claiming a new method frontier.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "contamination",
+    "harness",
+    "reproducibility",
+    "human-preference",
+    "offline-evaluation"
+  ],
+  "sources": [
+    {
+      "title": "Show HN: Perch by mxRaven, a self-hosted mailbox and CLI in 1 file",
+      "url": "https://perch.mxraven.com",
+      "source": "hackernews"
+    },
+    {
+      "title": "Psychometric Evaluation and Cognitive Correlates of the Tactile Mental Cutting Test: Investigating Reliability, Validity, Gender Differences in Spatial Ability, Executive Function and Social Emotional Competence Among Native American Elementary Students",
+      "url": "https://openalex.org/W7223163774",
+      "source": "openalex"
+    },
+    {
+      "title": "Allied Health Professionals: Experiences Making the Transition from Clinical Practice to Academia",
+      "url": "https://openalex.org/W7225765348",
+      "source": "openalex"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "Tabular Foundation Models vs Tuned Gradient Boosting for Telecom Churn: A Profit- and Calibration-Aware Evaluation",
+      "url": "https://arxiv.org/abs/2611.12942",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: fix: count a sample once toward `fail_on_error` when its `score_on_error` scoring also fails (#6507)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/36294bba53f4d703f1048de2b84e8ee5334c68e9",
+      "source": "github"
+    },
+    {
+      "title": "343 calibration matches did not establish semantic conformance",
+      "url": "https://discuss.huggingface.co/t/343-calibration-matches-did-not-establish-semantic-conformance/191712",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "Feedback wanted: scenario-based ethical evaluation tool for models and agents",
+      "url": "https://discuss.huggingface.co/t/feedback-wanted-scenario-based-ethical-evaluation-tool-for-models-and-agents/191717",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "AI Isn't Getting Dumber, We're Getting Pickier: Rising Standards in Human Evaluation of Large Language Models",
+      "url": "https://arxiv.org/abs/2611.14333v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Brasilidade: Measuring Brazilian Identity for Large Language Models",
+      "url": "https://arxiv.org/abs/2611.12906",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "IntentTwin: Deconfounding Candidate Support and the Oracle-to-Deployment Gap in Offline Web Behavior Prediction",
+      "url": "https://arxiv.org/abs/2611.12918",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "An evidence-traceable benchmark of clinical reasoning in large language models",
+      "url": "https://arxiv.org/abs/2611.13562",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "EarthRecord: From Pixels to Land Change with Multimodal Agents over Four Decades of Satellite Imagery",
+      "url": "https://arxiv.org/abs/2611.12934",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Graph Visualizations in Prompts for Knowledge Graph Question Answering",
+      "url": "https://arxiv.org/abs/2611.12938",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Agent Architecture Cost-Success Trade-offs: A Controlled Evaluation across Enterprise-Style SOPs",
+      "url": "https://arxiv.org/abs/2611.12953",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "BuySideFlow: A Point-in-Time Benchmark for LLM Agents in Investment Research",
+      "url": "https://arxiv.org/abs/2611.12966",
+      "source": "rss/arxiv-csai-rss"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

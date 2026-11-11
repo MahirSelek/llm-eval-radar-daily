@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-12-daily-eval-briefing-2026-11-12-candidate-support-confounds-rising-human-standards-and",
+    "title": "Daily Eval Briefing 2026-11-12: Candidate-Support Confounds, Rising Human Standards, and Profit-Aware Re-Scoring",
+    "subtitle": "Same-day signal is thin; the freshest window shows offline protocols that leak the answer via support membership, arena judges growing pickier on fixed models, and tabular win claims that collapse under tuned baselines and money metrics.",
+    "date": "2026-11-12",
+    "summary": "Publishable same-day coverage for 2026-11-12 is thin, so this briefing centers on the strongest evaluation items from 11 November and late 10 November within the freshness window. IntentTwin documents a structural confound in offline web-behavior reranking: when the gold action sits outside training support while distractors do not, support membership can identify the target without modeling behavior. A Chatbot Arena analysis of fixed model pairs shows human \"both are bad\" rates rising month over month, separating judge-standard drift from model change. A telecom churn re-study shows tabular foundation model wins shrink or reverse once Optuna-tuned GBDTs and profit/calibration metrics replace untuned trees and ranking-only scores. EarthRecord pushes agent eval toward raw multi-sensor archives, and an Inspect AI harness fix tightens fail_on_error counting when score_on_error itself fails.",
+    "key_takeaways": [
+      "Treat offline candidate-set reranking as invalid when support membership alone can identify the gold action; report support-identifiability rate (SIR) before claiming behavioral skill.",
+      "Do not read Chatbot Arena vote shifts on fixed snapshots as model regression without a human-standard drift check; rising \"both are bad\" rates change leaderboard meaning over time.",
+      "Reject tabular or domain-bench claims that beat untuned baselines on ranking-only metrics when deployment is judged in money, calibration, or decision utility.",
+      "Prefer Earth-observation and tool-agent benches that start from raw archives over curated images or preprocessed inputs if the claimed skill is end-to-end analysis.",
+      "Pin eval harness error accounting: double-counting or miscounting failed score_on_error paths can quietly change abort thresholds and run comparability."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-11T21:04:40.839320+00:00",
+    "post_path": "content/posts/2026-11-12-daily-eval-briefing-2026-11-12-candidate-support-confounds-rising-human-standards-and.json"
+  },
+  {
     "slug": "2026-11-11-daily-eval-briefing-2026-11-11-knowledge-application-splits-private-vision-tests-and-",
     "title": "Daily Eval Briefing 2026-11-11: Knowledge–Application Splits, Private Vision Tests, and Harness Comparability",
     "subtitle": "Same-day signal is thin; the freshest window centers on separating recall from application, keeping vision tests private, and treating orchestration as its own scored capability.",
