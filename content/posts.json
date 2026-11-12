@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-13-daily-eval-briefing-2026-11-13-thin-same-day-signal-domain-transcript-benches-and-cod",
+    "title": "Daily Eval Briefing 2026-11-13: Thin Same-Day Signal, Domain Transcript Benches, and Code-vs-Judge Scoring Paths",
+    "subtitle": "Fresh coverage is sparse for the report day; the usable signal clusters on domain harness design, shipping-team eval hygiene, and reproducibility churn in inspect examples.",
+    "date": "2026-11-13",
+    "summary": "Same-day coverage for 2026-11-13 is thin. The freshest actionable items land mostly on 2026-11-12, with one strong practitioner piece dated 2026-11-11 still inside the soft freshness window. The clearest evaluation-quality signal is Record Test, a Show HN benchmark for legal transcript editing that pushes domain-specific task definition over generic chat leaderboards. Parallel practitioner writing argues that shipping teams need pre-release evaluation strong enough to catch costly factual failures, while a separate hands-on Medium review tests whether a model can propose runnable checks for a SaaS migration plan. A Swift Foundation Models piece from 2026-11-11 is useful because it separates code-based scoring from model-based judging and makes scoring strategy an explicit design choice. Finally, an inspect_ai docs commit updating Claude model names in examples is a small but real harness-reproducibility reminder: stale model strings quietly break comparability.",
+    "key_takeaways": [
+      "Treat Record Test as a domain-harness signal, not a general leaderboard: legal transcript editing forces protocol clarity around edit fidelity, legal terminology, and acceptance criteria that generic QA benches omit.",
+      "Shipping-team eval writing is converging on liability-aware quality gates: catch wrong answers before customers see them, with explicit pass/fail criteria rather than vibes-based review.",
+      "Separate code-based evaluation from model-based judging early; mixed scoring without a declared strategy makes judge drift and non-comparability inevitable.",
+      "Hands-on migration-plan reviews are only informative if proposed tests are executable and scored against a fixed rubric; otherwise they are demos, not evaluations.",
+      "Keep harness docs and model IDs synchronized; inspect_ai’s Claude example refresh shows how small string drift becomes a silent confound across reruns."
+    ],
+    "source_count": 11,
+    "model": "grok-4.5",
+    "created_at": "2026-11-12T21:19:42.586669+00:00",
+    "post_path": "content/posts/2026-11-13-daily-eval-briefing-2026-11-13-thin-same-day-signal-domain-transcript-benches-and-cod.json"
+  },
+  {
     "slug": "2026-11-12-daily-eval-briefing-2026-11-12-candidate-support-confounds-rising-human-standards-and",
     "title": "Daily Eval Briefing 2026-11-12: Candidate-Support Confounds, Rising Human Standards, and Profit-Aware Re-Scoring",
     "subtitle": "Same-day signal is thin; the freshest window shows offline protocols that leak the answer via support membership, arena judges growing pickier on fixed models, and tabular win claims that collapse under tuned baselines and money metrics.",
