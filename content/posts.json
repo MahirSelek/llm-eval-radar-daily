@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-14-daily-eval-briefing-2026-11-14-thin-same-day-signal-noise-bands-for-agent-harnesses-a",
+    "title": "Daily Eval Briefing 2026-11-14: Thin Same-Day Signal, Noise Bands for Agent Harnesses, and Extreme Coding Benches",
+    "subtitle": "Same-day coverage is thin; the freshest Nov 13 signal centers on distinguishing harness luck from real gains, plus hard domain and coding benches that compress leaderboard claims.",
+    "date": "2026-11-14",
+    "summary": "Official same-day coverage for 2026-11-14 is thin. The strongest evaluation signal in the freshness window comes from 13 November pieces on agent-eval noise bands, production grading gaps, and a data-pipeline forensics bench where a short rulebook outweighed model price. A LocalLLaMA update on SWE-sweep reports DeepSeek v4.1 flash (max) as the first open-weight model above 1% on an extremely hard repo-scale bug-finding task, which is more useful as a difficulty and ceiling signal than as a ranking headline. Hugging Face forums also surface EpiGauge, a domain immunogenicity prediction benchmark, reminding teams that specialized task design still outranks generic chat evals. Across these items, the shared lesson is comparability discipline: report uncertainty, freeze harnesses, and treat single-run score moves as provisional until noise and protocol are explicit.",
+    "key_takeaways": [
+      "Treat agent score deltas inside estimated noise bands as non-decisions; require repeated runs or confidence intervals before claiming harness or model improvement.",
+      "Extreme benches like SWE-sweep (repo snapshots with hundreds of bugs) are better used to stress search, localization, and harness limits than to declare frontier winners from sub-2% absolute scores.",
+      "Forensic and domain benches (pipeline row disappearance; EpiGauge immunogenicity) show that explicit rulebooks, labels, and task boundaries can dominate model tier in measured outcomes.",
+      "Production observability without graded outcomes remains an eval gap: watching agents is not evaluating them; minimum viable grading loops should be cost-capped and protocol-versioned.",
+      "When same-day primary literature is sparse, prefer protocol and variance insights from the freshest technical posts over narrative claims from low-engagement forum threads."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-14T00:41:02.865269+00:00",
+    "post_path": "content/posts/2026-11-14-daily-eval-briefing-2026-11-14-thin-same-day-signal-noise-bands-for-agent-harnesses-a.json"
+  },
+  {
     "slug": "2026-11-13-daily-eval-briefing-2026-11-13-thin-same-day-signal-domain-transcript-benches-and-cod",
     "title": "Daily Eval Briefing 2026-11-13: Thin Same-Day Signal, Domain Transcript Benches, and Code-vs-Judge Scoring Paths",
     "subtitle": "Fresh coverage is sparse for the report day; the usable signal clusters on domain harness design, shipping-team eval hygiene, and reproducibility churn in inspect examples.",

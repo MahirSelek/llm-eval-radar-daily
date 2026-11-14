@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-14-daily-eval-briefing-2026-11-14-thin-same-day-signal-noise-bands-for-agent-harnesses-a",
+  "date": "2026-11-14",
+  "created_at": "2026-11-14T00:41:02.865269+00:00",
+  "title": "Daily Eval Briefing 2026-11-14: Thin Same-Day Signal, Noise Bands for Agent Harnesses, and Extreme Coding Benches",
+  "subtitle": "Same-day coverage is thin; the freshest Nov 13 signal centers on distinguishing harness luck from real gains, plus hard domain and coding benches that compress leaderboard claims.",
+  "summary": "Official same-day coverage for 2026-11-14 is thin. The strongest evaluation signal in the freshness window comes from 13 November pieces on agent-eval noise bands, production grading gaps, and a data-pipeline forensics bench where a short rulebook outweighed model price. A LocalLLaMA update on SWE-sweep reports DeepSeek v4.1 flash (max) as the first open-weight model above 1% on an extremely hard repo-scale bug-finding task, which is more useful as a difficulty and ceiling signal than as a ranking headline. Hugging Face forums also surface EpiGauge, a domain immunogenicity prediction benchmark, reminding teams that specialized task design still outranks generic chat evals. Across these items, the shared lesson is comparability discipline: report uncertainty, freeze harnesses, and treat single-run score moves as provisional until noise and protocol are explicit.",
+  "key_takeaways": [
+    "Treat agent score deltas inside estimated noise bands as non-decisions; require repeated runs or confidence intervals before claiming harness or model improvement.",
+    "Extreme benches like SWE-sweep (repo snapshots with hundreds of bugs) are better used to stress search, localization, and harness limits than to declare frontier winners from sub-2% absolute scores.",
+    "Forensic and domain benches (pipeline row disappearance; EpiGauge immunogenicity) show that explicit rulebooks, labels, and task boundaries can dominate model tier in measured outcomes.",
+    "Production observability without graded outcomes remains an eval gap: watching agents is not evaluating them; minimum viable grading loops should be cost-capped and protocol-versioned.",
+    "When same-day primary literature is sparse, prefer protocol and variance insights from the freshest technical posts over narrative claims from low-engagement forum threads."
+  ],
+  "body_en": "Same-day publishable coverage for 2026-11-14 is thin. Within the prefer-today-then-last-36h policy, the actionable evaluation material clusters on 13 November (Europe/Istanbul freshness window), with a few adjacent items from 12 November that are weaker for methodology. This briefing therefore does not invent a busy news day. It synthesizes the freshest technical signals that speak to benchmark validity, harness noise, judge and rubric design, and reproducibility for research and infra teams.\n\nThe clearest methodological post in the window is the Towards AI piece titled Your Harness Didn’t Get Better, It Got Lucky: Noise Bands for Agent Evals (published 2026-11-13). The framing is evaluation-native: a small drop and a large drop are not the same kind of event unless you know the noise floor of the harness. Practically, that means agent evals should report run-to-run variance, seed or trajectory diversity, and an explicit noise band before teams promote a harness change, prompt edit, or tool-policy tweak as a real gain. Infra implication is immediate. CI dashboards that show single-point pass rates invite false positives. A 2–3 point swing can be sampling noise; a 20-point swing may still be noise if the task set is tiny, grader unstable, or environment nondeterministic. The research habit to institutionalize is paired reporting: point estimate plus uncertainty, plus a frozen harness hash. Without that, leaderboard movement and internal A/B harness experiments remain incomparable across days.\n\nA companion Medium post from the same day, The Minimum Viable Harness That Keeps Your Agent Funded Past 2027 (2026-11-13), sharpens the production side of the same problem. The cited split—most surveyed teams can watch agents work, far fewer grade them in production—is an evaluation quality gap, not a product-ops anecdote. Observation without scoring yields anecdotal regressions and unfalsifiable claims of improvement. A minimum viable grading loop matters because it forces outcome definitions, cost caps, and sampling policy. For infra teams, the transferable design constraint is: grade a stratified sample with stable rubrics or deterministic checks; version the grader; and refuse to treat ungraded traces as evidence. For researchers, it is a reminder that deployment telemetry is not an eval suite until labels, success criteria, and leakage controls are specified.\n\nThe third same-day Medium signal, Can an LLM Prove Where a Row Disappeared? (2026-11-13), is useful because it is a concrete task family—data pipeline forensics—rather than another generic reasoning quiz. The reported finding that a short rulebook mattered more than model price is exactly the kind of result evaluation leads should expect when tasks are protocol-heavy. If the rewarded answer is often a disciplined I cannot prove it under the given evidence constraints, then the bench is testing epistemic discipline and procedure adherence, not fluency. That is healthy for validity: it reduces the chance that larger models win by style. It also raises judge and scorer design questions. If humans or LLM judges score forensic explanations, rubric leakage into prompts, answer-key hints in few-shot exemplars, and over-crediting confident narratives become primary risks. Comparability requires publishing the rulebook version with scores. Otherwise two labs can claim opposite conclusions on the same model family simply by changing what counts as a valid proof of disappearance.\n\nAgainst that methodology backdrop, the LocalLLaMA report on SWE-sweep (2026-11-13) is the strongest capability-bench signal in the window, and it should be read carefully. The claim is that DeepSeek v4.1 flash (max) is the first open-weight model evaluated there above 1% on a challenging bug-finding benchmark where models receive a snapshot of a potentially very large repository containing hundreds of bugs. Absolute performance near 1% is not a marketing victory; it is a difficulty and coverage statement. For evaluation quality, that matters more than rank order. Extremely hard, high-entropy software tasks compress score differences and amplify harness effects: retrieval scope, patch apply mechanics, time budgets, test oracles, and whether partial localization counts. A first model above 1% is noteworthy as a ceiling probe, but cross-model comparison is fragile until the leaderboard freezes harness version, repo sampling, and scoring rules. Contamination risk also differs from static quiz benches: training on public issues or patches can inflate apparent bug-finding skill without generalizing to held-out repos. Teams should therefore treat SWE-sweep movement as a stress test of agent coding pipelines, not as a drop-in substitute for unit-test pass@k on curated sets.\n\nDomain specialization appears in the Hugging Face forums thread on EpiGauge (2026-11-13), described as a benchmark for T-cell immunogenicity prediction from Norvara Therapeutics. Even with limited thread summary text, the evaluation lesson is structural. Biomedical prediction benches succeed or fail on label provenance, split discipline, and whether sequence or assay metadata leaked into pretraining or retrieval indexes. Generic LLM leaderboards will not substitute for domain metrics, calibration, and negative controls. For LLM evaluation programs, EpiGauge-type releases are a prompt to keep a dual track: general agent and coding harnesses for systems research, plus domain suites with expert-defined validity criteria. Mixing those tracks without stating the construct under test produces misleading aggregate rankings.\n\nWeaker signals should be labeled as such. The Hacker News item Using LLMs outside of reflection is an anti-pattern (2026-11-13) had minimal engagement at capture time and does not, by itself, supply an evaluation result. At most it echoes a design preference that mirrors eval caution: unconstrained free-form LLM use as an outer-loop decision maker is hard to score and easy to overfit to anecdotes. The Show HN Kapso thread (2026-11-12) is outside the strict same-day focus and is product-oriented iterative learning from enterprise data; it is not treated here as an evaluation release. OpenAlex entries with later nominal dates (psychometric tactile spatial testing; allied-health academia transition; knowledge-graph NLP methods) are outside the LLM-eval freshness thesis for this briefing and are not presented as today’s news.\n\nSynthesizing across the fresh window, the stake for researchers and infra teams is consistency of claims under noise and protocol. Noise bands for agent evals push against lucky harness narratives. Production grading gaps push against watching-without-scoring. Forensic and immunogenicity benches push toward explicit rulebooks and domain validity. SWE-sweep pushes toward honest reporting of hard absolute difficulty and harness sensitivity. On a thin 2026-11-14 calendar, that combination is still enough to set an operational bar: freeze protocols, quantify variance, separate domain constructs from general chat scores, and refuse to promote sub-noise improvements as evidence.",
+  "methodology_risks": "Comparability is the first risk on a thin news day. Mixing Nov 12–13 forum and blog signals with extreme coding leaderboard snippets without dating them invites false same-day narratives. Score deltas on agent harnesses are especially vulnerable: without noise bands, repeated trials, and a versioned environment, teams will misread stochastic trajectory variance as product progress. SWE-sweep-style repo bug finding amplifies this because oracle definition, search budget, and patch validation can dominate model identity.\n\nLeakage and contamination remain under-specified in most of the provided items. Coding and enterprise-adjacent tasks can overlap public issue trackers, blogs, and prior patches; domain benches like immunogenicity prediction can leak through sequence databases and paper supplements. Forensic pipeline tasks can leak if graders or few-shot exemplars reveal the causal story. Any LLM-as-a-judge overlay on these tasks adds judge drift: prompt edits, model swaps, and rubric creep can move scores more than the system under test.\n\nReproducibility requires publishing harness hashes, rulebook versions, sampling frames, and uncertainty. Where same-day primary papers are absent, blogs and forum leaderboard notes are hypotheses until protocols and raw run artifacts are inspectable. Treat single-run >1% or few-point harness gains as provisional pending locked evaluation packages.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "agent-harness",
+    "noise-bands",
+    "reproducibility",
+    "contamination",
+    "coding-benchmarks"
+  ],
+  "sources": [
+    {
+      "title": "Using LLMs outside of reflection is an anti-pattern",
+      "url": "https://news.ycombinator.com/item?id=50489240",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: Kapso – Iterative learning from enterprise data",
+      "url": "https://news.ycombinator.com/item?id=50471281",
+      "source": "hackernews"
+    },
+    {
+      "title": "EpiGauge: A benchmark for T-cell immunogenicity prediction from Norvara Therapeutics",
+      "url": "https://discuss.huggingface.co/t/epigauge-a-benchmark-for-t-cell-immunogenicity-prediction-from-norvara-therapeutics/191824",
+      "source": "forum/huggingface-forums"
+    },
+    {
+      "title": "DeepSeek flash max is the first model to reach >1% on challenging SWE-sweep bug finding benchmark",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xvcgxq/deepseek_flash_max_is_the_first_model_to_reach_1/",
+      "source": "reddit/r/LocalLLaMA"
+    },
+    {
+      "title": "Your Harness Didn’t Get Better, It Got Lucky: Noise Bands for Agent Evals",
+      "url": "https://pub.towardsai.net/your-harness-didnt-get-better-it-got-lucky-noise-bands-for-agent-evals-9413224c6fcb?source=rss------llm_evaluation-5",
+      "source": "rss/medium-llm-evaluation"
+    },
+    {
+      "title": "The Minimum Viable Harness That Keeps Your Agent Funded Past 2027",
+      "url": "https://medium.com/@kameshwar2004/the-minimum-viable-harness-that-keeps-your-agent-funded-past-2027-d46d4bb6681e?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Can an LLM Prove Where a Row Disappeared?",
+      "url": "https://ntrongtin11702.medium.com/can-an-llm-prove-where-a-row-disappeared-5f038d31a87b?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Psychometric Evaluation and Cognitive Correlates of the Tactile Mental Cutting Test: Investigating Reliability, Validity, Gender Differences in Spatial Ability, Executive Function and Social Emotional Competence Among Native American Elementary Students",
+      "url": "https://doi.org/10.26076/6bry-6064",
+      "source": "openalex"
+    },
+    {
+      "title": "Allied Health Professionals: Experiences Making the Transition from Clinical Practice to Academia",
+      "url": "https://openalex.org/W7225765348",
+      "source": "openalex"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: chore(deps): bump the provider-sdks group across 1 directory with 2 updates (#6549)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/f72aaad97e8baad440e256bad542a075a83e427c",
+      "source": "github"
+    },
+    {
+      "title": "The Complete Guide to LLM Evaluation",
+      "url": "https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Fluent but Wrong: Why the Biggest Challenge in AI Evaluation Is Knowing When an Answer Only Sounds…",
+      "url": "https://medium.com/@anyaomang26/fluent-but-wrong-why-the-biggest-challenge-in-ai-evaluation-is-knowing-when-an-answer-only-sounds-359cb71b0398?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Show HN: Record Test, benchmarking LLMs on legal transcript editing",
+      "url": "https://github.com/heydonna-app/record-test-bench",
+      "source": "hackernews"
+    },
+    {
+      "title": "ArchSpace: Recording, Reviewing, and Referencing LLM Architecture Research",
+      "url": "https://arxiv.org/abs/2611.17332v1",
+      "source": "arxiv"
+    },
+    {
+      "title": "Learning When Diffusion Language Models Should Regenerate",
+      "url": "https://arxiv.org/abs/2611.17320v1",
+      "source": "arxiv"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
