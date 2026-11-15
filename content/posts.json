@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-16-daily-eval-briefing-2026-11-16-thin-same-day-signal-rag-release-gates-and-inspect-tra",
+    "title": "Daily Eval Briefing 2026-11-16: Thin Same-Day Signal, RAG Release Gates, and Inspect Traceability",
+    "subtitle": "With almost no 2026-11-16 primary releases, the freshest signal is enterprise eval discipline around RAG metrics, ship gates beyond leaderboard scores, and inspect_ai scoring/trace hardening.",
+    "date": "2026-11-16",
+    "summary": "Same-day coverage for 2026-11-16 is thin: the publishable set is dominated by 2026-11-15 practitioner writing and a 2026-11-14 inspect_ai release rather than new frontier benchmarks. The strongest evaluation-quality thread is that retrieval and abstention metrics are being treated as first-class gates, not after-the-fact diagnostics. Parallel commentary argues that passing a public benchmark is insufficient for shipping if business outcomes, operational risk, and reliability under real traffic are unmeasured. On the harness side, UKGovernmentBEIS/inspect_ai v0.3.290 (2026-11-14) tightens message identity, tool-event linkage, and epoch exclusion behavior—changes that improve auditability but can break naive score comparisons. A small HN thread on mouse support in CLI harnesses and a docs commit updating Gemini examples further remind teams that interface and model-default drift are comparability risks. Off-topic OpenAlex entries and a content-free Reddit claim were not treated as eval news.",
+    "key_takeaways": [
+      "Treat RAG evaluation as a retrieval-plus-abstention problem: measure whether systems retrieve the right context and whether they correctly refuse when evidence is missing, not only whether final answers look fluent.",
+      "Add ship gates beyond benchmark pass/fail—business outcome checks, operational risk, and production reliability—so leaderboard wins do not silently authorize deployment.",
+      "When upgrading to inspect_ai v0.3.290 (2026-11-14), re-baseline scores after epoch-exclusion and message/tool identity changes; do not mix logs from older bridge semantics without noting the harness version.",
+      "Pin model IDs used in docs and harness examples; the 2026-11-15 inspect_ai docs update to a current Gemini model is a reminder that example defaults can silently shift what teams think they reproduced.",
+      "Treat CLI interaction-surface debates (for example, mouse support) as protocol changes: any input channel that alters task affordances can invalidate prior agent-coding comparisons."
+    ],
+    "source_count": 11,
+    "model": "grok-4.5",
+    "created_at": "2026-11-15T22:31:32.721197+00:00",
+    "post_path": "content/posts/2026-11-16-daily-eval-briefing-2026-11-16-thin-same-day-signal-rag-release-gates-and-inspect-tra.json"
+  },
+  {
     "slug": "2026-11-15-daily-eval-briefing-2026-11-15-arena-manipulation-risk-synthetic-data-agent-benches-a",
     "title": "Daily Eval Briefing 2026-11-15: Arena Manipulation Risk, Synthetic Data-Agent Benches, and Harness Traceability",
     "subtitle": "Same-day coverage is thin; the freshest signal is that preference arenas remain attackable while synthetic, protocol-specified benchmarks and inspectable harness logs become the practical counterweight.",
