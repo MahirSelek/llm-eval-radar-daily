@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-17-daily-eval-briefing-2026-11-17-thin-same-day-signal-internal-benchmark-tracing-and-ju",
+    "title": "Daily Eval Briefing 2026-11-17: Thin Same-Day Signal, Internal Benchmark Tracing, and Judge Alternatives",
+    "subtitle": "With little fresh Nov 17 coverage, the eval signal concentrates on task-centric internal tracing, synthetic traffic over LLM judges, and harness replay fidelity.",
+    "date": "2026-11-17",
+    "summary": "Same-day publishable coverage for 2026-11-17 is thin; the actionable technical signal sits in the prior 36-hour window. The strongest methodological item is an arXiv framework that moves beyond dataset-level scores toward characterizing the knowledge and reasoning processes a benchmark actually elicits inside a model. A linked critique argues that synthetic traffic can be a more trustworthy evaluation substrate than LLM-as-a-judge for search and agent workflows. An Inspect AI harness fix for Gemini computer-use replay underscores that agent leaderboards remain fragile when tool traces lose intent or coordinate fidelity. Peripheral items on synthetic multi-view benchmarks, vanity metrics, and GPU throughput help separate evaluation validity from marketing and hardware scoreboards.",
+    "key_takeaways": [
+      "Treat Nov 17 as a thin-signal day: prioritize the Nov 16 arXiv tracing paper, the synthetic-traffic-versus-judge argument, and the Inspect AI replay fix rather than inventing a same-day narrative.",
+      "Benchmark reports that only publish aggregate accuracy remain incomplete; task-centric internal tracing is becoming a necessary validity check on what a score actually measures.",
+      "For retrieval and agent search, prefer controlled synthetic traffic and ground-truthable outcomes over unconstrained LLM judges when ranking product changes.",
+      "Agent eval harnesses must preserve exact tool intent and coordinate fields on replay; silent field loss is a reproducibility defect, not a cosmetic log issue.",
+      "Hardware throughput deltas and vanity metric generators are useful context for score inflation risk, but they are not substitutes for protocol-controlled LLM evaluation."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-16T23:59:32.825356+00:00",
+    "post_path": "content/posts/2026-11-17-daily-eval-briefing-2026-11-17-thin-same-day-signal-internal-benchmark-tracing-and-ju.json"
+  },
+  {
     "slug": "2026-11-16-daily-eval-briefing-2026-11-16-thin-same-day-signal-rag-release-gates-and-inspect-tra",
     "title": "Daily Eval Briefing 2026-11-16: Thin Same-Day Signal, RAG Release Gates, and Inspect Traceability",
     "subtitle": "With almost no 2026-11-16 primary releases, the freshest signal is enterprise eval discipline around RAG metrics, ship gates beyond leaderboard scores, and inspect_ai scoring/trace hardening.",
