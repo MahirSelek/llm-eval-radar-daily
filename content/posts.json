@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-18-daily-eval-briefing-2026-11-18-judge-ci-gates-harness-change-logs-and-inspect-sample-",
+    "title": "Daily Eval Briefing 2026-11-18: Judge CI Gates, Harness Change Logs, and Inspect Sample Accounting",
+    "subtitle": "Same-day signal is thin; the freshest 36-hour items push evaluation quality toward calibrated judges, auditable harness drift, and honest empty-run accounting.",
+    "date": "2026-11-18",
+    "summary": "Coverage for 2026-11-18 itself is thin: the publishable set is dominated by 2026-11-17 technical items within the freshness window rather than new same-day releases. The clearest evaluation-quality signal is a shift from ad-hoc agent demos toward gated LLM-as-judge pipelines, with one practitioner report describing cost-weighted metrics and a judge that passes under 5% of flawed drafts before any agent ships. In parallel, harness discourse argues that model swaps require a change log of behavior and approval surface, not only code diffs, because re-approval cost is an evaluation problem. Inspect AI v0.3.291 tightens reproducibility by treating empty-attempt finished logs as failures and allowing explicit sample exclusion from metrics. Psychometric framing and dated-break coding probes round out the window: treat benchmarks as instruments with reliability and validity claims, and test whether generated code fails on a known future date as a leakage-resistant failure mode.",
+    "key_takeaways": [
+      "Treat LLM-as-judge as a CI measuring instrument: calibrate against known flawed drafts, track pass rates on negatives, and gate agent promotion on cost-weighted metrics rather than single-score vibes.",
+      "Version agent harnesses with behavioral change logs (prompt, tools, memory, judge rubric, model ID) so score deltas after a model swap are attributable rather than confounded.",
+      "Pin Inspect AI log semantics carefully after v0.3.291: empty-attempt finished logs counting as failures and metric exclusion of samples change how incomplete runs compare across eval sets.",
+      "Read benchmark scoreboards with psychometric discipline—reliability, validity, and item difficulty—before treating small leaderboard gaps as capability claims.",
+      "Add dated-break style coding probes to catch temporally brittle or memorized solutions that look correct on static unit tests but fail under calendar-conditioned constraints."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-18T00:35:18.947894+00:00",
+    "post_path": "content/posts/2026-11-18-daily-eval-briefing-2026-11-18-judge-ci-gates-harness-change-logs-and-inspect-sample-.json"
+  },
+  {
     "slug": "2026-11-17-daily-eval-briefing-2026-11-17-thin-same-day-signal-internal-benchmark-tracing-and-ju",
     "title": "Daily Eval Briefing 2026-11-17: Thin Same-Day Signal, Internal Benchmark Tracing, and Judge Alternatives",
     "subtitle": "With little fresh Nov 17 coverage, the eval signal concentrates on task-centric internal tracing, synthetic traffic over LLM judges, and harness replay fidelity.",
