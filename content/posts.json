@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-19-daily-eval-briefing-2026-11-19-leak-audits-domain-grounded-suites-and-multi-agent-har",
+    "title": "Daily Eval Briefing 2026-11-19: Leak Audits, Domain-Grounded Suites, and Multi-Agent Harness Signals",
+    "subtitle": "Same-day signal is thin; the strongest 36-hour shift is toward leakage audits and citation-grounded, domain-specific eval design over generic leaderboards.",
+    "date": "2026-11-19",
+    "summary": "Coverage for 2026-11-19 is thin on same-day originals, so this briefing draws from the freshest technical items published on 2026-11-18 within the freshness window. The clearest methodological signal is BenchAudit’s framing of benchmark integrity around leaks, data reuse, and harness gaps—an audit lens that should sit upstream of score interpretation. Domain suites continue to densify: CrisisBench targets privacy-preserving crisis counseling evaluation with escalation and de-escalation dynamics that general chat benches miss, while TUSI stresses citation-grounded, graph-linked legal RAG evaluation in Persian law rather than synthetic statute Q&A. Adjacent signals—WeightBench’s weight-space programming tasks, KradleBench’s Minecraft multi-agent setting, Hub registration pressure for phone-tool-bench, and community multilingual sourcing debates—all point to the same infra question: whether new benches improve construct validity and comparability or merely expand score surfaces without leakage controls.",
+    "key_takeaways": [
+      "Treat leakage, reuse, and harness-gap audits as release gates before any new leaderboard or Hub-official benchmark claim is trusted for model comparison.",
+      "Prefer domain suites that encode the actual failure modes of the setting (escalation risk in crisis counseling; citation grounding in legal RAG) over proxy chat accuracy metrics.",
+      "Multi-agent and interactive environment benches (Minecraft, tool-phone workflows) need frozen harness versions, seed policies, and protocol logs or scores will not transfer across labs.",
+      "Community-sourced multilingual benches can improve coverage only if item provenance, translation fidelity checks, and contamination screening are published with the data.",
+      "Weight-space and other novel task families expand what ‘capability’ means; without clear task specs and non-leaky references, they risk becoming unreproducible novelty benches."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-19T01:44:52.221343+00:00",
+    "post_path": "content/posts/2026-11-19-daily-eval-briefing-2026-11-19-leak-audits-domain-grounded-suites-and-multi-agent-har.json"
+  },
+  {
     "slug": "2026-11-18-daily-eval-briefing-2026-11-18-judge-ci-gates-harness-change-logs-and-inspect-sample-",
     "title": "Daily Eval Briefing 2026-11-18: Judge CI Gates, Harness Change Logs, and Inspect Sample Accounting",
     "subtitle": "Same-day signal is thin; the freshest 36-hour items push evaluation quality toward calibrated judges, auditable harness drift, and honest empty-run accounting.",
