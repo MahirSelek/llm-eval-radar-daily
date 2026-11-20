@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-20-daily-eval-briefing-2026-11-20-domain-grounded-suites-force-incremental-evidence-and-",
+  "date": "2026-11-20",
+  "created_at": "2026-11-20T01:40:50.753089+00:00",
+  "title": "Daily Eval Briefing 2026-11-20: Domain-Grounded Suites Force Incremental Evidence and Multidimensional Judges",
+  "subtitle": "Same-day eval signal is thin; the freshest shift is yesterday’s suite of crisis, legal RAG, diagnostic-trace, and triage frameworks that reject single-score validity.",
+  "summary": "Publishable same-day coverage for 2026-11-20 is thin: one Inspect AI live-viewer fix and a non-eval Show HN dominate the calendar day, so this briefing centers on 2026-11-19 arXiv releases still inside the freshness window. CrisisBench, TUSI, DiagTrace, and SAFE-Triage collectively argue that static final-answer scoring is an invalid proxy for crisis counseling, citation-grounded legal RAG, incremental clinical diagnosis, and patient-facing triage. Across these suites, validity now hinges on protocol realism (multi-turn escalation, evidence acquisition, source grounding) and on explicit distrust of acuity-only or answer-only metrics. A parallel 2026-11-19 local-model comparison on Hacker News underscores how private harness choices still drive rank order when public releases disappoint. Infra teams should treat these designs as comparability constraints: new dimensions, judges, and interaction loops are not drop-in replacements for yesterday’s leaderboards.",
+  "key_takeaways": [
+    "Treat single-turn medical or counseling accuracy as insufficient: DiagTrace and CrisisBench require incremental evidence gathering, risk assessment, and de-escalation under incomplete information.",
+    "For legal and citation-sensitive RAG, prefer benchmarks that link claims to authoritative documents (TUSI’s citation-grounded graph) over synthetic statute Q&A or unlinked informal forums.",
+    "SAFE-Triage shows why acuity accuracy alone is a methodology risk: patient interaction quality and clinician-facing summary fidelity can diverge under LLM-as-judge plus human review.",
+    "Local and private benches (the 2026-11-19 Spirux-style 22-model comparison) remain non-comparable without published prompts, decoding settings, and contamination controls.",
+    "Inspect AI’s 2026-11-20 live-viewer attachment URI fix is a small harness hygiene win: display bugs that rewrite protocol-looking text can silently corrupt human audit of traces."
+  ],
+  "body_en": "Same-day coverage for the official 2026-11-20 briefing is thin. Within the provided list, calendar-day items are a Show HN for Zeus (AI voice-agent tooling, not an evaluation methodology release) and a UKGovernmentBEIS/inspect_ai commit that fixes the live viewer treating strings beginning with attachment:// or tc:// as literal text rather than special URIs. The substantive evaluation signal therefore comes from 2026-11-19 items still inside the prefer-today-then-last-36h freshness window: four new arXiv evaluation suites and a Hacker News write-up of a 22-model local LLM comparison. OpenAlex records dated 2026-11-26 and 2026-12-01 are outside the operational news window for this briefing and are not treated as today’s releases; they also sit outside core LLM eval methodology focus.\n\nThe clearest shared thesis across yesterday’s arXiv cluster is that domain validity now demands interaction protocol and grounding structure, not another static multiple-choice or single-shot diagnosis score. CrisisBench (arXiv:2611.21622, published 2026-11-19) targets crisis counseling AI with a privacy-preserving suite for single- and multi-turn evaluation. The abstract’s diagnosis of the field is itself an eval-quality claim: existing benchmarks miss escalation, risk assessment, and de-escalation that define crisis conversations, while privacy constraints block naive use of real helpline transcripts. For researchers, that means leakage and consent are first-class design constraints, not afterthoughts. Synthetic or redacted multi-turn protocols become the only ethical path to score counselor-support models, but they also raise construct validity risk—if the synthetic escalation paths are too tidy, models can pass CrisisBench while failing messy real calls. Infra teams should budget for multi-turn harnesses with explicit risk-state labels, turn-level scorers, and audit trails that never require storing identifiable caller content.\n\nTUSI (arXiv:2611.21823, 2026-11-19) attacks a different validity failure mode in Persian legal RAG: benchmarks that are either synthetically generated from statutes (missing natural information needs) or scraped from informal legal Q&A without explicit links to authoritative documents. The proposed remedy is a citation-grounded, graph-based benchmark. That design choice matters for contamination and for judge design. Citation grounding turns evaluation into a retrieval-plus-attribution problem: a fluent legal-sounding answer without document support should fail even if a free-form LLM judge finds it persuasive. Graph structure also makes coverage and difficulty analysis inspectable—teams can see which statutes, edges, or reasoning hops drive failures—rather than treating a single accuracy number as a black box. Comparability warning: results on TUSI will not transfer cleanly to English common-law RAG or to uncited open-domain QA; the point of the suite is jurisdiction- and authority-specific groundedness.\n\nDiagTrace (arXiv:2611.22009, 2026-11-19) makes the incremental-information critique explicit for clinical decision making. Prior medical QA and diagnostic reasoning benches typically dump the full patient record upfront and score only the final diagnosis or rationale. DiagTrace instead frames a source-grounded interactive setting where diagnostic evidence must be acquired over time from incomplete information. This is a harness change with large ranking implications. Models that are strong at synthesizing a complete vignette may look weaker when they must decide which question to ask next, when to stop, and how to revise under uncertainty. For lab reproducibility, interactive clinical benches require frozen tool APIs, fixed information budgets, and logged action traces; otherwise two runs are not the same experiment. For contamination, source grounding helps, but teams still need leakage checks if case material overlaps public MIMIC-like or textbook corpora used in pretraining.\n\nBeyond Acuity Accuracy / SAFE-Triage (arXiv:2611.22045, 2026-11-19) is the multidimensional-framework counterpart. Patient-facing emergency triage tools are often scored primarily on acuity classification accuracy. SAFE-Triage integrates human review, automated metrics, LLM-as-judge evaluation, and simulation testing across clinical performance, patient interaction, and clinician-facing summary quality, applied to 40 MIMIC-IV-derived vignettes plus a much larger 10,030-case corpus. The methodological stake is clear: a model can be acuity-correct and still unsafe or unusable if patient-facing dialogue is misleading or if clinician summaries omit critical cues. Mixing human review with LLM-as-judge is pragmatic for scale, but it imports judge reliability as a first-order risk. Without published judge prompts, agreement statistics, and stratified error analysis (for example, by acuity band or demographic slice), SAFE-Triage-style scores can drift across labs even when the vignette set is shared. Simulation testing further separates online interaction quality from offline label match—another reason not to collapse the suite into one headline number.\n\nTaken together, CrisisBench, TUSI, DiagTrace, and SAFE-Triage form a coherent 2026-11-19 pattern: evaluation quality is migrating from answer correctness toward process validity under domain constraints. Crisis and triage demand risk-aware dialogue; diagnosis demands sequential evidence acquisition; legal RAG demands citation graphs. That pattern has immediate practical implications. Research groups should stop treating medical, legal, and counseling leaderboards as interchangeable accuracy contests. Infra teams should prioritize harness features that these suites assume: multi-turn state machines, tool and question budgets, citation checkers, dual human/LLM judging channels, and privacy-safe synthetic data pipelines. Release gates that only track final-answer accuracy will systematically over-rank models that look strong under full-context dumps and under-rank models that ask better questions.\n\nThe 2026-11-19 Hacker News item on benchmarking 22 local LLMs while hunting for a Qwen 3.8 35B variant that did not ship is a useful contrast signal, not a peer-reviewed suite. Community local benches often surface capability under constrained hardware, but they are chronically under-specified on prompts, stops, temperature, context packing, and contamination of the author’s favorite tasks. Rank order among 22 local models can flip under harness changes alone. The eval lesson is complementary to the arXiv cluster: when public model availability disappoints, private comparison harnesses fill the gap—and those harnesses must be versioned, documented, and leakage-audited if anyone intends to treat them as evidence rather than anecdotes.\n\nFinally, the Inspect AI live-viewer fix dated 2026-11-20 is small but aligned with reproducibility hygiene. If a viewer silently rewrites or special-cases protocol-looking prefixes, human auditors can misread attachments or tool-call URIs in traces. Display-layer bugs are easy to dismiss as UX, yet they corrupt the human half of judge pipelines and make failure analysis non-reproducible across operators. In a week where interactive and multi-judge suites are the main scientific story, keeping the observation surface faithful to raw traces is part of evaluation validity, not polish.\n\nBottom line for stakeholders: do not overclaim a busy same-day news cycle. Claim instead that within the freshness window, evaluation methodology advanced most clearly on 2026-11-19 through domain-grounded, process-aware suites, while 2026-11-20 itself mainly contributes harness-display hygiene and otherwise thin same-day signal.",
+  "methodology_risks": "Comparability risk is high if labs import these suites as drop-in accuracy replacements. CrisisBench and DiagTrace change the task from static prediction to multi-turn control; SAFE-Triage adds patient-interaction and summary axes; TUSI scores citation-grounded legal retrieval rather than unconstrained legal chat. Cross-paper model rankings are not meaningful without matched interaction budgets, judge configurations, and language or jurisdiction scope.\n\nLeakage and construct validity remain coupled. Privacy-preserving crisis synthetics and MIMIC-derived triage vignettes reduce direct transcript risk but can still leak structure from public clinical corpora or become too clean relative to real escalation. Legal graph benches reduce ungrounded answer gaming, yet synthetic statute Q&A in prior resources shows how easy it is to train to the document set rather than to natural user needs. Local 22-model comparisons without closed task inventories invite accidental training-set overlap with popular open benches.\n\nJudge drift is especially acute for SAFE-Triage-style LLM-as-judge plus human review stacks. If judge prompts, model versions, or rubric weights move without a changelog, multidimensional scores will shift even when candidate models do not. Mitigations that matter now: freeze and publish judge artifacts, report human–judge agreement by dimension, keep Inspect-style traces display-faithful, and refuse single-number summaries when acuity, interaction safety, and citation grounding can diverge.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "harness",
+    "contamination",
+    "reproducibility",
+    "clinical-eval",
+    "rag"
+  ],
+  "sources": [
+    {
+      "title": "I benchmarked 22 local LLMs looking for the Qwen 3.8 35B we didn't get",
+      "url": "https://sevangelatos.github.io/spiruxbench-results/blog/",
+      "source": "hackernews"
+    },
+    {
+      "title": "Show HN: Zeus – Claude Code for AI voice agents",
+      "url": "https://thunderphone.com/blog/introducing-zeus",
+      "source": "hackernews"
+    },
+    {
+      "title": "Psychometric Evaluation and Cognitive Correlates of the Tactile Mental Cutting Test: Investigating Reliability, Validity, Gender Differences in Spatial Ability, Executive Function and Social Emotional Competence Among Native American Elementary Students",
+      "url": "https://doi.org/10.26076/6bry-6064",
+      "source": "openalex"
+    },
+    {
+      "title": "Allied Health Professionals: Experiences Making the Transition from Clinical Practice to Academia",
+      "url": "https://openalex.org/W7225765348",
+      "source": "openalex"
+    },
+    {
+      "title": "Natural Language Processing and Graph Methods for Knowledge Graph Applications",
+      "url": "https://openalex.org/W7204678376",
+      "source": "openalex"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: fix: the live viewer shows text that begins with attachment:// or tc:// as written (#6677)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/c574b6bf6674e6d5f6cbb0f95059d7427b23d54b",
+      "source": "github"
+    },
+    {
+      "title": "CrisisBench: an evaluation suite for crisis counseling AI",
+      "url": "https://arxiv.org/abs/2611.21622",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Literary Language Mashup: Curating Fictions with Large Language Models",
+      "url": "https://arxiv.org/abs/2611.21649",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "TUSI: A Citation-Grounded Graph-Based Benchmark",
+      "url": "https://arxiv.org/abs/2611.21823",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "DiagTrace: An Interactive Benchmark for Clinical Decision Making",
+      "url": "https://arxiv.org/abs/2611.22009",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Beyond Acuity Accuracy: A Multidimensional Framework for Evaluating Patient-Facing Emergency Triage AI Tools",
+      "url": "https://arxiv.org/abs/2611.22045",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "MInfoVisQA: A Multilingual Benchmark for Information-Rich Visual Question Answering",
+      "url": "https://arxiv.org/abs/2611.21644",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "From Preference Data to Personalization: Tracing Sycophancy in Large Language Models",
+      "url": "https://arxiv.org/abs/2611.21650",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Show HN: KradleBench – Multi-agent AI evals in Minecraft",
+      "url": "https://www.kradle.ai?1",
+      "source": "hackernews"
+    },
+    {
+      "title": "We benchmarked our contour engine against GDAL and GRASS, blind, losses included",
+      "url": "https://www.topolines.app/blog/karst-engine",
+      "source": "hackernews"
+    },
+    {
+      "title": "KradleBench: Multi-agent AI evals in Minecraft",
+      "url": "http://www.kradle.ai",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
