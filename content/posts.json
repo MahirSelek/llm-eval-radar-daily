@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-21-daily-eval-briefing-2026-11-21-thin-same-day-signal-scoring-topology-drift-and-bridge",
+    "title": "Daily Eval Briefing 2026-11-21: Thin Same-Day Signal, Scoring-Topology Drift, and Bridged-Agent Log Provenance",
+    "subtitle": "Same-day coverage is thin; the freshest signal is that identical LLM judge verdicts can still diverge under scoring-scale design, while harness logs tighten tool-call identity for agent runs.",
+    "date": "2026-11-21",
+    "summary": "Same-day publishable coverage for 2026-11-21 is thin relative to a full eval news cycle, so this briefing prioritizes the strongest items inside the freshness window rather than inventing a crowded agenda. The clearest methodological signal is the 2026-11-19 arXiv study on numerical scoring topology in LLM-as-a-Judge settings, which shows that scale width, granularity, offset, symmetry, and boundary placement systematically reshape scores, calibration, and robustness even when qualitative judgement looks stable. A 2026-11-20 Inspect AI harness change improves reproducibility by recording the tool-call identity a bridged agent actually received when the bridge remaps ids. Adjacent same-window items—an open-source coding-agent alternative and broader benchmarking work on ranking stability—matter mainly as reminders that agent demos and multi-criteria score aggregation can look decisive while remaining hard to compare. For researchers and infra teams, the practical implication is to treat scoring scheme and harness identity as first-class experimental variables, not cosmetic configuration.",
+    "key_takeaways": [
+      "Treat numerical scoring topology (scale width, granularity, offset, symmetry, boundaries) as a controlled factor in LLM-as-a-Judge pipelines; identical qualitative judgements can still yield non-comparable numeric leaderboards.",
+      "Do not cross-compare judge scores across rubric revisions unless you re-run calibration checks; shifted or asymmetric scales can change robustness in judgment-intensive tasks.",
+      "For agent evaluations that bridge tool APIs, persist both native and remapped tool-call ids so failure analysis and replay remain auditable after harness changes.",
+      "Open agent demos remain weak substitutes for protocol-specified benchmarks unless task distribution, tool surface, and scoring rules are frozen and disclosed.",
+      "When same-day primary eval releases are sparse, prefer method papers and harness provenance patches over hype surfaces, and date-stamp every claim that is not from the report day."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-21T01:07:06.086131+00:00",
+    "post_path": "content/posts/2026-11-21-daily-eval-briefing-2026-11-21-thin-same-day-signal-scoring-topology-drift-and-bridge.json"
+  },
+  {
     "slug": "2026-11-20-daily-eval-briefing-2026-11-20-domain-grounded-suites-force-incremental-evidence-and-",
     "title": "Daily Eval Briefing 2026-11-20: Domain-Grounded Suites Force Incremental Evidence and Multidimensional Judges",
     "subtitle": "Same-day eval signal is thin; the freshest shift is yesterday’s suite of crisis, legal RAG, diagnostic-trace, and triage frameworks that reject single-score validity.",
