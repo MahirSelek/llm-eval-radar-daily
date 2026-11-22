@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-23-daily-eval-briefing-2026-11-23-thin-same-day-signal-agent-benchmark-principles-and-mo",
+    "title": "Daily Eval Briefing — 2026-11-23: Thin Same-Day Signal, Agent Benchmark Principles, and Moral-Framing Bias Tests",
+    "subtitle": "With almost no same-day primary releases, the freshest Nov 22 signals stress agent-bench design discipline and gender-asymmetric moral evaluation validity.",
+    "date": "2026-11-23",
+    "summary": "Same-day coverage for 2026-11-23 is thin: the publishable set is dominated by items dated 2026-11-22 inside the freshness window, not by new releases stamped to the report day. The strongest evaluation-relevant signals are a Hacker News–amplified arXiv study on gender-asymmetric moral framing in conflict settings, plus two practitioner pieces on agent benchmark principles and AI product quality management. Together they push the field away from headline accuracy and toward framing sensitivity, process-level agent checks, and continuous quality gates. Peripheral forum and off-domain OpenAlex items add little direct LLM-eval signal and should not be read as today’s research news. Researchers and infra teams should treat this as a methodology-maintenance day: tighten agent harness specs, audit moral/judge prompts for asymmetric framing, and keep product eval loops comparable across releases.",
+    "key_takeaways": [
+      "Treat 2026-11-23 as a thin-signal day: prioritize the 2026-11-22 moral-framing paper and agent-benchmark principles pieces; do not inflate unrelated product or OpenAlex items into same-day eval news.",
+      "Gender-asymmetric moral framing tests expose a validity gap: if conflict scenarios systematically shift blame or harshness by gender cues, leaderboard scores without framing controls are not comparable across models or prompt templates.",
+      "Agent benchmark design should encode explicit principles (task realism, scoring contracts, harness freeze, failure taxonomy) before scale-out; otherwise harness drift will dominate model deltas.",
+      "Product quality management framing is useful only when evaluation, reliability, and safety share versioned metrics and release gates—otherwise teams confuse UX anecdotes with reproducible eval evidence.",
+      "Infra implication: add framing-perturbation and agent-harness change-log checks to CI so moral-judge and agent-suite results remain auditable under prompt and tool-stack edits."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-22T21:33:48.374433+00:00",
+    "post_path": "content/posts/2026-11-23-daily-eval-briefing-2026-11-23-thin-same-day-signal-agent-benchmark-principles-and-mo.json"
+  },
+  {
     "slug": "2026-11-22-daily-eval-briefing-2026-11-22-thin-same-day-signal-deterministic-harnesses-and-legal",
     "title": "Daily Eval Briefing 2026-11-22: Thin Same-Day Signal, Deterministic Harnesses, and Legal-Bench Claims Without Domain Data",
     "subtitle": "With almost no same-day publishable traffic, the freshest eval signal is harness determinism, defensive dataset design, and skepticism toward domain-leaderboard claims that bypass domain training.",
