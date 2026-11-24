@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-24-daily-eval-briefing-2026-11-24-thin-same-day-signal-inspect-harness-breaks-and-long-c",
+    "title": "Daily Eval Briefing 2026-11-24: Thin Same-Day Signal, Inspect Harness Breaks, and Long-Call Trace Loss",
+    "subtitle": "With little fresh benchmark news, the actionable eval shift is harness API breakage and incomplete agent traces that quietly invalidate comparisons.",
+    "date": "2026-11-24",
+    "summary": "Same-day coverage for 2026-11-24 is thin: no new major LLM benchmarks, judge papers, or arena releases landed inside the freshness window with clear evaluation substance. The strongest technical signal is UKGovernmentBEIS/inspect_ai v0.3.292 (2026-11-23), which ships breaking changes to sample exclusion/zeroing APIs, log CLI output shape, and sandbox task lifecycle working directories. Those changes matter more for eval validity than most peripheral papers in the feed because they alter how scores are recovered, how scripts parse results, and where environment setup runs. A same-window Cursor forum report (2026-11-23) on long Grok Bot call content being lost during harnessed coding workflows adds a complementary reliability concern: incomplete traces undermine process scoring and reproducibility even when final answers look intact. Remaining items are either off-domain, future-dated OpenAlex records, or compiler tooling with weak LLM-eval relevance, so this briefing extracts methodology lessons from the freshest harness and trace signals rather than inventing news.",
+    "key_takeaways": [
+      "Treat inspect_ai 0.3.292 as a comparability break: exclude/zero flows now return None and CLI summaries replace per-sample JSON, so historical automation that read result.applied or --json output can silently mis-score runs.",
+      "Re-pin sandbox provider assumptions after the launch-directory shift for task_init / task_init_environment / task_cleanup; path and env-variable semantics can change measured agent success without model changes.",
+      "Long multi-turn agent calls that drop intermediate content invalidate process rubrics, judge audit trails, and failure taxonomy even if terminal outcomes remain scorable.",
+      "When same-day publishable eval news is sparse, prioritize harness changelog and trace completeness over adjacent ML papers that do not constrain LLM evaluation claims.",
+      "Infra teams should gate leaderboard merges on harness version, log schema, and full-transcript retention checks before interpreting score deltas as model progress."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-24T02:46:13.159714+00:00",
+    "post_path": "content/posts/2026-11-24-daily-eval-briefing-2026-11-24-thin-same-day-signal-inspect-harness-breaks-and-long-c.json"
+  },
+  {
     "slug": "2026-11-23-daily-eval-briefing-2026-11-23-thin-same-day-signal-agent-benchmark-principles-and-mo",
     "title": "Daily Eval Briefing — 2026-11-23: Thin Same-Day Signal, Agent Benchmark Principles, and Moral-Framing Bias Tests",
     "subtitle": "With almost no same-day primary releases, the freshest Nov 22 signals stress agent-bench design discipline and gender-asymmetric moral evaluation validity.",

@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-24-daily-eval-briefing-2026-11-24-thin-same-day-signal-inspect-harness-breaks-and-long-c",
+  "date": "2026-11-24",
+  "created_at": "2026-11-24T02:46:13.159714+00:00",
+  "title": "Daily Eval Briefing 2026-11-24: Thin Same-Day Signal, Inspect Harness Breaks, and Long-Call Trace Loss",
+  "subtitle": "With little fresh benchmark news, the actionable eval shift is harness API breakage and incomplete agent traces that quietly invalidate comparisons.",
+  "summary": "Same-day coverage for 2026-11-24 is thin: no new major LLM benchmarks, judge papers, or arena releases landed inside the freshness window with clear evaluation substance. The strongest technical signal is UKGovernmentBEIS/inspect_ai v0.3.292 (2026-11-23), which ships breaking changes to sample exclusion/zeroing APIs, log CLI output shape, and sandbox task lifecycle working directories. Those changes matter more for eval validity than most peripheral papers in the feed because they alter how scores are recovered, how scripts parse results, and where environment setup runs. A same-window Cursor forum report (2026-11-23) on long Grok Bot call content being lost during harnessed coding workflows adds a complementary reliability concern: incomplete traces undermine process scoring and reproducibility even when final answers look intact. Remaining items are either off-domain, future-dated OpenAlex records, or compiler tooling with weak LLM-eval relevance, so this briefing extracts methodology lessons from the freshest harness and trace signals rather than inventing news.",
+  "key_takeaways": [
+    "Treat inspect_ai 0.3.292 as a comparability break: exclude/zero flows now return None and CLI summaries replace per-sample JSON, so historical automation that read result.applied or --json output can silently mis-score runs.",
+    "Re-pin sandbox provider assumptions after the launch-directory shift for task_init / task_init_environment / task_cleanup; path and env-variable semantics can change measured agent success without model changes.",
+    "Long multi-turn agent calls that drop intermediate content invalidate process rubrics, judge audit trails, and failure taxonomy even if terminal outcomes remain scorable.",
+    "When same-day publishable eval news is sparse, prioritize harness changelog and trace completeness over adjacent ML papers that do not constrain LLM evaluation claims.",
+    "Infra teams should gate leaderboard merges on harness version, log schema, and full-transcript retention checks before interpreting score deltas as model progress."
+  ],
+  "body_en": "Same-day evaluation coverage for 2026-11-24 is thin. Across the provided fresh set, there is no new public LLM benchmark release, no judge-calibration study, and no arena methodology update dated to the report day itself. Under the stated freshness policy, the correct editorial move is not to stretch weak OpenAlex or compiler items into fake eval headlines, but to mine the freshest technical artifacts that actually change how evaluation is run, logged, and compared. Two items from 2026-11-23 clear that bar: the inspect_ai 0.3.292 release and a Cursor forum report on long call content loss in harnessed agent workflows. Everything else either sits outside LLM evaluation methodology or is future-dated and should not be framed as today’s news.\n\nThe inspect_ai release is the primary signal. Version 0.3.292 (published 2026-11-23) introduces breaking changes that directly affect evaluation plumbing. exclude_samples() and zero_samples() now return None, and DispositionResult is no longer exported. Operators are told to read affected samples and scores from the log instead of result.applied or result.unchanged. In parallel, inspect log exclude and inspect log zero no longer accept --json and print a summary instead of per-sample lines. For research and infra teams, this is not a cosmetic CLI tweak. Many internal scoreboards, CI gates, and post-hoc contamination/ablation scripts assume structured per-sample disposition objects. If those scripts continue to expect the old return shape, a run can look complete while exclusion or zeroing was never correctly accounted for in downstream aggregation. That is a classic reproducibility failure mode: the model and task are unchanged, but the accounting surface moved.\n\nWhy this matters for evaluation quality now is straightforward. Sample exclusion and zeroing are used for leakage quarantine, broken item removal, sandbox failure handling, and post-hoc fairness corrections. When the API stops returning applied/unchanged dispositions and forces log-centric recovery, teams that do not update parsers will either (1) under-count filtered samples and inflate accuracy, (2) double-count or drop zeros, or (3) silently skip quarantine steps because the old object path is None. Any of those outcomes contaminates cross-run comparison. The release also changes sandbox provider lifecycle semantics: task_init, task_init_environment, and task_cleanup now run in the launch directory instead of the task directory, and non-Docker providers whose task_init_environment returns variables fail setup with a PrerequisiteError. That is a harness validity issue. Agent benchmarks that depend on relative paths, local tool manifests, or provider-injected environment variables can change success rates after an upgrade even if the model checkpoint is identical. Without an explicit harness changelog in the paper or dashboard, such deltas will be misread as capability movement.\n\nThe practical implication for researchers is to treat 0.3.292 as a hard version pin boundary. Re-run a small frozen control suite before and after upgrade, keep the same seed and sample IDs, and verify that exclude/zero counts and score aggregates match after migrating to log-based recovery. For infra teams, update any automation that scraped --json exclude/zero output, assert DispositionResult is no longer imported, and add schema tests that fail if per-sample disposition fields are missing from logs. Also inventory custom sandbox providers: if they are not Docker or a Docker subclass and they return environment variables from task_init_environment, setup will now fail. That failure is preferable to silent misconfiguration, but only if teams notice it before a leaderboard cut.\n\nThe second fresh item is a Cursor forum thread dated 2026-11-23 titled “Long call content can be lost,” describing Grok Bot planning sessions whose long call content can disappear while work is handed to T3 Code harnesses. On its face this is a product bug report, not a benchmark paper. For evaluation methodology it still matters because modern agent scoring increasingly depends on process evidence: tool calls, intermediate plans, recovered errors, and multi-step state. If long-call content is truncated or lost, judges and human auditors lose the transcript needed to score partial credit, detect reward hacking, or reproduce failure modes. Final-answer-only metrics can remain computable while the run becomes scientifically incomplete. That asymmetry is dangerous in harnessed coding agents, where the interesting failure often lives in the middle of the trajectory.\n\nCompare the two signals. Inspect’s breaking changes are explicit and versioned: they announce that old result objects and CLI shapes are gone. The long-call loss report is observational and incomplete, but it points to a different class of validity threat: silent information attrition inside the eval surface. Explicit harness breaks are easier to catch with pin diffs and changelog gates. Silent trace loss is harder because scores may still post. Together they argue for a dual control strategy: (1) treat eval framework upgrades as methodology changes requiring re-baselining, and (2) treat full-transcript retention as a first-class acceptance criterion for agent runs, not an optional debug artifact.\n\nThe rest of the provided feed should be handled with discipline. Several OpenAlex records carry 2027 publication dates (GPU compiler regression finding, MCDM aggregation benchmarking, RAG academic chatbot, landslide susceptibility, motorcycle conversion energy study, mini-hydropower streamflow risk) and are either off-domain or only loosely about “benchmarking” in a non-LLM sense. Mind-Brush (dated 2026-11-30 in the feed) discusses agentic cognitive search for image generation, which is conceptually adjacent to agent evaluation but is not a same-day LLM eval release and should not be presented as today’s news. The Hacker News item on LLPE, a partial evaluator for LLVM bitcode (2026-11-23), is compiler infrastructure, not LLM judge or benchmark methodology. Including these as primary news would invent relevance. The correct use, if any, is negative evidence: adjacent “benchmark” language in other fields does not substitute for LLM evaluation signal when the daily stack is thin.\n\nSynthesizing for stakeholders: today’s briefing is a harness-and-trace day, not a benchmark-launch day. The evaluation quality agenda for the next 24–48 hours is operational. First, freeze and document inspect_ai version for every active suite; if upgrading to 0.3.292, migrate exclude/zero consumers to log reads and rewrite any scripts that depended on --json per-sample lines. Second, revalidate sandbox providers against launch-directory semantics and PrerequisiteError rules so environment setup differences do not masquerade as model regressions. Third, for agentic coding or planning evals, add retention checks that fail a run when long-call or intermediate harness content is missing, even if a terminal score exists. Fourth, keep leaderboard narratives muted until those controls pass: with thin same-day external research signal, overclaiming model progress from noisy harness churn is the main risk.\n\nIn short, 2026-11-24 does not offer a dense set of new eval papers. It does offer a concrete reminder that evaluation validity often moves through infrastructure first. When judge models and datasets are quiet, harness API breaks and incomplete agent traces are where comparability dies. Teams that treat those as methodology events—dated, versioned, and re-baselined—will preserve the integrity of claims while waiting for thicker research coverage.",
+  "methodology_risks": "Comparability risk is concentrated in inspect_ai 0.3.292’s disposition and CLI shape changes. Any pipeline still reading result.applied, result.unchanged, or --json exclude/zero output can mis-handle quarantined or zeroed samples after 2026-11-23, producing non-comparable aggregates across otherwise identical model runs. Sandbox lifecycle relocation to the launch directory further couples scores to provider and working-directory assumptions; without harness version pins, cross-day leaderboards conflate infra drift with capability change.\n\nLeakage and judge-drift exposure is secondary today because no fresh judge benchmark landed, but incomplete long-call traces create a related audit failure. If intermediate planning or tool content is lost, LLM-as-a-judge and human review cannot reliably detect contaminated prompts, copied solution fragments, or process shortcuts. Process-level judges then either abstain or overfit to truncated context, which looks like judge instability when the root cause is missing evidence.\n\nReproducibility practice for this window: declare thin same-day research coverage explicitly, cite the 2026-11-23 harness and forum dates, refuse to elevate future-dated or off-domain OpenAlex items as LLM eval news, and require log-schema plus transcript-completeness checks before publishing score deltas.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "inspect-ai",
+    "harness-changes",
+    "reproducibility",
+    "agent-traces",
+    "comparability"
+  ],
+  "sources": [
+    {
+      "title": "Long call content can be lost",
+      "url": "https://forum.cursor.com/t/long-call-content-can-be-lost/179119",
+      "source": "forum/cursor-forum"
+    },
+    {
+      "title": "[release] UKGovernmentBEIS/inspect_ai: v0.3.292",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/releases/tag/0.3.292",
+      "source": "github"
+    },
+    {
+      "title": "Finding Performance Regressions in GPU Compilers",
+      "url": "https://doi.org/10.1145/3845814.3850066",
+      "source": "openalex"
+    },
+    {
+      "title": "Benchmarking Aggregation-Based MCDM Methods: A Comparative Analysis of Ranking Consistency, Stability, and Robustness",
+      "url": "https://doi.org/10.67449/jodesma.v1i2.9",
+      "source": "openalex"
+    },
+    {
+      "title": "Retrieval-Augmented Generation Chatbot for Academic Information Services Using GROQ API",
+      "url": "https://doi.org/10.37373/tekno.v14i1.2526",
+      "source": "openalex"
+    },
+    {
+      "title": "Seismic–Tectonic Predictors of Landslide Susceptibility in the Western Himalayas: A Spatially Validated Machine Learning Assessment",
+      "url": "https://doi.org/10.70425/rml.202701.54",
+      "source": "openalex"
+    },
+    {
+      "title": "Performance and Energy Consumption Evaluation of a Yamaha 5TL Converted to BLDC Electric Propulsion",
+      "url": "https://doi.org/10.68252/seat.16",
+      "source": "openalex"
+    },
+    {
+      "title": "Seasonal Water-Flow Risk and Business Sustainability in a Mini-Scale Hydropower Enterprise: Evidence from Central Java, Indonesia",
+      "url": "https://doi.org/10.68252/sebe.21",
+      "source": "openalex"
+    },
+    {
+      "title": "Mind-Brush: Integrating Agentic Cognitive Search and Reasoning into Image Generation",
+      "url": "https://doi.org/10.1145/3829340.3842241",
+      "source": "openalex"
+    },
+    {
+      "title": "LLPE: A partial evaluator for LLVM bitcode",
+      "url": "http://www.llpe.org/",
+      "source": "hackernews"
+    },
+    {
+      "title": "[commit] UKGovernmentBEIS/inspect_ai: feat: model cache entries use a JSON format; entries from earlier versions are not reused (`inspect cache prune` removes them) (#6732)",
+      "url": "https://github.com/UKGovernmentBEIS/inspect_ai/commit/83561dec9facc2074dbc051ced0ac0865e8b73a4",
+      "source": "github"
+    },
+    {
+      "title": "Your Judge Inherits Your Prompt: In-Context Label Bias in an LLM-as-Judge Is Directional, Not Symmetric",
+      "url": "https://arxiv.org/abs/2611.26881",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Beyond Demographic Discrimination: Benchmarking Normative-Descriptive Calibration in LLMs",
+      "url": "https://arxiv.org/abs/2611.26870",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "Scalable Evaluation of Medical AI using Evidence-based Practice Recommendations",
+      "url": "https://arxiv.org/abs/2611.27007",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "LLM Evals in CI/CD: Golden Datasets, Regression Gates and LLM-as-Judge Pitfalls",
+      "url": "https://codefarm0.medium.com/llm-evals-in-ci-cd-golden-datasets-regression-gates-and-llm-as-judge-pitfalls-485744d215e5?source=rss------ai_evaluation-5",
+      "source": "rss/medium-ai-evaluation"
+    },
+    {
+      "title": "Show HN: KradleBench – Multi-agent AI evals in Minecraft",
+      "url": "https://www.kradle.ai?1",
+      "source": "hackernews"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}
