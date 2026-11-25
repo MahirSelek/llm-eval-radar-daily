@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-25-daily-eval-briefing-2026-11-25-thin-same-day-signal-benchmark-death-modes-and-sealed-",
+    "title": "Daily Eval Briefing 2026-11-25: Thin Same-Day Signal, Benchmark Death Modes, and Sealed Analyst Rubrics",
+    "subtitle": "Same-day coverage is thin; the strongest signal is how saturation, contamination, and answer-key design decide whether scores still mean anything.",
+    "date": "2026-11-25",
+    "summary": "Publishable same-day eval signal for 2026-11-25 is thin: no dense arXiv wave, no forum threads, and little primary research beyond a few high-signal methodology pieces. The clearest anchor is a same-day essay on how AI benchmarks die through saturation, contamination, and the need for living evaluations rather than frozen leaderboards. Adjacent freshness comes from a 2026-11-24 deep dive into an AI analyst evaluation that rejects self-authored answer keys, grades numbers by code, scores compound questions part by part, and holds sealed items. A same-day Show HN on production grammar-guided decoding with Xgrammar benchmarks adds an infra angle: constrained-generation harnesses are becoming part of the measurement surface, not just a serving optimization. Together these items push researchers and platform teams to treat benchmark validity, leakage control, and scorer provenance as first-class release gates. Comparability without sealed sets, code-backed numeric checks, and dated harness pins remains fragile.",
+    "key_takeaways": [
+      "Treat saturation and contamination as expected failure modes: retire or refresh static benches before scores become vanity metrics.",
+      "Prefer answer keys the system did not author, with code-graded numeric checks and part-level scoring for compound analyst tasks.",
+      "Keep sealed or held-out question packs so public leaderboards cannot quietly train into the evaluation set.",
+      "When measuring constrained decoding, pin grammar, engine, and decoder versions; Xgrammar-style benches are harness-sensitive.",
+      "With thin same-day primary literature, prioritize methodology discipline over chasing sparse launch noise unrelated to eval quality."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-25T10:54:22.359185+00:00",
+    "post_path": "content/posts/2026-11-25-daily-eval-briefing-2026-11-25-thin-same-day-signal-benchmark-death-modes-and-sealed-.json"
+  },
+  {
     "slug": "2026-11-24-daily-eval-briefing-2026-11-24-thin-same-day-signal-inspect-harness-breaks-and-long-c",
     "title": "Daily Eval Briefing 2026-11-24: Thin Same-Day Signal, Inspect Harness Breaks, and Long-Call Trace Loss",
     "subtitle": "With little fresh benchmark news, the actionable eval shift is harness API breakage and incomplete agent traces that quietly invalidate comparisons.",
