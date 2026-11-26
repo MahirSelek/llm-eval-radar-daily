@@ -1,0 +1,111 @@
+{
+  "slug": "2026-11-26-daily-eval-briefing-2026-11-26-refusal-coverage-blind-spots-behavioral-chart-harnesse",
+  "date": "2026-11-26",
+  "created_at": "2026-11-26T13:41:11.719163+00:00",
+  "title": "Daily Eval Briefing 2026-11-26: Refusal Coverage Blind Spots, Behavioral Chart Harnesses, and Deterministic Scoring Spines",
+  "subtitle": "Same-day papers treat measurement filters, presentation confounds, and non-deterministic memory as first-class validity failures—not post-hoc footnotes.",
+  "summary": "Coverage for 2026-11-26 is strong across arXiv and adjacent releases, with a clear cluster on what evaluations silently exclude or confound. A new bias-audit analysis shows that discarding refusals before scoring is itself a coverage decision that reshapes which behaviors audits can see. Parallel work introduces interactive chart-to-code scoring aimed at behavioral consistency, CogLoadBench to separate presentation load from task difficulty, and FOF-Bench to punish surface-similarity shortcuts in embeddings. Multilingual decision-model ranking, part-level partial-context scoring, and deterministic agent-memory and spatial harnesses reinforce the same operational lesson: comparability now depends as much on filters, harness determinism, and label topology as on headline accuracy.",
+  "key_takeaways": [
+    "Treat refusal filtering, answer-level aggregation, and English-only ranking as protocol choices that change coverage and leaderboard meaning, not as invisible preprocessing.",
+    "Prefer harnesses that score behavioral state transitions, part-level sufficiency, and fact identity under paraphrase rather than static visual match or whole-answer pass/fail.",
+    "Isolate extraneous presentation load and surface-form similarity from intrinsic difficulty before attributing score gaps to model capability.",
+    "For long-horizon agents and spatial or iterative predictors, require deterministic indexing, provenance, and verified-outcome loops so reruns remain comparable.",
+    "When routers or guardrails threshold decision-model probabilities, recalibrate and re-rank per language; English leaderboards understate multilingual error."
+  ],
+  "body_en": "Same-day coverage for 2026-11-26 is not thin. Fresh arXiv items and a same-day deterministic spatial harness push evaluation quality questions that matter immediately for audit design, multimodal coding benches, embedding metrics, multilingual routers, and agent memory reproducibility.\n\nThe sharpest measurement critique is Refusal Is Not Scored (arXiv:2611.33690). Bias audits of conversational models commonly discard refusals such as \"I can't assist with that request\" before scoring. The paper treats that filter as a coverage limit rather than a harmless cleanup step: once refusals are removed, the audit can only score the residual response distribution, and that residual is shaped by safety policy, prompt framing, and model refusal rates. Applying seven instruments—three dictionary-based and four LLM-as-judge—across paradigms makes the practical point concrete. Dictionary scorers and judge prompts may look stable on the filtered set while silently missing systematic differences in who gets refused, when, and on which demographic or topic axes. For infra teams running recurring bias gates, the implication is operational: log refusal rates as a first-class metric, report scores both with and without refusals where ethically feasible, and document whether a score reflects \"behavior given that the model answered\" or \"behavior across the full response policy.\" Without that split, week-over-week leaderboard moves can be refusal-policy drift misread as stereotype reduction.\n\nA second design shift appears in Beyond Static Charts (arXiv:2611.31345). Existing multimodal chart-to-code benches emphasize static visual consistency. Interactive charts require behavioral consistency: chart state must evolve correctly under user actions, not merely look right in a screenshot. That changes the scoring surface from pixel or SVG similarity to state-transition checks, interaction traces, and harness determinism. Teams comparing MLLMs on dashboard or BI codegen should stop treating static chart suites as sufficient proxies. A model that emits plausible visual code can still fail event bindings, filter updates, or linked-view synchronization. The evaluation unit becomes an interactive episode with reproducible action scripts, not a single rendered frame.\n\nExtraneous Cognitive Load in Large Language Models (arXiv:2611.33197) and its CogLoadBench isolate a confound that many capability benches still bury. Cognitive Load Theory distinguishes intrinsic load from presentation load; the paper argues LLMs show analogous sensitivity, where formatting and information packaging move scores even when underlying task difficulty is held fixed. If two prompts differ only in extraneous presentation, attribution to reasoning ability is invalid. Controlled benches that orthogonalize presentation from difficulty are therefore prerequisites for claims about robustness or instruction-following. For harness maintainers, this is a change-log item: prompt templates, JSON wrappers, and RAG packing formats are part of the experimental condition. Unlogged template edits are silent difficulty shifts.\n\nFocus On Facts (arXiv:2611.33250) targets a related shortcut in embedding evaluation. Base models can prefer an altered near-copy that preserves surface form while corrupting a fact over a differently worded rewrite that preserves facts. FOF-Bench supplies 83,263 triplets across five domains with hard-negative contrastive supervision aimed at stylistic invariance and factual sensitivity. The eval lesson is not only that embeddings conflate form with identity, but that retrieval and clustering metrics which reward lexical near-duplicates will systematically undervalue fact-preserving paraphrase and overvalue near-copy corruption. Release gates for search, memory indexing, and deduplication should include fact-sensitive negatives rather than only paraphrase positives.\n\nLost in Translation, Not in Confidence (arXiv:2611.33307) stresses comparability for decision models—models fine-tuned to emit option probabilities that routers and guardrails threshold directly. Twenty-five open-weight models evaluated on 17 tasks in 14 languages lose accuracy in every non-English setting relative to parallel English items, with drops that remain large even where models stay overconfident. English-centric rankings therefore mis-order systems for multilingual deployment. The methodology demand is parallel-item multilingual scoring plus calibration reporting per language, not a single English leaderboard with a multilingual base-model footnote.\n\nWhen the Knowledge Runs Out (arXiv:2611.33428) is a smaller open pilot, but it corrects a common label topology error. Many insufficient-context evaluations score one answer per question and collapse partially sufficient context into a single insufficient label. The pilot scores each part of a three-part question separately, distinguishing correct use of covered material from unsupported answers on uncovered parts. That matters for assistants grounded in supplied references: whole-answer pass/fail hides selective hallucination and selective abstinence. Part-level verdicts make failure modes actionable for RAG release gates.\n\nOn the reproducibility spine, MGMem (arXiv:2611.33174) argues that long-horizon agent memory systems that rewrite history via generative summarization are costly, non-deterministic, and provenance-erasing. Non-determinism undermines rerun comparability; lost provenance blocks audit of which past turn justified an action. Deterministic, provenance-preserving indexing is therefore an evaluation prerequisite for agent harnesses that claim stable long-horizon scores. Adjacent to that, Verified experience improves materials prediction (arXiv:2611.33195) notes that benchmarks often score queries in isolation while real discovery loops feed verified outcomes back into subsequent predictions. Isolation scoring understates systems that improve through verified experience and overstates one-shot predictors relative to closed-loop use. IKIN ZipGate v2.2, posted the same day on Hacker News as a deterministic 60-degree lattice spatial benchmark with a visualizer, fits the same theme: deterministic geometry and fixed protocol reduce scorer drift when spatial reasoning claims are compared across models.\n\nLearning from Recurrence (arXiv:2611.33468) is more architectural than benchmark-centric, but it still touches eval comparability: recurrent depth changes compute per token under shared parameters, so depth must be logged as a harness condition when mid-training or preference internalization claims are made. Without depth disclosure, accuracy deltas are not reproducible across labs.\n\nTaken together, today's signal is that evaluation quality failures are increasingly about what the protocol decides not to score, how it packages the task, and whether the harness can be rerun with the same provenance. Refusal filters, static-only multimodal suites, English-only decision rankings, whole-answer partial-context labels, generative memory rewrite, and isolation scoring all look like ordinary engineering defaults until they quietly redefine the construct under measurement. Researchers and infra teams should update gates accordingly: publish coverage and filter statistics, require behavioral and part-level scores where the product is interactive or grounded, separate presentation from difficulty, add fact-identity hard negatives for embeddings, recalibrate multilingual routers, and demand deterministic memory and spatial harnesses before treating long-horizon or geometric claims as comparable.",
+  "methodology_risks": "Comparability risk is highest where preprocessing filters and ranking languages are left implicit. Refusal discarding, English-only decision-model ladders, and whole-answer aggregation of partially covered questions each change the measured construct without changing the model. Cross-paper or cross-week comparisons that ignore those protocol choices will attribute coverage artifacts to capability. Interactive chart and agent-memory evals add a second risk: if scorers check static outputs or regenerated summaries instead of deterministic state transitions and provenance links, reruns disagree even when the candidate model is fixed.\n\nLeakage and judge drift remain material for several same-day instruments. FOF-Bench and bias audits that rely on LLM-generated rewrites or LLM-as-judge axes can inherit generator style and judge preference into the label. CogLoadBench-style presentation sweeps can also be contaminated if models have seen particular wrapper formats in post-training. Mitigations are frozen judge prompts with versioned seeds, human audit samples on refusal-adjacent and fact-corrupt cases, and explicit separation between items used to train contrastive objectives and items used for public ranking.\n\nReproducibility fails when generative memory builders, non-logged recurrent depth, or non-deterministic spatial/tool harnesses sit under the score. Prefer deterministic indexing, sealed interaction scripts for interactive charts, verified-outcome logging for iterative predictors, and per-language calibration tables for routers. Without those controls, leaderboard deltas are not trustworthy release signals.",
+  "tags": [
+    "evaluation",
+    "benchmark",
+    "llm-as-a-judge",
+    "refusal-coverage",
+    "contamination-risk",
+    "harness-determinism",
+    "multilingual-calibration",
+    "reproducibility"
+  ],
+  "sources": [
+    {
+      "title": "Refusal Is Not Scored: A Coverage Limit in Content-Based Bias Evaluation",
+      "url": "https://arxiv.org/abs/2611.33690",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Beyond Static Charts: Benchmarking Interactive Chart-to-Code Generation for MLLMs",
+      "url": "https://arxiv.org/abs/2611.31345",
+      "source": "rss/arxiv-csai-rss"
+    },
+    {
+      "title": "IKIN ZipGate v2.2 – A deterministic 60° lattice spatial benchmark for LLMs",
+      "url": "https://huggingface.co/spaces/Jadeikin-1/ikin-zipgate-visualizer",
+      "source": "hackernews"
+    },
+    {
+      "title": "MGMem: An Efficient, Deterministic, and Provenance-Preserving Framework for Long-Horizon Agent Memory",
+      "url": "https://arxiv.org/abs/2611.33174",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Verified experience improves materials prediction with large language models",
+      "url": "https://arxiv.org/abs/2611.33195",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Extraneous Cognitive Load in Large Language Models",
+      "url": "https://arxiv.org/abs/2611.33197",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Focus On Facts: Stylistically Invariant and Factually Sensitive Text Embeddings",
+      "url": "https://arxiv.org/abs/2611.33250",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Lost in Translation, Not in Confidence: Benchmarking and Calibrating Multilingual Decision Models",
+      "url": "https://arxiv.org/abs/2611.33307",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "When the Knowledge Runs Out: A Part-Level Pilot Evaluation of How Language Models Handle Partially Covered Questions",
+      "url": "https://arxiv.org/abs/2611.33428",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Learning from Recurrence: Internalizing Depth-Induced Preferences in Looped Language Models",
+      "url": "https://arxiv.org/abs/2611.33468",
+      "source": "rss/arxiv-cscl-rss"
+    },
+    {
+      "title": "Finding Performance Regressions in GPU Compilers",
+      "url": "https://doi.org/10.1145/3845814.3850066",
+      "source": "openalex"
+    },
+    {
+      "title": "Benchmarking Aggregation-Based MCDM Methods: A Comparative Analysis of Ranking Consistency, Stability, and Robustness",
+      "url": "https://doi.org/10.67449/jodesma.v1i2.9",
+      "source": "openalex"
+    },
+    {
+      "title": "Retrieval-Augmented Generation Chatbot for Academic Information Services Using GROQ API",
+      "url": "https://doi.org/10.37373/tekno.v14i1.2526",
+      "source": "openalex"
+    },
+    {
+      "title": "Seismic–Tectonic Predictors of Landslide Susceptibility in the Western Himalayas: A Spatially Validated Machine Learning Assessment",
+      "url": "https://doi.org/10.70425/rml.202701.54",
+      "source": "openalex"
+    },
+    {
+      "title": "Performance and Energy Consumption Evaluation of a Yamaha 5TL Converted to BLDC Electric Propulsion",
+      "url": "https://doi.org/10.68252/seat.16",
+      "source": "openalex"
+    },
+    {
+      "title": "Seasonal Water-Flow Risk and Business Sustainability in a Mini-Scale Hydropower Enterprise: Evidence from Central Java, Indonesia",
+      "url": "https://doi.org/10.68252/sebe.21",
+      "source": "openalex"
+    }
+  ],
+  "model": "grok-4.5",
+  "requested_model": "grok-4.5"
+}

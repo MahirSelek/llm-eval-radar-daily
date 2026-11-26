@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-26-daily-eval-briefing-2026-11-26-refusal-coverage-blind-spots-behavioral-chart-harnesse",
+    "title": "Daily Eval Briefing 2026-11-26: Refusal Coverage Blind Spots, Behavioral Chart Harnesses, and Deterministic Scoring Spines",
+    "subtitle": "Same-day papers treat measurement filters, presentation confounds, and non-deterministic memory as first-class validity failures—not post-hoc footnotes.",
+    "date": "2026-11-26",
+    "summary": "Coverage for 2026-11-26 is strong across arXiv and adjacent releases, with a clear cluster on what evaluations silently exclude or confound. A new bias-audit analysis shows that discarding refusals before scoring is itself a coverage decision that reshapes which behaviors audits can see. Parallel work introduces interactive chart-to-code scoring aimed at behavioral consistency, CogLoadBench to separate presentation load from task difficulty, and FOF-Bench to punish surface-similarity shortcuts in embeddings. Multilingual decision-model ranking, part-level partial-context scoring, and deterministic agent-memory and spatial harnesses reinforce the same operational lesson: comparability now depends as much on filters, harness determinism, and label topology as on headline accuracy.",
+    "key_takeaways": [
+      "Treat refusal filtering, answer-level aggregation, and English-only ranking as protocol choices that change coverage and leaderboard meaning, not as invisible preprocessing.",
+      "Prefer harnesses that score behavioral state transitions, part-level sufficiency, and fact identity under paraphrase rather than static visual match or whole-answer pass/fail.",
+      "Isolate extraneous presentation load and surface-form similarity from intrinsic difficulty before attributing score gaps to model capability.",
+      "For long-horizon agents and spatial or iterative predictors, require deterministic indexing, provenance, and verified-outcome loops so reruns remain comparable.",
+      "When routers or guardrails threshold decision-model probabilities, recalibrate and re-rank per language; English leaderboards understate multilingual error."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-26T13:41:11.719163+00:00",
+    "post_path": "content/posts/2026-11-26-daily-eval-briefing-2026-11-26-refusal-coverage-blind-spots-behavioral-chart-harnesse.json"
+  },
+  {
     "slug": "2026-11-25-daily-eval-briefing-2026-11-25-thin-same-day-signal-benchmark-death-modes-and-sealed-",
     "title": "Daily Eval Briefing 2026-11-25: Thin Same-Day Signal, Benchmark Death Modes, and Sealed Analyst Rubrics",
     "subtitle": "Same-day coverage is thin; the strongest signal is how saturation, contamination, and answer-key design decide whether scores still mean anything.",
