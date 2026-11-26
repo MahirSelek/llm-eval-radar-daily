@@ -1,5 +1,23 @@
 [
   {
+    "slug": "2026-11-27-daily-eval-briefing-2026-11-27-thin-same-day-signal-deterministic-spatial-benches-and",
+    "title": "Daily Eval Briefing 2026-11-27: Thin Same-Day Signal, Deterministic Spatial Benches, and Short-Benchmark Validity",
+    "subtitle": "With almost no 2026-11-27-native eval news, the freshest usable signal is ZipGate’s deterministic lattice protocol and caution about throughput claims built on short benchmarks.",
+    "date": "2026-11-27",
+    "summary": "Same-day coverage for 2026-11-27 is thin: none of the provided items carry a 2026-11-27 publish stamp, so this briefing draws from the freshest 36-hour window and a few adjacent methodology papers without inventing events. The strongest evaluation-relevant item is IKIN ZipGate v2.2 (noted 2026-11-26), a deterministic 60-degree lattice spatial benchmark that foregrounds protocol control over chatty preference scoring. A Hugging Face forum throughput claim for NInfer on RTX 4090 (also 2026-11-26) illustrates a recurring validity risk: short-benchmark speed figures that travel farther than the harness that produced them. Adjacent OpenAlex work on aggregation ranking stability and silent GPU-compiler regressions reinforces two durable infra lessons—score aggregation can reorder systems under small condition shifts, and tiny toolchain changes can invalidate historical comparisons. For researchers and platform teams, the practical stance today is protocol-first reading: treat determinism, harness identity, and aggregation sensitivity as first-class comparability constraints rather than footnotes.",
+    "key_takeaways": [
+      "Treat ZipGate-style deterministic spatial tasks as a reminder that reproducible geometry and fixed scoring rules can reduce judge-dependent variance when the capability under test is spatial or protocol-bound.",
+      "Do not promote tok/s or latency claims from short benchmarks into leaderboard-grade evidence unless sequence length, batching, warmup, precision, and decode path are locked and reported.",
+      "When comparing systems with aggregated scores, stress-test ranking stability under criterion and weight perturbations before claiming a durable ordering.",
+      "Version and freeze compiler, runtime, and harness knobs; silent performance or score regressions after tiny toolchain edits are a comparability failure, not just an ops inconvenience.",
+      "Because 2026-11-27 same-day primary eval releases are scarce in this feed, prioritize protocol documentation and re-run discipline over narrative novelty until denser same-day sources appear."
+    ],
+    "source_count": 16,
+    "model": "grok-4.5",
+    "created_at": "2026-11-26T22:50:03.882061+00:00",
+    "post_path": "content/posts/2026-11-27-daily-eval-briefing-2026-11-27-thin-same-day-signal-deterministic-spatial-benches-and.json"
+  },
+  {
     "slug": "2026-11-26-daily-eval-briefing-2026-11-26-refusal-coverage-blind-spots-behavioral-chart-harnesse",
     "title": "Daily Eval Briefing 2026-11-26: Refusal Coverage Blind Spots, Behavioral Chart Harnesses, and Deterministic Scoring Spines",
     "subtitle": "Same-day papers treat measurement filters, presentation confounds, and non-deterministic memory as first-class validity failures—not post-hoc footnotes.",
